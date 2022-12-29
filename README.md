@@ -6,7 +6,12 @@
 dotnet ef migrations add InitialCreate -s API -p Persistence
 ```
 
-## Run project
+## Run server
 ```
 dotnet watch --no-hot-reload
+```
+
+## Run client
+```
+npm start
 ```
