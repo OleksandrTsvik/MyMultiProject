@@ -1,5 +1,7 @@
 #SQLite Database
 mymultiproject.db
+mymultiproject.db-shm
+mymultiproject.db-wal
 
 #EF Migrations
 Persistence/Migrations
