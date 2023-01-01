@@ -2,6 +2,44 @@ body {
   background-color: #eaeaea;
 }
 
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin: 6.5rem 1rem 2rem 1rem;
+}
+
 .ui.inverted.top.fixed.menu {
   background-image: linear-gradient(135deg, rgb(24, 42, 115) 0%, rgb(33, 138, 174) 69%, rgb(32, 167, 172) 89%);
+}
+
+footer {
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: teal;
+  padding: 1.5rem 0;
+}
+
+footer a {
+  color: #fff;
+  font-weight: bold;
+}
+
+footer a:hover {
+  color: darkblue;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.input-color .ui.input input {
+  padding: 0;
+  border: none;
 }
