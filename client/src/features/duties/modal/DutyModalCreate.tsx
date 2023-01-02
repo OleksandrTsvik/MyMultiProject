@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
 import { Duty } from '../../../app/models/duty';
 import { v4 as uuid } from 'uuid';
@@ -7,6 +7,12 @@ interface Props {
     setDuties: React.Dispatch<React.SetStateAction<Duty[]>>;
     createMode: boolean;
     closeCreateMode: () => void;
+}
+
+interface Style {
+    color: string;
+    backgroundColor: string;
+    borderColor: string;
 }
 
 export default function DutyModalCreate({ setDuties, createMode, closeCreateMode }: Props) {
@@ -22,7 +28,19 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
         fontColor: '#000000'
     };
 
+    const initialStyle: Style = {
+        color: '#000000',
+        backgroundColor: '#ffffff',
+        borderColor: '#ffffff'
+    };
+
     const [duty, setDuty] = useState<Duty>(initialState);
+    const [style, setStyle] = useState<Style>(initialStyle);
+
+    useEffect(() => {
+        setDuty(initialState);
+        setStyle(initialStyle);
+    }, [createMode]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function handleSubmit() {
         setDuties((duties) => (
@@ -42,19 +60,31 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
         setDuty({ ...duty, [name]: value });
     }
 
+    function handleInputColor(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target;
+
+        switch (name) {
+            case 'fontColor':
+                setStyle({ ...style, 'color': value, 'borderColor': value });
+                break;
+            default:
+                setStyle({ ...style, [name]: value });
+        }
+    }
+
     return (
         <Modal
             centered={false}
             open={createMode}
             onClose={closeCreateMode}
-            onOpen={() => setDuty(initialState)}
+            style={style}
         >
-            <Modal.Header>Create task</Modal.Header>
-            <Modal.Content>
+            <Modal.Header style={style}>Create task</Modal.Header>
+            <Modal.Content style={style}>
                 <Form>
                     <Form.Field>
+                        <label style={style}>Title</label>
                         <Form.Input
-                            label='Title'
                             placeholder='Title'
                             value={duty.title}
                             name='title'
@@ -62,8 +92,8 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
                         />
                     </Form.Field>
                     <Form.Field>
+                        <label style={style}>Description</label>
                         <Form.TextArea
-                            label='Description'
                             placeholder='Description'
                             value={duty.description}
                             name='description'
@@ -72,30 +102,32 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
                         />
                     </Form.Field>
                     <Form.Field>
+                        <label style={style}>Background color</label>
                         <Form.Input
                             className='input-color'
-                            label='Background color'
                             type='color'
                             placeholder='Background color'
                             value={duty.backgroundColor}
                             onChange={handleInputChange}
+                            onInput={handleInputColor}
                             name='backgroundColor'
                         />
                     </Form.Field>
                     <Form.Field>
+                        <label style={style}>Font color</label>
                         <Form.Input
                             className='input-color'
-                            label='Font color'
                             type='color'
                             placeholder='Font color'
                             value={duty.fontColor}
                             onChange={handleInputChange}
+                            onInput={handleInputColor}
                             name='fontColor'
                         />
                     </Form.Field>
                 </Form>
             </Modal.Content>
-            <Modal.Actions>
+            <Modal.Actions style={style}>
                 <Button negative onClick={closeCreateMode}>
                     Cancel
                 </Button>

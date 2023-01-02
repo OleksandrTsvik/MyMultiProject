@@ -11,15 +11,17 @@ interface Props {
 interface Style {
     color: string;
     backgroundColor: string;
+    borderColor: string;
 }
 
 export default function DutyModalDelete({ duty: selectedDuty, deleteMode, closeDeleteMode }: Props) {
-    const [style, setStyle] = useState<Style>({ color: '#000', backgroundColor: '#fff' });
+    const [style, setStyle] = useState<Style>({ color: '#000000', backgroundColor: '#ffffff', borderColor: '#ffffff' });
 
     useEffect(() => {
         setStyle({
-            color: `${selectedDuty.fontColor} !important`,
-            backgroundColor: `${selectedDuty.backgroundColor} !important`
+            color: selectedDuty.fontColor,
+            backgroundColor: selectedDuty.backgroundColor,
+            borderColor: selectedDuty.fontColor
         });
     }, [selectedDuty]);
 
@@ -39,8 +41,9 @@ export default function DutyModalDelete({ duty: selectedDuty, deleteMode, closeD
             <Modal.Content style={style}>
                 <p>{selectedDuty.description}</p>
             </Modal.Content>
-            <hr />
+            <hr style={style} />
             <Modal.Content className='text-end' style={style}>
+                <Icon name='calendar alternate' />&ensp;
                 {selectedDuty.dateCreation}
             </Modal.Content>
             <Modal.Actions style={style}>

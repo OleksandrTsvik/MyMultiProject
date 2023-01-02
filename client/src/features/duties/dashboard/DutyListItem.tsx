@@ -9,13 +9,19 @@ interface Props {
 }
 
 export default function DutyListItem({ duty, openEditMode, openDeleteMode }: Props) {
+    const style = {
+        backgroundColor: duty.backgroundColor,
+        color: duty.fontColor,
+        borderColor: duty.fontColor
+    };
+
     return (
         <Grid.Column mobile={16} tablet={8} computer={4}>
-            <Card fluid>
+            <Card fluid style={style}>
                 <Card.Content>
                     {duty.isCompleted
-                        ? <Card.Header>{duty.title}</Card.Header>
-                        : <Card.Header className='d-flex justify-content-between'>
+                        ? <Card.Header style={style}>{duty.title}</Card.Header>
+                        : <Card.Header style={style} className='d-flex justify-content-between'>
                             <div>{duty.title}</div>
                             <div className='draggable'>
                                 <Icon name='grid layout' />
@@ -23,16 +29,16 @@ export default function DutyListItem({ duty, openEditMode, openDeleteMode }: Pro
                         </Card.Header>
                     }
                 </Card.Content>
-                <Card.Content>
-                    <Card.Description>{duty.description}</Card.Description>
+                <Card.Content style={style}>
+                    <Card.Description style={style}>{duty.description}</Card.Description>
                 </Card.Content>
-                <Card.Content>
-                    <Card.Meta>
+                <Card.Content style={style}>
+                    <Card.Meta style={style}>
                         <Icon name='calendar alternate' />&ensp;
                         {duty.dateCreation}
                     </Card.Meta>
                 </Card.Content>
-                <Card.Content extra textAlign='right'>
+                <Card.Content style={style} textAlign='right'>
                     {duty.isCompleted
                         ? <Button inverted circular
                             icon='cancel'
