@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Duty } from '../models/duty';
 import NavBar from './NavBar';
 import DutyDashboard from '../../features/duties/dashboard/DutyDashboard';
 import Footer from './Footer';
+import agent from '../api/agent';
+import LoadingComponent from './LoadingComponent';
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [duties, setDuties] = useState<Duty[]>([]);
   const [countCompletedDuties, setCountCompletedDuties] = useState<number>(0);
   const [countNotCompletedDuties, setCountNotCompletedDuties] = useState<number>(0);
@@ -16,9 +19,10 @@ function App() {
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
 
   useEffect(() => {
-    axios.get<Duty[]>("http://localhost:5000/api/duties")
+    agent.Duties.list()
       .then(response => {
-        setDuties(response.data);
+        setDuties(response);
+        setLoading(false);
       });
   }, []);
 
@@ -62,9 +66,15 @@ function App() {
     if (id) {
       setDuties(duties.filter(duty => duty.id !== id));
     }
-    
+
     setDeleteMode(false);
     handleCancelSelectedDuty();
+  }
+
+  if (loading) {
+    return (
+      <LoadingComponent content='Loading app...' />
+    );
   }
 
   return (

@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
+import agent from '../../../app/api/agent';
 import { Duty } from '../../../app/models/duty';
 
 interface Props {
@@ -10,14 +11,20 @@ interface Props {
 }
 
 export default function DutyModalEdit({ duty: selectedDuty, setDuties, editMode, closeEditMode }: Props) {
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [duty, setDuty] = useState<Duty>(selectedDuty);
 
     function handleSubmit() {
-        setDuties((duties) => (
-            [...duties.filter(task => task.id !== duty.id), duty]
-        ));
+        setSubmitting(true);
 
-        closeEditMode();
+        agent.Duties.update(duty).then(() => {
+            setDuties((duties) => (
+                [...duties.filter(task => task.id !== duty.id), duty]
+            ));
+
+            setSubmitting(false);
+            closeEditMode();
+        });
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -57,10 +64,16 @@ export default function DutyModalEdit({ duty: selectedDuty, setDuties, editMode,
                 </Form>
             </Modal.Content>
             <Modal.Actions>
-                <Button negative onClick={closeEditMode}>
+                <Button
+                    negative
+                    onClick={closeEditMode}
+                >
                     Cancel
                 </Button>
-                <Button positive onClick={handleSubmit}
+                <Button
+                    positive
+                    loading={submitting}
+                    onClick={handleSubmit}
                 >
                     Update
                 </Button>

@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
 import { Duty } from '../../../app/models/duty';
 import { v4 as uuid } from 'uuid';
+import agent from '../../../app/api/agent';
 
 interface Props {
     setDuties: React.Dispatch<React.SetStateAction<Duty[]>>;
@@ -22,8 +23,8 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
         title: '',
         description: '',
         isCompleted: false,
-        dateCreation: (new Date()).toString(),
-        dateCompletion: '',
+        dateCreation: (new Date()).toISOString(),
+        dateCompletion: null,
         backgroundColor: '#ffffff',
         fontColor: '#000000'
     };
@@ -34,6 +35,7 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
         borderColor: '#ffffff'
     };
 
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [duty, setDuty] = useState<Duty>(initialState);
     const [style, setStyle] = useState<Style>(initialStyle);
 
@@ -43,15 +45,17 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
     }, [createMode]); // eslint-disable-line react-hooks/exhaustive-deps
 
     function handleSubmit() {
-        setDuties((duties) => (
-            [...duties, {
-                ...duty,
-                id: uuid(),
-                dateCreation: (new Date()).toString()
-            }]
-        ));
+        setSubmitting(true);
 
-        closeCreateMode();
+        duty.id = uuid();
+        duty.dateCreation = (new Date()).toISOString();
+
+        agent.Duties.create(duty).then(() => {
+            setDuties((duties) => [...duties, duty]);
+
+            setSubmitting(false);
+            closeCreateMode();
+        });
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -128,10 +132,17 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
                 </Form>
             </Modal.Content>
             <Modal.Actions style={style}>
-                <Button negative onClick={closeCreateMode}>
+                <Button
+                    negative
+                    onClick={closeCreateMode}
+                >
                     Cancel
                 </Button>
-                <Button positive onClick={handleSubmit}>
+                <Button
+                    positive
+                    loading={submitting}
+                    onClick={handleSubmit}
+                >
                     Create
                 </Button>
             </Modal.Actions>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Card, Grid, Icon } from 'semantic-ui-react';
+import { Button, Card, Grid, Icon, Popup } from 'semantic-ui-react';
 import { Duty } from '../../../app/models/duty';
+import dateFormat from '../../../app/utils/dateFormat';
 
 interface Props {
     duty: Duty;
@@ -34,33 +35,51 @@ export default function DutyListItem({ duty, openEditMode, openDeleteMode }: Pro
                 </Card.Content>
                 <Card.Content style={style}>
                     <Card.Meta style={style}>
-                        <Icon name='calendar alternate' />&ensp;
-                        {duty.dateCreation}
+                        <Popup
+                            content='date create'
+                            position='bottom left'
+                            trigger={
+                                <div>
+                                    <Icon name='calendar alternate' />&ensp;
+                                    {dateFormat(duty.dateCreation)}
+                                </div>
+                            }
+                        />
                     </Card.Meta>
                 </Card.Content>
-                <Card.Content style={style} textAlign='right'>
-                    {duty.isCompleted
-                        ? <Button inverted circular
-                            icon='cancel'
-                            color='orange' />
-                        : <Button inverted circular
-                            icon='check'
-                            color='green' />
-                    }
-                    <Button inverted circular
-                        icon='pencil alternate'
-                        color='blue'
-                        onClick={() => openEditMode(duty.id)}
+                <Card.Content
+                    style={style}
+                    className='d-flex flex-row-reverse gap-2'
+                >
+                    <Button circular
+                        icon='tint'
+                        color='purple'
+                        className='m-0'
                     />
                     <Button inverted circular
                         icon='trash alternate'
                         color='red'
+                        className='m-0'
                         onClick={() => openDeleteMode(duty.id)}
                     />
-                    <Button circular
-                        icon='tint'
-                        color='purple'
+                    <Button inverted circular
+                        icon='pencil alternate'
+                        color='blue'
+                        className='m-0'
+                        onClick={() => openEditMode(duty.id)}
                     />
+                    {duty.isCompleted
+                        ? <Button inverted circular
+                            icon='cancel'
+                            color='orange'
+                            className='m-0'
+                        />
+                        : <Button inverted circular
+                            icon='check'
+                            color='green'
+                            className='m-0'
+                        />
+                    }
                 </Card.Content>
             </Card>
         </Grid.Column>

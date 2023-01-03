@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Icon, Modal } from 'semantic-ui-react';
+import agent from '../../../app/api/agent';
 import { Duty } from '../../../app/models/duty';
+import dateFormat from '../../../app/utils/dateFormat';
 
 interface Props {
     duty: Duty;
@@ -15,6 +17,7 @@ interface Style {
 }
 
 export default function DutyModalDelete({ duty: selectedDuty, deleteMode, closeDeleteMode }: Props) {
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [style, setStyle] = useState<Style>({ color: '#000000', backgroundColor: '#ffffff', borderColor: '#ffffff' });
 
     useEffect(() => {
@@ -24,6 +27,15 @@ export default function DutyModalDelete({ duty: selectedDuty, deleteMode, closeD
             borderColor: selectedDuty.fontColor
         });
     }, [selectedDuty]);
+
+    function handleSubmit(id: string) {
+        setSubmitting(true);
+
+        agent.Duties.delete(id).then(() => {
+            setSubmitting(false);
+            closeDeleteMode(selectedDuty.id);
+        });
+    }
 
     return (
         <Modal
@@ -44,7 +56,7 @@ export default function DutyModalDelete({ duty: selectedDuty, deleteMode, closeD
             <hr style={style} />
             <Modal.Content className='text-end' style={style}>
                 <Icon name='calendar alternate' />&ensp;
-                {selectedDuty.dateCreation}
+                {dateFormat(selectedDuty.dateCreation)}
             </Modal.Content>
             <Modal.Actions style={style}>
                 <Button
@@ -55,7 +67,8 @@ export default function DutyModalDelete({ duty: selectedDuty, deleteMode, closeD
                 </Button>
                 <Button
                     positive
-                    onClick={() => closeDeleteMode(selectedDuty.id)}
+                    loading={submitting}
+                    onClick={() => handleSubmit(selectedDuty.id)}
                 >
                     <Icon name='checkmark' /> Yes
                 </Button>
