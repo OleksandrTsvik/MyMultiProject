@@ -3,15 +3,14 @@ import { Duty } from '../models/duty';
 import NavBar from './NavBar';
 import DutyDashboard from '../../features/duties/dashboard/DutyDashboard';
 import Footer from './Footer';
-import agent from '../api/agent';
 import LoadingComponent from './LoadingComponent';
+import { useStore } from '../stores/store';
+import { observer } from 'mobx-react-lite';
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
+  const { dutyStore } = useStore();
 
   const [duties, setDuties] = useState<Duty[]>([]);
-  const [countCompletedDuties, setCountCompletedDuties] = useState<number>(0);
-  const [countNotCompletedDuties, setCountNotCompletedDuties] = useState<number>(0);
   const [selectedDuty, setSelectedDuty] = useState<Duty | undefined>(undefined);
 
   const [createMode, setCreateMode] = useState<boolean>(false);
@@ -19,17 +18,8 @@ function App() {
   const [deleteMode, setDeleteMode] = useState<boolean>(false);
 
   useEffect(() => {
-    agent.Duties.list()
-      .then(response => {
-        setDuties(response);
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    setCountNotCompletedDuties(duties.filter(duty => !duty.isCompleted).length);
-    setCountCompletedDuties(duties.filter(duty => duty.isCompleted).length);
-  }, [duties]);
+    dutyStore.loadDuties();
+  }, [dutyStore]);
 
   function handleCreateModeOpen() {
     setCreateMode(true);
@@ -71,7 +61,7 @@ function App() {
     handleCancelSelectedDuty();
   }
 
-  if (loading) {
+  if (dutyStore.loadingInitial) {
     return (
       <LoadingComponent content='Loading app...' />
     );
@@ -79,14 +69,12 @@ function App() {
 
   return (
     <>
-      <NavBar countNotCompletedDuties={countNotCompletedDuties} />
+      <NavBar />
       <main>
         <DutyDashboard
-          duties={duties}
+          duties={dutyStore.duties}
           setDuties={setDuties}
           selectedDuty={selectedDuty}
-          countCompletedDuties={countCompletedDuties}
-          countNotCompletedDuties={countNotCompletedDuties}
           createMode={createMode}
           openCreateMode={handleCreateModeOpen}
           closeCreateMode={handleCreateModeClose}
@@ -103,4 +91,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

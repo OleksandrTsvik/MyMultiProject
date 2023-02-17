@@ -6,10 +6,9 @@ import DutyListItem from './DutyListItem';
 interface Props {
     duties: Duty[];
     openEditMode: (id: string) => void;
-    openDeleteMode: (id: string) => void;
 }
 
-export default function DutyList({ duties, openEditMode, openDeleteMode }: Props) {
+export default function DutyList({ duties, openEditMode }: Props) {
     if (duties.length === 0) {
         return <Fragment />;
     }
@@ -20,7 +19,6 @@ export default function DutyList({ duties, openEditMode, openDeleteMode }: Props
                 <DutyListItem key={duty.id}
                     duty={duty}
                     openEditMode={openEditMode}
-                    openDeleteMode={openDeleteMode}
                 />
             ))}
         </Grid>

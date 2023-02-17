@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import agent from '../../../app/api/agent';
 import { Duty } from '../../../app/models/duty';
+import { useStore } from '../../../app/stores/store';
 import dateFormat from '../../../app/utils/dateFormat';
 
 interface Props {
     duty: Duty;
-    deleteMode: boolean;
-    closeDeleteMode: (id?: string) => void;
 }
 
 interface Style {
@@ -16,7 +15,10 @@ interface Style {
     borderColor: string;
 }
 
-export default function DutyModalDelete({ duty: selectedDuty, deleteMode, closeDeleteMode }: Props) {
+export default function DutyModalDelete({ duty: selectedDuty }: Props) {
+    const { dutyStore } = useStore();
+    const { deleteMode, closeDeleteMode } = dutyStore;
+
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [style, setStyle] = useState<Style>({ color: '#000000', backgroundColor: '#ffffff', borderColor: '#ffffff' });
 

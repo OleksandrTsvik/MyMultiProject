@@ -1,6 +1,8 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
 import { Duty } from '../../../app/models/duty';
+import { useStore } from '../../../app/stores/store';
 import DutyModalCreate from '../modal/DutyModalCreate';
 import DutyModalDelete from '../modal/DutyModalDelete';
 import DutyModalEdit from '../modal/DutyModalEdit';
@@ -11,8 +13,6 @@ interface Props {
     duties: Duty[];
     setDuties: React.Dispatch<React.SetStateAction<Duty[]>>;
     selectedDuty: Duty | undefined;
-    countCompletedDuties: number;
-    countNotCompletedDuties: number;
     createMode: boolean;
     openCreateMode: () => void;
     closeCreateMode: () => void;
@@ -24,32 +24,31 @@ interface Props {
     closeDeleteMode: (id?: string) => void;
 }
 
-export default function DutyDashboard({ duties, setDuties, selectedDuty,
-    countCompletedDuties, countNotCompletedDuties,
+export default observer(function DutyDashboard({ duties, setDuties,
     createMode, openCreateMode, closeCreateMode,
     editMode, openEditMode, closeEditMode,
-    deleteMode, openDeleteMode, closeDeleteMode }: Props) {
+    openDeleteMode, closeDeleteMode }: Props) {
+    const { dutyStore } = useStore();
+    const { countCompleted, selectedDuty, deleteMode } = dutyStore;
+
     return (
         <>
             <DutyCreate
-                countNotCompletedDuties={countNotCompletedDuties}
                 openCreateMode={openCreateMode}
             />
 
             <DutyList
                 duties={duties.filter(duty => !duty.isCompleted)}
                 openEditMode={openEditMode}
-                openDeleteMode={openDeleteMode}
             />
 
             <Segment inverted color='green' textAlign='center' size='big'>
-                The latter are completed ({countCompletedDuties})
+                The latter are completed ({countCompleted})
             </Segment>
 
             <DutyList
                 duties={duties.filter(duty => duty.isCompleted)}
                 openEditMode={openEditMode}
-                openDeleteMode={openDeleteMode}
             />
 
             {selectedDuty && editMode &&
@@ -70,10 +69,8 @@ export default function DutyDashboard({ duties, setDuties, selectedDuty,
             {selectedDuty && deleteMode &&
                 <DutyModalDelete
                     duty={selectedDuty}
-                    deleteMode={deleteMode}
-                    closeDeleteMode={closeDeleteMode}
                 />
             }
         </>
     );
-}
+});
