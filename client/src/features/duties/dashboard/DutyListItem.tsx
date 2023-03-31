@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import { Button, Card, Grid, Icon, Popup } from 'semantic-ui-react';
 
 import { Duty } from '../../../app/models/duty';
@@ -6,12 +7,11 @@ import dateFormat from '../../../app/utils/dateFormat';
 
 interface Props {
     duty: Duty;
-    openEditMode: (id: string) => void;
 }
 
-export default function DutyListItem({ duty, openEditMode }: Props) {
+export default observer(function DutyListItem({ duty }: Props) {
     const { dutyStore } = useStore();
-    const { openDeleteMode } = dutyStore;
+    const { openEditMode, openDeleteMode } = dutyStore;
 
     const style = {
         backgroundColor: duty.backgroundColor,
@@ -87,4 +87,4 @@ export default function DutyListItem({ duty, openEditMode }: Props) {
             </Card>
         </Grid.Column>
     );
-}
+});

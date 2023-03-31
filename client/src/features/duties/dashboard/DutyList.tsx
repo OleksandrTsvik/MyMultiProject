@@ -6,10 +6,9 @@ import DutyListItem from './DutyListItem';
 
 interface Props {
     duties: Duty[];
-    openEditMode: (id: string) => void;
 }
 
-export default function DutyList({ duties, openEditMode }: Props) {
+export default function DutyList({ duties }: Props) {
     if (duties.length === 0) {
         return <Fragment />;
     }
@@ -17,10 +16,7 @@ export default function DutyList({ duties, openEditMode }: Props) {
     return (
         <Grid>
             {duties.map(duty => (
-                <DutyListItem key={duty.id}
-                    duty={duty}
-                    openEditMode={openEditMode}
-                />
+                <DutyListItem key={duty.id} duty={duty} />
             ))}
         </Grid>
     );

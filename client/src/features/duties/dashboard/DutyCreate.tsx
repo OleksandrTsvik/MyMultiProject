@@ -3,13 +3,9 @@ import { Button, Icon, Label } from 'semantic-ui-react';
 
 import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    openCreateMode: () => void;
-}
-
-export default observer(function DutyCreate({ openCreateMode }: Props) {
+export default observer(function DutyCreate() {
     const { dutyStore } = useStore();
-    const { countNotCompleted } = dutyStore;
+    const { countNotCompleted, openCreateMode } = dutyStore;
 
     return (
         <div className='mb-3 text-end'>

@@ -1,29 +1,22 @@
 import { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 
-import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
-import agent from '../../../app/api/agent';
 import dateFormat from '../../../app/utils/dateFormat';
+import { initialStyle, Style } from './DutyModalCreate';
 
-interface Props {
-    duty: Duty;
-}
-
-interface Style {
-    color: string;
-    backgroundColor: string;
-    borderColor: string;
-}
-
-export default function DutyModalDelete({ duty: selectedDuty }: Props) {
+export default observer(function DutyModalDelete() {
     const { dutyStore } = useStore();
-    const { deleteMode, closeDeleteMode } = dutyStore;
+    const { loading, selectedDuty, deleteDuty, deleteMode, closeDeleteMode } = dutyStore;
 
-    const [submitting, setSubmitting] = useState<boolean>(false);
-    const [style, setStyle] = useState<Style>({ color: '#000000', backgroundColor: '#ffffff', borderColor: '#ffffff' });
+    const [style, setStyle] = useState<Style>(initialStyle);
 
     useEffect(() => {
+        if (!selectedDuty) {
+            return;
+        }
+
         setStyle({
             color: selectedDuty.fontColor,
             backgroundColor: selectedDuty.backgroundColor,
@@ -31,13 +24,8 @@ export default function DutyModalDelete({ duty: selectedDuty }: Props) {
         });
     }, [selectedDuty]);
 
-    function handleSubmit(id: string) {
-        setSubmitting(true);
-
-        agent.Duties.delete(id).then(() => {
-            setSubmitting(false);
-            closeDeleteMode(selectedDuty.id);
-        });
+    if (!selectedDuty) {
+        return null;
     }
 
     return (
@@ -70,12 +58,12 @@ export default function DutyModalDelete({ duty: selectedDuty }: Props) {
                 </Button>
                 <Button
                     positive
-                    loading={submitting}
-                    onClick={() => handleSubmit(selectedDuty.id)}
+                    loading={loading}
+                    onClick={() => deleteDuty(selectedDuty.id)}
                 >
                     <Icon name='checkmark' /> Yes
                 </Button>
             </Modal.Actions>
         </Modal>
     );
-}
+});

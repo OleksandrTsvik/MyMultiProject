@@ -1,37 +1,32 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Form, Modal } from 'semantic-ui-react';
 
 import { Duty } from '../../../app/models/duty';
-import agent from '../../../app/api/agent';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    duty: Duty;
-    setDuties: React.Dispatch<React.SetStateAction<Duty[]>>;
-    editMode: boolean;
-    closeEditMode: () => void;
-}
+export default observer(function DutyModalEdit() {
+    const { dutyStore } = useStore();
+    const { loading, selectedDuty, editDuty, editMode, closeEditMode } = dutyStore;
 
-export default function DutyModalEdit({ duty: selectedDuty, setDuties, editMode, closeEditMode }: Props) {
-    const [submitting, setSubmitting] = useState<boolean>(false);
-    const [duty, setDuty] = useState<Duty>(selectedDuty);
+    const [duty, setDuty] = useState<Duty | undefined>(selectedDuty);
 
-    function handleSubmit() {
-        setSubmitting(true);
-
-        agent.Duties.update(duty).then(() => {
-            setDuties((duties) => (
-                [...duties.filter(task => task.id !== duty.id), duty]
-            ));
-
-            setSubmitting(false);
-            closeEditMode();
-        });
-    }
+    useEffect(() => {
+        setDuty(selectedDuty);
+    }, [selectedDuty]);
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        if (!duty) {
+            return;
+        }
+
         const { name, value } = event.target;
 
         setDuty({ ...duty, [name]: value });
+    }
+
+    if (!duty) {
+        return null;
     }
 
     return (
@@ -73,12 +68,12 @@ export default function DutyModalEdit({ duty: selectedDuty, setDuties, editMode,
                 </Button>
                 <Button
                     positive
-                    loading={submitting}
-                    onClick={handleSubmit}
+                    loading={loading}
+                    onClick={() => editDuty(duty)}
                 >
                     Update
                 </Button>
             </Modal.Actions>
         </Modal>
     );
-}
+});

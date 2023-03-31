@@ -1,42 +1,38 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Form, Modal } from 'semantic-ui-react';
-import { v4 as uuid } from 'uuid';
 
 import { Duty } from '../../../app/models/duty';
-import agent from '../../../app/api/agent';
+import { useStore } from '../../../app/stores/store';
 
-interface Props {
-    setDuties: React.Dispatch<React.SetStateAction<Duty[]>>;
-    createMode: boolean;
-    closeCreateMode: () => void;
-}
-
-interface Style {
+export interface Style {
     color: string;
     backgroundColor: string;
     borderColor: string;
 }
 
-export default function DutyModalCreate({ setDuties, createMode, closeCreateMode }: Props) {
-    const initialState: Duty = {
-        id: '',
-        position: -1,
-        title: '',
-        description: '',
-        isCompleted: false,
-        dateCreation: (new Date()).toISOString(),
-        dateCompletion: null,
-        backgroundColor: '#ffffff',
-        fontColor: '#000000'
-    };
+const initialState: Duty = {
+    id: '',
+    position: -1,
+    title: '',
+    description: '',
+    isCompleted: false,
+    dateCreation: (new Date()).toISOString(),
+    dateCompletion: null,
+    backgroundColor: '#ffffff',
+    fontColor: '#000000'
+};
 
-    const initialStyle: Style = {
-        color: '#000000',
-        backgroundColor: '#ffffff',
-        borderColor: '#ffffff'
-    };
+export const initialStyle: Style = {
+    color: '#000000',
+    backgroundColor: '#ffffff',
+    borderColor: '#ffffff'
+};
 
-    const [submitting, setSubmitting] = useState<boolean>(false);
+export default observer(function DutyModalCreate() {
+    const { dutyStore } = useStore();
+    const { loading, createDuty, createMode, closeCreateMode } = dutyStore;
+
     const [duty, setDuty] = useState<Duty>(initialState);
     const [style, setStyle] = useState<Style>(initialStyle);
 
@@ -44,20 +40,6 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
         setDuty(initialState);
         setStyle(initialStyle);
     }, [createMode]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    function handleSubmit() {
-        setSubmitting(true);
-
-        duty.id = uuid();
-        duty.dateCreation = (new Date()).toISOString();
-
-        agent.Duties.create(duty).then(() => {
-            setDuties((duties) => [...duties, duty]);
-
-            setSubmitting(false);
-            closeCreateMode();
-        });
-    }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const { name, value } = event.target;
@@ -141,12 +123,12 @@ export default function DutyModalCreate({ setDuties, createMode, closeCreateMode
                 </Button>
                 <Button
                     positive
-                    loading={submitting}
-                    onClick={handleSubmit}
+                    loading={loading}
+                    onClick={() => createDuty(duty)}
                 >
                     Create
                 </Button>
             </Modal.Actions>
         </Modal>
     );
-}
+});
