@@ -2,7 +2,8 @@
 
 
 ## Create EF Migrations
-```
+```sh
+cd server
 dotnet ef migrations add InitialCreate -s API -p Persistence
 ```
 
