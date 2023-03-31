@@ -1,4 +1,4 @@
-# Tsvik Oleksandr 
+# Multi-project of Oleksandr Tsvik
 
 
 ## Create EF Migrations
@@ -18,3 +18,6 @@ dotnet watch --no-hot-reload
 cd client
 npm start
 ```
+
+## What's Included
+1. Task Manager
