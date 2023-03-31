@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Icon, Modal } from 'semantic-ui-react';
-import agent from '../../../app/api/agent';
+
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
+import agent from '../../../app/api/agent';
 import dateFormat from '../../../app/utils/dateFormat';
 
 interface Props {

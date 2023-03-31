@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, Label } from 'semantic-ui-react';
+
 import { useStore } from '../../../app/stores/store';
 
 interface Props {

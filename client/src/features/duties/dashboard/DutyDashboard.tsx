@@ -1,13 +1,14 @@
-import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Segment } from 'semantic-ui-react';
+
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
+import DutyList from './DutyList';
+import DutyCreate from './DutyCreate';
 import DutyModalCreate from '../modal/DutyModalCreate';
 import DutyModalDelete from '../modal/DutyModalDelete';
 import DutyModalEdit from '../modal/DutyModalEdit';
-import DutyCreate from './DutyCreate';
-import DutyList from './DutyList';
 
 interface Props {
     duties: Duty[];
@@ -24,10 +25,14 @@ interface Props {
     closeDeleteMode: (id?: string) => void;
 }
 
-export default observer(function DutyDashboard({ duties, setDuties,
-    createMode, openCreateMode, closeCreateMode,
-    editMode, openEditMode, closeEditMode,
-    openDeleteMode, closeDeleteMode }: Props) {
+export default observer(function DutyDashboard(
+    {
+        duties, setDuties,
+        createMode, openCreateMode, closeCreateMode,
+        editMode, openEditMode, closeEditMode,
+        openDeleteMode, closeDeleteMode
+    }: Props
+) {
     const { dutyStore } = useStore();
     const { countCompleted, selectedDuty, deleteMode } = dutyStore;
 

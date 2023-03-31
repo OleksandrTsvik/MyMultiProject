@@ -1,7 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Button, Form, Modal } from 'semantic-ui-react';
-import agent from '../../../app/api/agent';
+
 import { Duty } from '../../../app/models/duty';
+import agent from '../../../app/api/agent';
 
 interface Props {
     duty: Duty;

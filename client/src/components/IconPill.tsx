@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon, Label, SemanticCOLORS, SemanticICONS } from 'semantic-ui-react';
 
 interface Props {

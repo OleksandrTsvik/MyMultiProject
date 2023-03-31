@@ -1,8 +1,8 @@
-import React from 'react';
 import { Container, Icon, Menu } from 'semantic-ui-react';
-import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
-import IconPill from '../../features/components/IconPill';
+
+import { useStore } from '../stores/store';
+import IconPill from '../../components/IconPill';
 
 export default observer(function NavBar() {
     const { dutyStore } = useStore();

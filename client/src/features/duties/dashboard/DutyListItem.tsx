@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button, Card, Grid, Icon, Popup } from 'semantic-ui-react';
+
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
 import dateFormat from '../../../app/utils/dateFormat';

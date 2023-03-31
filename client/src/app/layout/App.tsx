@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Duty } from '../models/duty';
-import NavBar from './NavBar';
-import DutyDashboard from '../../features/duties/dashboard/DutyDashboard';
-import Footer from './Footer';
-import LoadingComponent from './LoadingComponent';
-import { useStore } from '../stores/store';
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+
+import { Duty } from '../models/duty';
+import { useStore } from '../stores/store';
+import NavBar from './NavBar';
+import Footer from './Footer';
+import Loading from '../../components/Loading';
+import DutyDashboard from '../../features/duties/dashboard/DutyDashboard';
 
 function App() {
   const { dutyStore } = useStore();
@@ -62,9 +63,7 @@ function App() {
   }
 
   if (dutyStore.loadingInitial) {
-    return (
-      <LoadingComponent content='Loading app...' />
-    );
+    return <Loading content='Loading app...' />;
   }
 
   return (

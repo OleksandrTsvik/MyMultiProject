@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
-import agent from '../api/agent';
+
 import { Duty } from '../models/duty';
+import agent from '../api/agent';
 
 export default class DutyStore {
     duties: Duty[] = [];

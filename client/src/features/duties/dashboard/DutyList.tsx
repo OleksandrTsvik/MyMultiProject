@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { Grid } from 'semantic-ui-react';
+
 import { Duty } from '../../../app/models/duty';
 import DutyListItem from './DutyListItem';
 

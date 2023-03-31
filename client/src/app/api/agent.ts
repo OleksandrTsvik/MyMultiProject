@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+
 import { Duty } from '../models/duty';
 import sleep from '../utils/sleep';
 

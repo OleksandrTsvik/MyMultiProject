@@ -14,7 +14,8 @@ const defaultOptions: Intl.DateTimeFormatOptions = {
 export default function dateFormat(
     date: Date | string,
     locales: Intl.LocalesArgument = defaultlocales,
-    options: Intl.DateTimeFormatOptions = defaultOptions): string {
+    options: Intl.DateTimeFormatOptions = defaultOptions
+): string {
     if (typeof date === 'string') {
         date = new Date(Date.parse(date));
     }
