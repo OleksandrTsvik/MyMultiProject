@@ -7,7 +7,7 @@ import { useStore } from '../../../app/stores/store';
 
 export default observer(function DutyModalEdit() {
     const { dutyStore } = useStore();
-    const { loading, selectedDuty, editDuty, editMode, closeEditMode } = dutyStore;
+    const { getIsLoading, selectedDuty, editDuty, editMode, closeEditMode } = dutyStore;
 
     const [duty, setDuty] = useState<Duty | undefined>(selectedDuty);
 
@@ -33,7 +33,7 @@ export default observer(function DutyModalEdit() {
         <Modal
             centered={false}
             open={editMode}
-            onClose={closeEditMode}
+            onClose={() => closeEditMode()}
         >
             <Modal.Header>Edit task</Modal.Header>
             <Modal.Content>
@@ -62,13 +62,14 @@ export default observer(function DutyModalEdit() {
             <Modal.Actions>
                 <Button
                     negative
-                    onClick={closeEditMode}
+                    onClick={() => closeEditMode()}
                 >
                     Cancel
                 </Button>
                 <Button
                     positive
-                    loading={loading}
+                    loading={getIsLoading(duty.id)}
+                    disabled={getIsLoading(duty.id)}
                     onClick={() => editDuty(duty)}
                 >
                     Update

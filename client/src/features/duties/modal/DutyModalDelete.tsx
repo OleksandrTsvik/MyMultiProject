@@ -8,7 +8,7 @@ import { initialStyle, Style } from './DutyModalCreate';
 
 export default observer(function DutyModalDelete() {
     const { dutyStore } = useStore();
-    const { loading, selectedDuty, deleteDuty, deleteMode, closeDeleteMode } = dutyStore;
+    const { getIsLoading, selectedDuty, deleteDuty, deleteMode, closeDeleteMode } = dutyStore;
 
     const [style, setStyle] = useState<Style>(initialStyle);
 
@@ -58,7 +58,8 @@ export default observer(function DutyModalDelete() {
                 </Button>
                 <Button
                     positive
-                    loading={loading}
+                    loading={getIsLoading(selectedDuty.id)}
+                    disabled={getIsLoading(selectedDuty.id)}
                     onClick={() => deleteDuty(selectedDuty.id)}
                 >
                     <Icon name='checkmark' /> Yes

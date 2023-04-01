@@ -11,7 +11,7 @@ interface Props {
 
 export default observer(function DutyListItem({ duty }: Props) {
     const { dutyStore } = useStore();
-    const { openEditMode, openDeleteMode } = dutyStore;
+    const { updateIsCompletedDuty, getIsLoading, openEditMode, openDeleteMode } = dutyStore;
 
     const style = {
         backgroundColor: duty.backgroundColor,
@@ -76,11 +76,17 @@ export default observer(function DutyListItem({ duty }: Props) {
                             icon='cancel'
                             color='orange'
                             className='m-0'
+                            loading={getIsLoading(duty.id)}
+                            disabled={getIsLoading(duty.id)}
+                            onClick={() => updateIsCompletedDuty(duty, false)}
                         />
                         : <Button inverted circular
                             icon='check'
                             color='green'
                             className='m-0'
+                            loading={getIsLoading(duty.id)}
+                            disabled={getIsLoading(duty.id)}
+                            onClick={() => updateIsCompletedDuty(duty, true)}
                         />
                     }
                 </Card.Content>

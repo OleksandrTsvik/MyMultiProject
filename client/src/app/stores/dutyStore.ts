@@ -3,35 +3,54 @@ import { v4 as uuid } from 'uuid';
 
 import { Duty } from '../models/duty';
 import agent from '../api/agent';
+import compareDates from '../utils/compareDates';
 
 export default class DutyStore {
-    duties: Duty[] = [];
+    duties: Map<string, Duty> = new Map<string, Duty>();
     selectedDuty: Duty | undefined = undefined;
 
     createMode: boolean = false;
     editMode: boolean = false;
     deleteMode: boolean = false;
 
-    loadingInitial: boolean = false;
-    loading: boolean = false;
+    loadingInitial: boolean = true;
+    createloading: boolean = false;
+    arrLoadingDutiesId: string[] = [];
 
     constructor() {
         makeAutoObservable(this);
     }
 
+    get dutiesCompleted(): Duty[] {
+        return Array.from(this.duties.values())
+            .filter(duty => duty.isCompleted)
+            .sort((duty01, duty02) => compareDates(duty01.dateCompletion, duty02.dateCompletion));
+    }
+
+    get dutiesNotCompleted(): Duty[] {
+        return Array.from(this.duties.values())
+            .filter(duty => !duty.isCompleted)
+            .sort((duty01, duty02) => duty02.position - duty01.position);
+    }
+
     get countCompleted(): number {
-        return this.duties.filter(duty => duty.isCompleted).length;
+        return Array.from(this.duties.values())
+            .filter(duty => duty.isCompleted).length;
     }
 
     get countNotCompleted(): number {
-        return this.duties.filter(duty => !duty.isCompleted).length;
+        return Array.from(this.duties.values())
+            .filter(duty => !duty.isCompleted).length;
     }
 
     loadDuties = async () => {
         this.setLoadingInitial(true);
 
         try {
-            this.duties = await agent.Duties.list();
+            const duties = await agent.Duties.list();
+            duties.forEach((duty) => {
+                this.duties.set(duty.id, duty);
+            });
         } catch (error) {
             console.log(error);
         }
@@ -40,11 +59,18 @@ export default class DutyStore {
     }
 
     selectDuty = (id: string) => {
-        this.selectedDuty = this.duties.find(duty => duty.id === id);
+        this.selectedDuty = this.duties.get(id);
     }
 
     cancelSelectedDuty = () => {
         this.selectedDuty = undefined;
+    }
+
+    updateIsCompletedDuty = (duty: Duty, isCompleted: boolean) => {
+        duty.isCompleted = isCompleted;
+        duty.dateCompletion = isCompleted ? (new Date()).toISOString() : null;
+
+        this.duties.set(duty.id, duty);
     }
 
     openCreateMode = () => {
@@ -52,7 +78,7 @@ export default class DutyStore {
     }
 
     createDuty = async (duty: Duty) => {
-        this.setLoading(true);
+        this.setCreateLoading(true);
 
         duty.id = uuid();
         duty.dateCreation = (new Date()).toISOString();
@@ -61,13 +87,13 @@ export default class DutyStore {
             await agent.Duties.create(duty);
 
             runInAction(() => {
-                this.duties = [...this.duties, duty];
+                this.duties.set(duty.id, duty);
             });
 
-            this.setLoading(false);
+            this.setCreateLoading(false);
             this.closeCreateMode();
         } catch (error) {
-            this.setLoading(false);
+            this.setCreateLoading(false);
             console.log(error);
         }
     }
@@ -82,24 +108,28 @@ export default class DutyStore {
     }
 
     editDuty = async (duty: Duty) => {
-        this.setLoading(true);
+        this.setLoading(duty.id);
 
         try {
             await agent.Duties.update(duty);
 
             runInAction(() => {
-                this.duties = [...this.duties.filter(task => task.id !== duty.id), duty];
+                this.duties.set(duty.id, duty);
             });
 
-            this.setLoading(false);
-            this.closeEditMode();
+            this.setLoading(duty.id, true);
+            this.closeEditMode(duty.id);
         } catch (error) {
-            this.setLoading(false);
+            this.setLoading(duty.id, true);
             console.log(error);
         }
     }
 
-    closeEditMode = () => {
+    closeEditMode = (id?: string) => {
+        if (id && this.selectedDuty && this.selectedDuty.id !== id) {
+            return;
+        }
+
         this.setEditMode(false);
         this.cancelSelectedDuty();
     }
@@ -110,22 +140,22 @@ export default class DutyStore {
     }
 
     deleteDuty = async (id: string) => {
-        this.setLoading(true);
+        this.setLoading(id);
 
         try {
             await agent.Duties.delete(id);
 
-            this.setLoading(false);
+            this.setLoading(id, true);
             this.closeDeleteMode(id);
         } catch (error) {
-            this.setLoading(false);
+            this.setLoading(id, true);
             console.log(error);
         }
     }
 
     closeDeleteMode = (id?: string) => {
         if (id) {
-            this.duties = this.duties.filter(duty => duty.id !== id);
+            this.duties.delete(id);
         }
 
         this.setDeleteMode(false);
@@ -136,8 +166,20 @@ export default class DutyStore {
         this.loadingInitial = state;
     }
 
-    setLoading = (state: boolean) => {
-        this.loading = state;
+    setCreateLoading = (state: boolean) => {
+        this.createloading = state;
+    }
+
+    setLoading = (id: string, isDelete: boolean = false) => {
+        if (isDelete) {
+            this.arrLoadingDutiesId = this.arrLoadingDutiesId.filter((load) => load !== id);
+        } else if (!this.arrLoadingDutiesId.includes(id)) {
+            this.arrLoadingDutiesId.push(id);
+        }
+    }
+
+    getIsLoading = (id: string): boolean => {
+        return this.arrLoadingDutiesId.includes(id);
     }
 
     setCreateMode = (state: boolean) => {

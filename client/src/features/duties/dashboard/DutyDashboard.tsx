@@ -10,20 +10,16 @@ import DutyModalEdit from '../modal/DutyModalEdit';
 
 export default observer(function DutyDashboard() {
     const { dutyStore } = useStore();
-    const { duties, countCompleted } = dutyStore;
+    const { dutiesCompleted, dutiesNotCompleted, countCompleted } = dutyStore;
 
     return (
         <>
             <DutyCreate />
-            <DutyList
-                duties={duties.filter(duty => !duty.isCompleted)}
-            />
+            <DutyList duties={dutiesNotCompleted} />
             <Segment inverted color='green' textAlign='center' size='big'>
                 The latter are completed ({countCompleted})
             </Segment>
-            <DutyList
-                duties={duties.filter(duty => duty.isCompleted)}
-            />
+            <DutyList duties={dutiesCompleted} />
             <DutyModalCreate />
             <DutyModalEdit />
             <DutyModalDelete />
