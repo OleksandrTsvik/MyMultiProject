@@ -21,9 +21,9 @@ export default function DutyList({ duties, draggable }: Props) {
         return <EmptyBlock />;
     }
 
-    function handlerMouseDownDraggableElem(event: MouseEvent<HTMLDivElement>) {
+    function handleMouseDownDraggableElem(event: MouseEvent<HTMLDivElement>) {
         let target = event.target as HTMLDivElement;
-        target = target.closest('.draggable__item') as HTMLDivElement;
+        target = target.closest('.duty__draggable') as HTMLDivElement;
 
         if (!target) {
             return;
@@ -32,9 +32,9 @@ export default function DutyList({ duties, draggable }: Props) {
         target.draggable = true;
     }
 
-    function handlerMouseUpDraggableElem(event: MouseEvent<HTMLDivElement>) {
+    function handleMouseUpDraggableElem(event: MouseEvent<HTMLDivElement>) {
         let target = event.target as HTMLDivElement;
-        target = target.closest('.draggable__item') as HTMLDivElement;
+        target = target.closest('.duty__draggable') as HTMLDivElement;
 
         if (!target) {
             return;
@@ -43,14 +43,14 @@ export default function DutyList({ duties, draggable }: Props) {
         target.draggable = false;
     }
 
-    function handlerDragStart(event: DragEvent<HTMLDivElement>, duty: Duty) {
+    function handleDragStart(event: DragEvent<HTMLDivElement>, duty: Duty) {
         const target = event.target as HTMLDivElement;
         target.classList.add('dragging');
 
         setDraggingDuty(duty);
     }
 
-    function handlerDragEnd(event: DragEvent<HTMLDivElement>) {
+    function handleDragEnd(event: DragEvent<HTMLDivElement>) {
         const target = event.target as HTMLDivElement;
 
         target.draggable = false;
@@ -60,7 +60,7 @@ export default function DutyList({ duties, draggable }: Props) {
         reorderDutiesOnServer();
     }
 
-    function handlerDragOver(event: DragEvent<HTMLDivElement>, duty: Duty) {
+    function handleDragOver(event: DragEvent<HTMLDivElement>, duty: Duty) {
         event.preventDefault();
 
         if (draggingDuty && draggingDuty.id !== duty.id) {
@@ -75,11 +75,11 @@ export default function DutyList({ duties, draggable }: Props) {
                     key={duty.id}
                     duty={duty}
                     draggable={draggable}
-                    onMouseDownDraggableElem={handlerMouseDownDraggableElem}
-                    onMouseUpDraggableElem={handlerMouseUpDraggableElem}
-                    onDragStart={handlerDragStart}
-                    onDragEnd={handlerDragEnd}
-                    onDragOver={handlerDragOver}
+                    onMouseDownDraggableElem={handleMouseDownDraggableElem}
+                    onMouseUpDraggableElem={handleMouseUpDraggableElem}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onDragOver={handleDragOver}
                 />
             ))}
         </Grid>

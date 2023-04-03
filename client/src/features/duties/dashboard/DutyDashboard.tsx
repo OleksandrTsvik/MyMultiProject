@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Segment } from 'semantic-ui-react';
 
@@ -10,7 +11,23 @@ import DutyModalEdit from '../modal/DutyModalEdit';
 
 export default observer(function DutyDashboard() {
     const { dutyStore } = useStore();
-    const { dutiesCompleted, dutiesNotCompleted, countCompleted } = dutyStore;
+    const { dutiesCompleted, dutiesNotCompleted, countCompleted, setChangeColorMode } = dutyStore;
+
+    useEffect(() => {
+        function handleCloseChangeColorMode(event: MouseEvent) {
+            const target = event.target as HTMLElement;
+
+            if (!target.closest('.duty__collapsible')) {
+                setChangeColorMode(false);
+            }
+        }
+
+        document.addEventListener('click', handleCloseChangeColorMode);
+
+        return () => {
+            document.removeEventListener('click', handleCloseChangeColorMode)
+        };
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <>

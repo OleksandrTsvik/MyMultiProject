@@ -7,11 +7,14 @@ import compareDates from '../utils/compareDates';
 
 export default class DutyStore {
     duties: Map<string, Duty> = new Map<string, Duty>();
+
     selectedDuty: Duty | undefined = undefined;
+    selectedDutyForChangeColor: Duty | undefined = undefined;
 
     createMode: boolean = false;
     editMode: boolean = false;
     deleteMode: boolean = false;
+    changeColorMode: boolean = false;
 
     loadingInitial: boolean = true;
     createloading: boolean = false;
@@ -132,6 +135,32 @@ export default class DutyStore {
         this.setLoading(tempDuty.id, true);
     }
 
+    toggleChangeColorMode = (duty: Duty) => {
+        if (!this.selectedDutyForChangeColor || this.selectedDutyForChangeColor?.id === duty.id) {
+            this.setChangeColorMode(!this.changeColorMode);
+        }
+
+        if (this.changeColorMode) {
+            this.selectedDutyForChangeColor = duty;
+        }
+    }
+
+    changeColor = async (duty: Duty) => {
+        this.setLoading(duty.id);
+
+        try {
+            await agent.Duties.update(duty);
+
+            runInAction(() => {
+                this.duties.set(duty.id, duty);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        this.setLoading(duty.id, true);
+    }
+
     openCreateMode = () => {
         this.setCreateMode(true);
     }
@@ -239,6 +268,18 @@ export default class DutyStore {
 
     getIsLoading = (id: string): boolean => {
         return this.arrLoadingDutiesId.includes(id);
+    }
+
+    setChangeColorMode = (state: boolean) => {
+        this.changeColorMode = state;
+
+        if (!state) {
+            this.selectedDutyForChangeColor = undefined;
+        }
+    }
+
+    getIsChangeColor = (id: string): boolean => {
+        return this.changeColorMode && this.selectedDutyForChangeColor?.id === id;
     }
 
     setCreateMode = (state: boolean) => {
