@@ -15,7 +15,7 @@ export default observer(function DutyDashboard() {
     return (
         <>
             <DutyCreate />
-            <DutyList duties={dutiesNotCompleted} />
+            <DutyList duties={dutiesNotCompleted} draggable />
             <Segment inverted color='green' textAlign='center' size='big'>
                 The latter are completed ({countCompleted})
             </Segment>

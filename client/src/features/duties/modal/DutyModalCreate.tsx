@@ -91,7 +91,7 @@ export default observer(function DutyModalCreate() {
                     <Form.Field>
                         <label style={style}>Background color</label>
                         <Form.Input
-                            className='input-color'
+                            className='input__color'
                             type='color'
                             placeholder='Background color'
                             value={duty.backgroundColor}
@@ -103,7 +103,7 @@ export default observer(function DutyModalCreate() {
                     <Form.Field>
                         <label style={style}>Font color</label>
                         <Form.Input
-                            className='input-color'
+                            className='input__color'
                             type='color'
                             placeholder='Font color'
                             value={duty.fontColor}

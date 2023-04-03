@@ -58,6 +58,28 @@ export default class DutyStore {
         this.setLoadingInitial(false);
     }
 
+    reorderDuties = (overDuty: Duty, dropDuty: Duty) => {
+        const tempPosition = overDuty.position;
+
+        overDuty.position = dropDuty.position;
+        dropDuty.position = tempPosition;
+
+        try {
+            this.duties.set(overDuty.id, overDuty);
+            this.duties.set(dropDuty.id, dropDuty);
+
+            Array.from(this.duties.values())
+                .filter(duty => !duty.isCompleted)
+                .sort((duty01, duty02) => duty01.position - duty02.position)
+                .forEach((duty, index) => {
+                    duty.position = index;
+                    this.duties.set(duty.id, duty);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     selectDuty = (id: string) => {
         this.selectedDuty = this.duties.get(id);
     }
@@ -68,7 +90,17 @@ export default class DutyStore {
 
     updateIsCompletedDuty = (duty: Duty, isCompleted: boolean) => {
         duty.isCompleted = isCompleted;
-        duty.dateCompletion = isCompleted ? (new Date()).toISOString() : null;
+
+        if (isCompleted) {
+            duty.dateCompletion = (new Date()).toISOString();
+        } else {
+            const positions = Array.from(this.duties.values())
+                .filter(duty => !duty.isCompleted)
+                .map(duty => duty.position);
+
+            duty.position = Math.max(...positions) + 1;
+            duty.dateCompletion = null;
+        }
 
         this.duties.set(duty.id, duty);
     }

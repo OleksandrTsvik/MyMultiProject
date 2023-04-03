@@ -1,3 +1,4 @@
+import { DragEvent, MouseEvent } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Card, Grid, Icon, Popup } from 'semantic-ui-react';
 
@@ -7,9 +8,25 @@ import dateFormat from '../../../app/utils/dateFormat';
 
 interface Props {
     duty: Duty;
+    draggable?: boolean;
+    onMouseDownDraggableElem: (event: MouseEvent<HTMLDivElement>) => void;
+    onMouseUpDraggableElem: (event: MouseEvent<HTMLDivElement>) => void;
+    onDragStart: (event: DragEvent<HTMLDivElement>, duty: Duty) => void;
+    onDragEnd: (event: DragEvent<HTMLDivElement>) => void;
+    onDragOver: (event: DragEvent<HTMLDivElement>, duty: Duty) => void;
 }
 
-export default observer(function DutyListItem({ duty }: Props) {
+export default observer(function DutyListItem(
+    {
+        duty,
+        draggable,
+        onMouseDownDraggableElem,
+        onMouseUpDraggableElem,
+        onDragStart,
+        onDragEnd,
+        onDragOver
+    }: Props
+) {
     const { dutyStore } = useStore();
     const { updateIsCompletedDuty, getIsLoading, openEditMode, openDeleteMode } = dutyStore;
 
@@ -19,18 +36,41 @@ export default observer(function DutyListItem({ duty }: Props) {
         borderColor: duty.fontColor
     };
 
+    const dragAndDrop = draggable
+        ? {
+            className: 'rounded draggable__item',
+            onDragStart: (e: DragEvent<HTMLDivElement>) => onDragStart(e, duty),
+            onDragEnd: onDragEnd,
+            onDragOver: (e: DragEvent<HTMLDivElement>) => onDragOver(e, duty)
+        }
+        : {
+            className: 'rounded'
+        };
+
     return (
-        <Grid.Column mobile={16} tablet={8} computer={4}>
+        <Grid.Column
+            mobile={16}
+            tablet={8}
+            computer={4}
+            {...dragAndDrop}
+        >
             <Card fluid style={style}>
                 <Card.Content>
-                    {duty.isCompleted
-                        ? <Card.Header style={style}>{duty.title}</Card.Header>
-                        : <Card.Header style={style} className='d-flex justify-content-between'>
+                    {!duty.isCompleted && draggable
+                        ? <Card.Header
+                            style={style}
+                            className='d-flex justify-content-between'
+                        >
                             <div>{duty.title}</div>
-                            <div className='draggable'>
+                            <div
+                                className='draggable'
+                                onMouseDown={onMouseDownDraggableElem}
+                                onMouseUp={onMouseUpDraggableElem}
+                            >
                                 <Icon name='grid layout' />
                             </div>
                         </Card.Header>
+                        : <Card.Header style={style}>{duty.title}</Card.Header>
                     }
                 </Card.Content>
                 <Card.Content style={style}>

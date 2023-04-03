@@ -1,22 +1,85 @@
+import { DragEvent, MouseEvent, useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 
 import { Duty } from '../../../app/models/duty';
+import { useStore } from '../../../app/stores/store';
 import DutyListItem from './DutyListItem';
 import EmptyBlock from '../../../components/EmptyBlock';
 
 interface Props {
     duties: Duty[];
+    draggable?: boolean;
 }
 
-export default function DutyList({ duties }: Props) {
+export default function DutyList({ duties, draggable }: Props) {
+    const { dutyStore } = useStore();
+    const { reorderDuties } = dutyStore;
+
+    const [draggingDuty, setDraggingDuty] = useState<Duty | undefined>(undefined);
+
     if (duties.length === 0) {
         return <EmptyBlock />;
     }
 
+    function handlerMouseDownDraggableElem(event: MouseEvent<HTMLDivElement>) {
+        let target = event.target as HTMLDivElement;
+        target = target.closest('.draggable__item') as HTMLDivElement;
+
+        if (!target) {
+            return;
+        }
+
+        target.draggable = true;
+    }
+
+    function handlerMouseUpDraggableElem(event: MouseEvent<HTMLDivElement>) {
+        let target = event.target as HTMLDivElement;
+        target = target.closest('.draggable__item') as HTMLDivElement;
+
+        if (!target) {
+            return;
+        }
+
+        target.draggable = false;
+    }
+
+    function handlerDragStart(event: DragEvent<HTMLDivElement>, duty: Duty) {
+        const target = event.target as HTMLDivElement;
+        target.classList.add('dragging');
+
+        setDraggingDuty(duty);
+    }
+
+    function handlerDragEnd(event: DragEvent<HTMLDivElement>) {
+        const target = event.target as HTMLDivElement;
+
+        target.draggable = false;
+        target.classList.remove('dragging');
+
+        setDraggingDuty(undefined);
+    }
+
+    function handlerDragOver(event: DragEvent<HTMLDivElement>, duty: Duty) {
+        event.preventDefault();
+
+        if (draggingDuty && draggingDuty.id !== duty.id) {
+            reorderDuties(duty, draggingDuty);
+        }
+    }
+
     return (
-        <Grid>
+        <Grid className="py-2">
             {duties.map(duty => (
-                <DutyListItem key={duty.id} duty={duty} />
+                <DutyListItem
+                    key={duty.id}
+                    duty={duty}
+                    draggable={draggable}
+                    onMouseDownDraggableElem={handlerMouseDownDraggableElem}
+                    onMouseUpDraggableElem={handlerMouseUpDraggableElem}
+                    onDragStart={handlerDragStart}
+                    onDragEnd={handlerDragEnd}
+                    onDragOver={handlerDragOver}
+                />
             ))}
         </Grid>
     );

@@ -35,11 +35,15 @@ footer a:hover {
   color: darkblue;
 }
 
-.draggable {
+.draggable__item.dragging {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.draggable__item .draggable {
   cursor: move;
 }
 
-.input-color .ui.input input {
+.input__color .ui.input input {
   padding: 0;
   border: none;
 }
