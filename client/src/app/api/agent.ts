@@ -29,7 +29,8 @@ const Duties = {
     details: (id: string) => requests.get<Duty>(`/duties/${id}`),
     create: (duty: Duty) => axios.post<void>('/duties', duty),
     update: (duty: Duty) => axios.put<void>(`/duties/${duty.id}`, duty),
-    delete: (id: string) => axios.delete<void>(`/duties/${id}`)
+    delete: (id: string) => axios.delete<void>(`/duties/${id}`),
+    updateList: (duties: Duty[]) => axios.put<void>('/duties/list', duties)
 };
 
 const agent = {

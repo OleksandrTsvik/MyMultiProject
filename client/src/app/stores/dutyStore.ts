@@ -48,8 +48,11 @@ export default class DutyStore {
 
         try {
             const duties = await agent.Duties.list();
-            duties.forEach((duty) => {
-                this.duties.set(duty.id, duty);
+
+            runInAction(() => {
+                duties.forEach((duty) => {
+                    this.duties.set(duty.id, duty);
+                });
             });
         } catch (error) {
             console.log(error);
@@ -80,6 +83,17 @@ export default class DutyStore {
         }
     }
 
+    reorderDutiesOnServer = async () => {
+        try {
+            await agent.Duties.updateList(
+                Array.from(this.duties.values())
+                    .filter(duty => !duty.isCompleted)
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     selectDuty = (id: string) => {
         this.selectedDuty = this.duties.get(id);
     }
@@ -88,21 +102,34 @@ export default class DutyStore {
         this.selectedDuty = undefined;
     }
 
-    updateIsCompletedDuty = (duty: Duty, isCompleted: boolean) => {
-        duty.isCompleted = isCompleted;
+    updateIsCompletedDuty = async (duty: Duty, isCompleted: boolean) => {
+        this.setLoading(duty.id);
+
+        const tempDuty = { ...duty };
+        tempDuty.isCompleted = isCompleted;
 
         if (isCompleted) {
-            duty.dateCompletion = (new Date()).toISOString();
+            tempDuty.dateCompletion = (new Date()).toISOString();
         } else {
             const positions = Array.from(this.duties.values())
                 .filter(duty => !duty.isCompleted)
                 .map(duty => duty.position);
 
-            duty.position = Math.max(...positions) + 1;
-            duty.dateCompletion = null;
+            tempDuty.position = Math.max(...positions) + 1;
+            tempDuty.dateCompletion = null;
         }
 
-        this.duties.set(duty.id, duty);
+        try {
+            await agent.Duties.update(tempDuty);
+
+            runInAction(() => {
+                this.duties.set(tempDuty.id, tempDuty);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        this.setLoading(tempDuty.id, true);
     }
 
     openCreateMode = () => {

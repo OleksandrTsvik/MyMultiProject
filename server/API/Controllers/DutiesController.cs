@@ -37,4 +37,10 @@ public class DutiesController : BaseApiController
     {
         return Ok(await Mediator.Send(new Delete.Command { Id = id }));
     }
+
+    [HttpPut("list")]
+    public async Task<IActionResult> EditDuties(List<Duty> duties)
+    {
+        return Ok(await Mediator.Send(new EditList.Command { Duties = duties }));
+    }
 }

@@ -13,7 +13,7 @@ interface Props {
 
 export default function DutyList({ duties, draggable }: Props) {
     const { dutyStore } = useStore();
-    const { reorderDuties } = dutyStore;
+    const { reorderDuties, reorderDutiesOnServer } = dutyStore;
 
     const [draggingDuty, setDraggingDuty] = useState<Duty | undefined>(undefined);
 
@@ -57,6 +57,7 @@ export default function DutyList({ duties, draggable }: Props) {
         target.classList.remove('dragging');
 
         setDraggingDuty(undefined);
+        reorderDutiesOnServer();
     }
 
     function handlerDragOver(event: DragEvent<HTMLDivElement>, duty: Duty) {
