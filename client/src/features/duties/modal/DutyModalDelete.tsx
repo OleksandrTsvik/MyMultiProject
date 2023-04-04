@@ -38,15 +38,15 @@ export default observer(function DutyModalDelete() {
             <Modal.Header style={style}>Delete duty?</Modal.Header>
             <Modal.Content style={style}>
                 <p>Are you sure you want to delete duty?</p>
-                <p className='fw-bold'>{selectedDuty.title}</p>
+                <p className="fw-bold">{selectedDuty.title}</p>
             </Modal.Content>
             <hr style={style} />
             <Modal.Content style={style}>
                 <p>{selectedDuty.description}</p>
             </Modal.Content>
             <hr style={style} />
-            <Modal.Content className='text-end' style={style}>
-                <Icon name='calendar alternate' />&ensp;
+            <Modal.Content style={style} className="text-end">
+                <Icon name="calendar alternate" />&ensp;
                 {dateFormat(selectedDuty.dateCreation)}
             </Modal.Content>
             <Modal.Actions style={style}>
@@ -54,7 +54,7 @@ export default observer(function DutyModalDelete() {
                     negative
                     onClick={() => closeDeleteMode()}
                 >
-                    <Icon name='remove' /> No
+                    <Icon name="remove" /> No
                 </Button>
                 <Button
                     positive
@@ -62,7 +62,7 @@ export default observer(function DutyModalDelete() {
                     disabled={getIsLoading(selectedDuty.id)}
                     onClick={() => deleteDuty(selectedDuty.id)}
                 >
-                    <Icon name='checkmark' /> Yes
+                    <Icon name="checkmark" /> Yes
                 </Button>
             </Modal.Actions>
         </Modal>

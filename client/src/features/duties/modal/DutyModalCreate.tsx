@@ -72,44 +72,44 @@ export default observer(function DutyModalCreate() {
                     <Form.Field>
                         <label style={style}>Title</label>
                         <Form.Input
-                            placeholder='Title'
+                            placeholder="Title"
                             value={duty.title}
-                            name='title'
+                            name="title"
                             onChange={handleInputChange}
                         />
                     </Form.Field>
                     <Form.Field>
                         <label style={style}>Description</label>
                         <Form.TextArea
-                            placeholder='Description'
-                            value={duty.description}
-                            name='description'
-                            onChange={handleInputChange}
                             style={{ minHeight: 100 }}
+                            placeholder="Description"
+                            value={duty.description}
+                            name="description"
+                            onChange={handleInputChange}
                         />
                     </Form.Field>
                     <Form.Field>
                         <label style={style}>Background color</label>
                         <Form.Input
-                            className='input__color'
-                            type='color'
-                            placeholder='Background color'
+                            type="color"
+                            className="input__color"
+                            name="backgroundColor"
+                            placeholder="Background color"
                             value={duty.backgroundColor}
                             onChange={handleInputChange}
                             onInput={handleInputColor}
-                            name='backgroundColor'
                         />
                     </Form.Field>
                     <Form.Field>
                         <label style={style}>Font color</label>
                         <Form.Input
-                            className='input__color'
-                            type='color'
-                            placeholder='Font color'
+                            type="color"
+                            className="input__color"
+                            name="fontColor"
+                            placeholder="Font color"
                             value={duty.fontColor}
                             onChange={handleInputChange}
                             onInput={handleInputColor}
-                            name='fontColor'
                         />
                     </Form.Field>
                 </Form>

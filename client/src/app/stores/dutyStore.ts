@@ -26,24 +26,30 @@ export default class DutyStore {
 
     get dutiesCompleted(): Duty[] {
         return Array.from(this.duties.values())
-            .filter(duty => duty.isCompleted)
-            .sort((duty01, duty02) => compareDates(duty01.dateCompletion, duty02.dateCompletion));
+            .filter(duty => duty.isCompleted);
     }
 
     get dutiesNotCompleted(): Duty[] {
         return Array.from(this.duties.values())
-            .filter(duty => !duty.isCompleted)
+            .filter(duty => !duty.isCompleted);
+    }
+
+    get dutiesCompletedSortByDateCompletion(): Duty[] {
+        return this.dutiesCompleted
+            .sort((duty01, duty02) => compareDates(duty01.dateCompletion, duty02.dateCompletion));
+    }
+
+    get dutiesNotCompletedSortByPosition(): Duty[] {
+        return this.dutiesNotCompleted
             .sort((duty01, duty02) => duty02.position - duty01.position);
     }
 
     get countCompleted(): number {
-        return Array.from(this.duties.values())
-            .filter(duty => duty.isCompleted).length;
+        return this.dutiesCompleted.length;
     }
 
     get countNotCompleted(): number {
-        return Array.from(this.duties.values())
-            .filter(duty => !duty.isCompleted).length;
+        return this.dutiesNotCompleted.length;
     }
 
     loadDuties = async () => {
@@ -65,33 +71,25 @@ export default class DutyStore {
     }
 
     reorderDuties = (overDuty: Duty, dropDuty: Duty) => {
-        const tempPosition = overDuty.position;
+        const overDutyPosition = overDuty.position;
 
         overDuty.position = dropDuty.position;
-        dropDuty.position = tempPosition;
+        dropDuty.position = overDutyPosition;
 
-        try {
-            this.duties.set(overDuty.id, overDuty);
-            this.duties.set(dropDuty.id, dropDuty);
+        this.duties.set(overDuty.id, overDuty);
+        this.duties.set(dropDuty.id, dropDuty);
 
-            Array.from(this.duties.values())
-                .filter(duty => !duty.isCompleted)
-                .sort((duty01, duty02) => duty01.position - duty02.position)
-                .forEach((duty, index) => {
-                    duty.position = index;
-                    this.duties.set(duty.id, duty);
-                });
-        } catch (error) {
-            console.log(error);
-        }
+        this.dutiesNotCompleted
+            .sort((duty01, duty02) => duty01.position - duty02.position)
+            .forEach((duty, index) => {
+                duty.position = index;
+                this.duties.set(duty.id, { ...duty });
+            });
     }
 
     reorderDutiesOnServer = async () => {
         try {
-            await agent.Duties.updateList(
-                Array.from(this.duties.values())
-                    .filter(duty => !duty.isCompleted)
-            );
+            await agent.Duties.updateList(this.dutiesNotCompleted);
         } catch (error) {
             console.log(error);
         }
@@ -114,8 +112,7 @@ export default class DutyStore {
         if (isCompleted) {
             tempDuty.dateCompletion = (new Date()).toISOString();
         } else {
-            const positions = Array.from(this.duties.values())
-                .filter(duty => !duty.isCompleted)
+            const positions = this.dutiesNotCompleted
                 .map(duty => duty.position);
 
             tempDuty.position = Math.max(...positions) + 1;

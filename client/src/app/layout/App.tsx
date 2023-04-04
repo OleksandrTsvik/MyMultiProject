@@ -15,7 +15,7 @@ export default observer(function App() {
   }, [dutyStore]);
 
   if (dutyStore.loadingInitial) {
-    return <Loading content='Loading app...' />;
+    return <Loading content="Loading app..." />;
   }
 
   return (

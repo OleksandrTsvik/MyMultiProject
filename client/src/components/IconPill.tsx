@@ -8,7 +8,7 @@ interface Props {
 
 export default function IconPill({ name, color, value }: Props) {
     return (
-        <Icon className='position-relative' name={name}>
+        <Icon className="position-relative" name={name}>
             {value > 0 &&
                 <Label
                     color={color}

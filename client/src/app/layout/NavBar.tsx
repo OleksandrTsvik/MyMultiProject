@@ -9,21 +9,21 @@ export default observer(function NavBar() {
     const { countNotCompleted } = dutyStore;
 
     return (
-        <Menu inverted fixed='top' icon='labeled'>
+        <Menu inverted fixed="top" icon="labeled">
             <Container>
                 <Menu.Item header>
-                    <Icon name='flask' />
+                    <Icon name="flask" />
                     MyMultiProject
                 </Menu.Item>
                 <Menu.Item>
                     <IconPill
-                        name='tasks'
-                        color='teal'
+                        name="tasks"
+                        color="teal"
                         value={countNotCompleted}
                     />
                     Tasks
                 </Menu.Item>
-                <Menu.Item name='Test' style={{ justifyContent: 'center' }} />
+                <Menu.Item name="Test" style={{ justifyContent: 'center' }} />
             </Container>
         </Menu>
     );

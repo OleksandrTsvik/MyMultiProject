@@ -40,21 +40,21 @@ export default observer(function DutyModalEdit() {
                 <Form>
                     <Form.Field>
                         <Form.Input
-                            label='Title'
-                            placeholder='Title'
+                            label="Title"
+                            name="title"
+                            placeholder="Title"
                             value={duty.title}
-                            name='title'
                             onChange={handleInputChange}
                         />
                     </Form.Field>
                     <Form.Field>
                         <Form.TextArea
-                            label='Description'
-                            placeholder='Description'
-                            value={duty.description}
-                            name='description'
-                            onChange={handleInputChange}
                             style={{ minHeight: 100 }}
+                            label="Description"
+                            name="description"
+                            placeholder="Description"
+                            value={duty.description}
+                            onChange={handleInputChange}
                         />
                     </Form.Field>
                 </Form>

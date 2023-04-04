@@ -8,15 +8,17 @@ export default observer(function DutyCreate() {
     const { countNotCompleted, openCreateMode } = dutyStore;
 
     return (
-        <div className='mb-3 text-end'>
-            <Button as='div' labelPosition='right'
+        <div className="mb-3 text-end">
+            <Button
+                as="div"
+                labelPosition="right"
                 onClick={openCreateMode}
             >
                 <Button positive>
-                    <Icon name='add' />
+                    <Icon name="add" />
                     Create
                 </Button>
-                <Label basic color='green' pointing='left'>
+                <Label basic color="green" pointing="left">
                     {countNotCompleted}
                 </Label>
             </Button>

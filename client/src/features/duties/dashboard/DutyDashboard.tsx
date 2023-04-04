@@ -11,7 +11,11 @@ import DutyModalEdit from '../modal/DutyModalEdit';
 
 export default observer(function DutyDashboard() {
     const { dutyStore } = useStore();
-    const { dutiesCompleted, dutiesNotCompleted, countCompleted, setChangeColorMode } = dutyStore;
+    const {
+        dutiesCompletedSortByDateCompletion,
+        dutiesNotCompletedSortByPosition,
+        countCompleted, setChangeColorMode
+    } = dutyStore;
 
     useEffect(() => {
         function handleCloseChangeColorMode(event: MouseEvent) {
@@ -32,11 +36,11 @@ export default observer(function DutyDashboard() {
     return (
         <>
             <DutyCreate />
-            <DutyList duties={dutiesNotCompleted} draggable />
-            <Segment inverted color='green' textAlign='center' size='big'>
+            <DutyList duties={dutiesNotCompletedSortByPosition} draggable />
+            <Segment inverted color="green" textAlign="center" size="big">
                 The latter are completed ({countCompleted})
             </Segment>
-            <DutyList duties={dutiesCompleted} />
+            <DutyList duties={dutiesCompletedSortByDateCompletion} />
             <DutyModalCreate />
             <DutyModalEdit />
             <DutyModalDelete />
