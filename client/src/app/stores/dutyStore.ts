@@ -17,7 +17,7 @@ export default class DutyStore {
     changeColorMode: boolean = false;
 
     loadingInitial: boolean = true;
-    createloading: boolean = false;
+    createLoading: boolean = false;
     arrLoadingDutiesId: string[] = [];
 
     constructor() {
@@ -71,6 +71,34 @@ export default class DutyStore {
     }
 
     reorderDuties = (overDuty: Duty, dropDuty: Duty) => {
+        let position = 0;
+
+        this.dutiesNotCompleted
+            .sort((duty01, duty02) => duty01.position - duty02.position)
+            .forEach((duty) => {
+                if (duty.id === overDuty.id) {
+                    if (overDuty.position - dropDuty.position > 0) {
+                        // move to the left
+                        overDuty.position = position;
+                        dropDuty.position = ++position;
+                    } else {
+                        // move to the right
+                        dropDuty.position = position;
+                        overDuty.position = ++position;
+                    }
+
+                    this.duties.set(overDuty.id, overDuty);
+                    this.duties.set(dropDuty.id, dropDuty);
+                } else if (duty.id !== overDuty.id && duty.id !== dropDuty.id) {
+                    duty.position = position;
+                    this.duties.set(duty.id, { ...duty });
+                }
+
+                position++;
+            });
+    }
+
+    reorderDutiesBySwappingPlaces = (overDuty: Duty, dropDuty: Duty) => {
         const overDutyPosition = overDuty.position;
 
         overDuty.position = dropDuty.position;
@@ -252,7 +280,7 @@ export default class DutyStore {
     }
 
     setCreateLoading = (state: boolean) => {
-        this.createloading = state;
+        this.createLoading = state;
     }
 
     setLoading = (id: string, isDelete: boolean = false) => {

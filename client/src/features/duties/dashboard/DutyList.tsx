@@ -64,6 +64,7 @@ export default function DutyList({ duties, draggable }: Props) {
         event.preventDefault();
 
         if (draggingDuty && draggingDuty.id !== duty.id) {
+            console.log('reorderDuties')
             reorderDuties(duty, draggingDuty);
         }
     }

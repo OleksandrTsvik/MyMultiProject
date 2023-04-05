@@ -31,7 +31,7 @@ export const initialStyle: Style = {
 
 export default observer(function DutyModalCreate() {
     const { dutyStore } = useStore();
-    const { createloading, createDuty, createMode, closeCreateMode } = dutyStore;
+    const { createLoading, createDuty, createMode, closeCreateMode } = dutyStore;
 
     const [duty, setDuty] = useState<Duty>(initialState);
     const [style, setStyle] = useState<Style>(initialStyle);
@@ -123,8 +123,8 @@ export default observer(function DutyModalCreate() {
                 </Button>
                 <Button
                     positive
-                    loading={createloading}
-                    disabled={createloading}
+                    loading={createLoading}
+                    disabled={createLoading}
                     onClick={() => createDuty(duty)}
                 >
                     Create
