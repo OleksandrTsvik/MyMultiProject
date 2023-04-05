@@ -4,6 +4,7 @@ import { Button, Form, Modal } from 'semantic-ui-react';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
+import DutyPickColor from '../dashboard/DutyPickColor';
 
 export interface Style {
     color: string;
@@ -47,18 +48,6 @@ export default observer(function DutyModalCreate() {
         setDuty({ ...duty, [name]: value });
     }
 
-    function handleInputColor(event: ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-
-        switch (name) {
-            case 'fontColor':
-                setStyle({ ...style, 'color': value, 'borderColor': value });
-                break;
-            default:
-                setStyle({ ...style, [name]: value });
-        }
-    }
-
     return (
         <Modal
             centered={false}
@@ -88,30 +77,12 @@ export default observer(function DutyModalCreate() {
                             onChange={handleInputChange}
                         />
                     </Form.Field>
-                    <Form.Field>
-                        <label style={style}>Background color</label>
-                        <Form.Input
-                            type="color"
-                            className="input__color"
-                            name="backgroundColor"
-                            placeholder="Background color"
-                            value={duty.backgroundColor}
-                            onChange={handleInputChange}
-                            onInput={handleInputColor}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label style={style}>Font color</label>
-                        <Form.Input
-                            type="color"
-                            className="input__color"
-                            name="fontColor"
-                            placeholder="Font color"
-                            value={duty.fontColor}
-                            onChange={handleInputChange}
-                            onInput={handleInputColor}
-                        />
-                    </Form.Field>
+                    <DutyPickColor
+                        duty={duty}
+                        style={style}
+                        setDuty={setDuty}
+                        setStyle={setStyle}
+                    />
                 </Form>
             </Modal.Content>
             <Modal.Actions style={style}>

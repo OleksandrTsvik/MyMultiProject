@@ -1,12 +1,12 @@
 import { DragEvent, MouseEvent, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Card, Grid, Icon, Popup } from 'semantic-ui-react';
+import { Button, Card, Form, Grid, Icon, Popup } from 'semantic-ui-react';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
 import { Style } from '../modal/DutyModalCreate';
 import dateFormat from '../../../app/utils/dateFormat';
-import DutyChangeColor from './DutyChangeColor';
+import DutyPickColor from './DutyPickColor';
 
 interface Props {
     duty: Duty;
@@ -32,7 +32,8 @@ export default observer(function DutyListItem(
     const { dutyStore } = useStore();
     const {
         updateIsCompletedDuty, getIsLoading, openEditMode,
-        openDeleteMode, toggleChangeColorMode, getIsChangeColor
+        openDeleteMode, toggleChangeColorMode, getIsChangeColor,
+        changeColor
     } = dutyStore;
 
     const [dutyItem, setDutyItem] = useState<Duty>(duty);
@@ -141,12 +142,19 @@ export default observer(function DutyListItem(
                     }
                 </Card.Content>
                 {getIsChangeColor(dutyItem.id) &&
-                    <DutyChangeColor
-                        duty={dutyItem}
+                    <Card.Content
                         style={style}
-                        setDuty={setDutyItem}
-                        setStyle={setStyle}
-                    />
+                    >
+                        <Form>
+                            <DutyPickColor
+                                duty={dutyItem}
+                                style={style}
+                                setDuty={setDutyItem}
+                                setStyle={setStyle}
+                                onChangeColor={changeColor}
+                            />
+                        </Form>
+                    </Card.Content>
                 }
             </Card>
         </Grid.Column>

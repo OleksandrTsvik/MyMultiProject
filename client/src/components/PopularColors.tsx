@@ -17,7 +17,7 @@ export default function PopularColors({ onClickColor }: Props) {
                 <div
                     key={index}
                     style={{ backgroundColor: color }}
-                    className="duty__color"
+                    className="duty__pick-color"
                     onClick={() => onClickColor(color)}
                 />
             ))}
