@@ -21,7 +21,7 @@ export default observer(function App() {
   return (
     <>
       <NavBar />
-      <main>
+      <main className="wrapper">
         <DutyDashboard />
       </main>
       <Footer />

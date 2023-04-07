@@ -4,7 +4,7 @@ import App from './app/layout/App';
 import { store, StoreContext } from './app/stores/store';
 
 import 'semantic-ui-css/semantic.min.css'
-import './app/layout/styles.css';
+import './app/layout/styles.scss';
 import './app/layout/short-bootstrap.css';
 
 const root = ReactDOM.createRoot(

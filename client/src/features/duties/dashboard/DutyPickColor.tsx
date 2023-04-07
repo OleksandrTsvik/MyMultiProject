@@ -49,7 +49,7 @@ export default function DutyPickColor({ duty, setDuty, style, setStyle, onChange
                 />
                 <Form.Input
                     type="color"
-                    className="input__color"
+                    className="duty__input-color"
                     name="backgroundColor"
                     value={duty.backgroundColor}
                     onInput={handleInputColor}
@@ -63,7 +63,7 @@ export default function DutyPickColor({ duty, setDuty, style, setStyle, onChange
                 />
                 <Form.Input
                     type="color"
-                    className="input__color"
+                    className="duty__input-color"
                     name="fontColor"
                     value={duty.fontColor}
                     onInput={handleInputColor}
