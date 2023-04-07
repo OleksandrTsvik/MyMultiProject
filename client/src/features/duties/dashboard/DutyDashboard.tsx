@@ -3,11 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { Segment } from 'semantic-ui-react';
 
 import { useStore } from '../../../app/stores/store';
-import DutyList from './DutyList';
-import DutyCreate from './DutyCreate';
 import DutyModalCreate from '../modal/DutyModalCreate';
 import DutyModalDelete from '../modal/DutyModalDelete';
 import DutyModalEdit from '../modal/DutyModalEdit';
+import DutyList from './DutyList';
+import DutyCreate from './DutyCreate';
 
 export default observer(function DutyDashboard() {
     const { dutyStore } = useStore();

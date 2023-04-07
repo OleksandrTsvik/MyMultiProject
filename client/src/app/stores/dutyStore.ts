@@ -87,8 +87,8 @@ export default class DutyStore {
                         overDuty.position = ++position;
                     }
 
-                    this.duties.set(overDuty.id, overDuty);
-                    this.duties.set(dropDuty.id, dropDuty);
+                    this.duties.set(overDuty.id, { ...overDuty });
+                    this.duties.set(dropDuty.id, { ...dropDuty });
                 } else if (duty.id !== overDuty.id && duty.id !== dropDuty.id) {
                     duty.position = position;
                     this.duties.set(duty.id, { ...duty });

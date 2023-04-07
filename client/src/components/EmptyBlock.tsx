@@ -1,4 +1,4 @@
-import { Segment } from "semantic-ui-react";
+import { Segment } from 'semantic-ui-react';
 
 interface Props {
     text?: string;

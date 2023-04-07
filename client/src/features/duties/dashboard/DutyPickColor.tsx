@@ -1,9 +1,9 @@
-import { ChangeEvent, Dispatch } from "react";
-import { Form } from "semantic-ui-react";
+import { ChangeEvent, Dispatch } from 'react';
+import { Form } from 'semantic-ui-react';
 
-import { Duty } from "../../../app/models/duty";
-import { Style } from "../modal/DutyModalCreate";
-import PopularColors from "../../../components/PopularColors";
+import { Duty } from '../../../app/models/duty';
+import { Style } from '../modal/DutyModalCreate';
+import PopularColors from '../../../components/PopularColors';
 
 interface Props {
     duty: Duty;

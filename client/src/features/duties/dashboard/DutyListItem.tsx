@@ -1,4 +1,4 @@
-import { DragEvent, MouseEvent, useState } from 'react';
+import { DragEvent, MouseEvent, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Card, Form, Grid, Icon, Popup } from 'semantic-ui-react';
 
@@ -43,6 +43,10 @@ export default observer(function DutyListItem(
         borderColor: dutyItem.fontColor
     });
 
+    useEffect(() => {
+        setDutyItem(duty);
+    }, [duty]);
+
     const classesForContainer = 'duty__item rounded'
         + (getIsChangeColor(dutyItem.id) ? ' duty__collapsible' : '');
 
@@ -84,7 +88,12 @@ export default observer(function DutyListItem(
                     }
                 </Card.Content>
                 <Card.Content style={style}>
-                    <Card.Description style={style}>{dutyItem.description}</Card.Description>
+                    <Card.Description
+                        style={style}
+                        className="formatted-text"
+                    >
+                        {dutyItem.description}
+                    </Card.Description>
                 </Card.Content>
                 <Card.Content style={style}>
                     <Card.Meta style={style}>

@@ -1,28 +1,31 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import { Outlet } from 'react-router-dom';
 
 import { useStore } from '../stores/store';
 import Loading from '../../components/Loading';
-import DutyDashboard from '../../features/duties/dashboard/DutyDashboard';
 import NavBar from './NavBar';
 import Footer from './Footer';
 
 export default observer(function App() {
   const { dutyStore } = useStore();
+  const { duties, loadDuties, loadingInitial } = dutyStore;
 
   useEffect(() => {
-    dutyStore.loadDuties();
-  }, [dutyStore]);
+    if (duties.size === 0) {
+      loadDuties();
+    }
+  }, [duties.size, loadDuties]);
 
-  if (dutyStore.loadingInitial) {
-    return <Loading content="Loading app..." />;
+  if (loadingInitial) {
+    return <Loading content="Loading tasks..." />;
   }
 
   return (
     <>
       <NavBar />
       <main className="wrapper">
-        <DutyDashboard />
+        <Outlet />
       </main>
       <Footer />
     </>
