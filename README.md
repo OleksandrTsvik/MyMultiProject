@@ -21,3 +21,4 @@ npm start
 
 ## What's Included
 1. Task Manager
+2. Language and keyboard translator
