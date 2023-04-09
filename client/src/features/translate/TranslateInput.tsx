@@ -24,7 +24,7 @@ interface Props {
     placeholder: string;
     name: 'input' | 'output';
     readOnly?: boolean;
-    value?: string;
+    value: string;
     onChange?: (text: string) => void;
 
     buttonSize?: IconSizeProp;
@@ -50,6 +50,26 @@ export default function TranslateInput(
 ) {
     function handleChange(event: ChangeEvent<HTMLTextAreaElement>) {
         onChange && onChange(event.target.value);
+    }
+
+    async function handlePasteText() {
+        try {
+            onChange && onChange(await navigator.clipboard.readText());
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function handleCopyText() {
+        try {
+            await navigator.clipboard.writeText(value);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function handleClearText() {
+        onChange && onChange('');
     }
 
     return (
@@ -86,7 +106,9 @@ export default function TranslateInput(
                     <Popup
                         content="Paste"
                         trigger={
-                            <Button icon inverted color="blue">
+                            <Button icon inverted color="blue"
+                                onClick={handlePasteText}
+                            >
                                 <Icon name="paste" size={buttonSize} />
                             </Button>
                         }
@@ -95,7 +117,9 @@ export default function TranslateInput(
                 <Popup
                     content="Copy"
                     trigger={
-                        <Button icon inverted color="green">
+                        <Button icon inverted color="green"
+                            onClick={handleCopyText}
+                        >
                             <Icon name="copy outline" size={buttonSize} />
                         </Button>
                     }
@@ -104,7 +128,9 @@ export default function TranslateInput(
                     <Popup
                         content="Clear"
                         trigger={
-                            <Button icon color="red">
+                            <Button icon color="red"
+                                onClick={handleClearText}
+                            >
                                 <Icon name="remove" size={buttonSize} />
                             </Button>
                         }
