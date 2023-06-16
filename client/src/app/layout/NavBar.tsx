@@ -61,7 +61,21 @@ export default observer(function NavBar() {
                     </Dropdown.Menu>
                 </Dropdown>
                 <Menu.Item
-                    as={NavLink} to="/test"
+                    as={NavLink} to="/games"
+                    className="justify-content-center"
+                >
+                    <Icon name="gamepad" />
+                    Games
+                </Menu.Item>
+                <Menu.Item
+                    as={NavLink} to="/errors"
+                    className="justify-content-center"
+                >
+                    <Icon name="bug" />
+                    Errors
+                </Menu.Item>
+                <Menu.Item
+                    as={NavLink} to="/not-found"
                     name="404"
                     className="justify-content-center"
                 />

@@ -1,5 +1,7 @@
+using Application.Core;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -7,12 +9,20 @@ namespace Application.Duties;
 
 public class Edit
 {
-    public class Command : IRequest
+    public class Command : IRequest<Result<Unit>>
     {
         public Duty Duty { get; set; }
     }
 
-    public class Handler : IRequestHandler<Command>
+    public class CommandValidator : AbstractValidator<Command>
+    {
+        public CommandValidator()
+        {
+            RuleFor(x => x.Duty).SetValidator(new DutyValidator());
+        }
+    }
+
+    public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -23,15 +33,25 @@ public class Edit
             _context = context;
         }
 
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             Duty duty = await _context.Duties.FindAsync(request.Duty.Id);
 
+            if (duty == null)
+            {
+                return null;
+            }
+
             _mapper.Map(request.Duty, duty);
 
-            await _context.SaveChangesAsync();
+            int result = await _context.SaveChangesAsync();
 
-            return Unit.Value;
+            if (result <= 0)
+            {
+                return Result<Unit>.Failure("Failed to update duty");
+            }
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

@@ -1,10 +1,12 @@
-import { RouteObject, createBrowserRouter } from 'react-router-dom';
+import { Navigate, RouteObject, createBrowserRouter } from 'react-router-dom';
 
 import App from '../layout/App';
 import HomePage from '../../features/home/HomePage';
 import DutyDashboard from '../../features/duties/dashboard/DutyDashboard';
-import NotFoundPage from '../../features/404/NotFoundPage';
+import NotFoundPage from '../../features/errors/NotFoundPage';
 import TranslateKeyboardPage from '../../features/translate/TranslateKeyboardPage';
+import TestErrorsPage from '../../features/errors/TestErrorPage';
+import ServerErrorPage from '../../features/errors/ServerErrorPage';
 
 export const routes: RouteObject[] = [
     {
@@ -20,7 +22,11 @@ export const routes: RouteObject[] = [
                     { path: 'keyboard', element: <TranslateKeyboardPage /> }
                 ]
             },
-            { path: '*', element: <NotFoundPage /> }
+            { path: 'games', element: <>Games</> },
+            { path: 'errors', element: <TestErrorsPage /> },
+            { path: 'server-error', element: <ServerErrorPage /> },
+            { path: 'not-found', element: <NotFoundPage /> },
+            { path: '*', element: <Navigate to="/not-found" replace /> }
         ]
     }
 ];

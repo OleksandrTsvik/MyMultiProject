@@ -1,19 +1,63 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
+import { store } from '../stores/store';
+import { router } from '../router/Routes';
 import { Duty } from '../models/duty';
 import sleep from '../utils/sleep';
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
+export const baseUrl = 'http://localhost:5000/api';
 
-axios.interceptors.response.use(async (response) => {
-    try {
+axios.defaults.baseURL = baseUrl;
+
+axios.interceptors.response.use(
+    async (response) => {
         await sleep(1000);
         return response;
-    } catch (error) {
-        console.log(error);
-        return await Promise.reject(error);
+    },
+    (error: AxiosError) => {
+        const { data, status, config } = error.response as AxiosResponse;
+        const { errors } = data;
+
+        switch (status) {
+            case 400:
+                if (errors && config.method === 'get' && errors.hasOwnProperty('id')) {
+                    router.navigate('not-found');
+                } else if (errors) {
+                    const modalStateErrors = [];
+
+                    for (const key in errors) {
+                        if (errors[key]) {
+                            modalStateErrors.push(errors[key]);
+                        }
+                    }
+
+                    throw modalStateErrors.flat();
+                } else {
+                    toast.error(data);
+                }
+
+                break;
+            case 401:
+                toast.error('Unauthorised');
+                break;
+            case 403:
+                toast.error('Forbidden');
+                break;
+            case 404:
+                router.navigate('not-found');
+                break;
+            case 500:
+                store.commonStore.setServerError(data);
+                router.navigate('server-error');
+                break;
+            default:
+                break;
+        }
+
+        return Promise.reject(error);
     }
-});
+);
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 

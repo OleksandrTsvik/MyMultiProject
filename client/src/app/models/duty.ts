@@ -8,5 +8,4 @@ export interface Duty {
     dateCompletion: string | null;
     backgroundColor: string;
     fontColor: string;
-  }
-  
+}

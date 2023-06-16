@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { useStore } from '../stores/store';
 import Loading from '../../components/Loading';
@@ -23,6 +24,7 @@ export default observer(function App() {
 
   return (
     <>
+      <ToastContainer position="bottom-right" theme="colored" />
       <NavBar />
       <main className="wrapper">
         <Outlet />
