@@ -16,10 +16,14 @@ export default function translateKeyboard(
     let translateText: string[] = [];
 
     for (let i = 0; i < text.length; i++) {
-        let translateLetter = letters.find((letter) => text[i] === letter[inputLanguage]);
+        let translateLetter = letters.find((letter) => text[i].toLowerCase() === letter[inputLanguage]);
 
         if (translateLetter) {
-            translateText.push(translateLetter[outputLanguage]);
+            if (text[i] === text[i].toUpperCase()) {
+                translateText.push(translateLetter[outputLanguage].toUpperCase());
+            } else {
+                translateText.push(translateLetter[outputLanguage]);
+            }
         } else {
             translateText.push(text[i]);
         }
