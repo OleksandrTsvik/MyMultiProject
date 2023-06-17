@@ -1,10 +1,14 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Form, Modal } from 'semantic-ui-react';
+import { Button, Modal } from 'semantic-ui-react';
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
-import DutyPickColor from '../dashboard/DutyPickColor';
+import FormikInput from '../../../components/FormikInput';
+import FormikTextArea from '../../../components/FormikTextArea';
+import FormikDutyPickColor from '../dashboard/FormikDutyPickColor';
 
 export interface Style {
     color: string;
@@ -18,7 +22,7 @@ const initialState: Duty = {
     title: '',
     description: '',
     isCompleted: false,
-    dateCreation: (new Date()).toISOString(),
+    dateCreation: new Date(),
     dateCompletion: null,
     backgroundColor: '#ffffff',
     fontColor: '#000000'
@@ -27,7 +31,7 @@ const initialState: Duty = {
 export const initialStyle: Style = {
     color: '#000000',
     backgroundColor: '#ffffff',
-    borderColor: '#ffffff'
+    borderColor: '#000000'
 };
 
 export default observer(function DutyModalCreate() {
@@ -37,16 +41,15 @@ export default observer(function DutyModalCreate() {
     const [duty, setDuty] = useState<Duty>(initialState);
     const [style, setStyle] = useState<Style>(initialStyle);
 
+    const validationSchema = Yup.object({
+        title: Yup.string().required('The task title is required'),
+        description: Yup.string().required('The task description is required')
+    });
+
     useEffect(() => {
         setDuty(initialState);
         setStyle(initialStyle);
     }, [createMode]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const { name, value } = event.target;
-
-        setDuty({ ...duty, [name]: value });
-    }
 
     return (
         <Modal
@@ -56,51 +59,54 @@ export default observer(function DutyModalCreate() {
             style={style}
         >
             <Modal.Header style={style}>Create task</Modal.Header>
-            <Modal.Content style={style}>
-                <Form>
-                    <Form.Field>
-                        <label style={style}>Title</label>
-                        <Form.Input
-                            placeholder="Title"
-                            value={duty.title}
-                            name="title"
-                            onChange={handleInputChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label style={style}>Description</label>
-                        <Form.TextArea
-                            style={{ minHeight: 100 }}
-                            placeholder="Description"
-                            value={duty.description}
-                            name="description"
-                            onChange={handleInputChange}
-                        />
-                    </Form.Field>
-                    <DutyPickColor
-                        duty={duty}
-                        style={style}
-                        setDuty={setDuty}
-                        setStyle={setStyle}
-                    />
-                </Form>
-            </Modal.Content>
-            <Modal.Actions style={style}>
-                <Button
-                    negative
-                    onClick={closeCreateMode}
-                >
-                    Cancel
-                </Button>
-                <Button
-                    positive
-                    loading={createLoading}
-                    disabled={createLoading}
-                    onClick={() => createDuty(duty)}
-                >
-                    Create
-                </Button>
-            </Modal.Actions>
+            <Formik
+                initialValues={duty}
+                validationSchema={validationSchema}
+                enableReinitialize
+                onSubmit={createDuty}
+            >
+                {({ handleSubmit, submitForm, isValid, dirty }) => (
+                    <>
+                        <Modal.Content style={style}>
+                            <Form className="ui form" onSubmit={handleSubmit}>
+                                <FormikInput
+                                    name="title"
+                                    label="Title"
+                                    labelStyle={style}
+                                    placeholder="Title"
+                                />
+                                <FormikTextArea
+                                    name="description"
+                                    label="Description"
+                                    labelStyle={style}
+                                    placeholder="Description"
+                                    style={{ minHeight: 100 }}
+                                />
+                                <FormikDutyPickColor
+                                    style={style}
+                                    setStyle={setStyle}
+                                />
+                            </Form>
+                        </Modal.Content>
+                        <Modal.Actions style={style}>
+                            <Button
+                                negative
+                                onClick={closeCreateMode}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                positive
+                                loading={createLoading}
+                                disabled={createLoading || !isValid || !dirty}
+                                onClick={submitForm}
+                            >
+                                Create
+                            </Button>
+                        </Modal.Actions>
+                    </>
+                )}
+            </Formik>
         </Modal>
     );
 });

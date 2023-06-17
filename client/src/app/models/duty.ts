@@ -4,8 +4,8 @@ export interface Duty {
     title: string;
     description: string;
     isCompleted: boolean;
-    dateCreation: string;
-    dateCompletion: string | null;
+    dateCreation: Date;
+    dateCompletion: Date | null;
     backgroundColor: string;
     fontColor: string;
 }

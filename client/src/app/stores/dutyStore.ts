@@ -60,6 +60,11 @@ export default class DutyStore {
 
             runInAction(() => {
                 duties.forEach((duty) => {
+                    duty.dateCreation = new Date(duty.dateCreation);
+                    if (duty.dateCompletion) {
+                        duty.dateCompletion = new Date(duty.dateCompletion);
+                    }
+
                     this.duties.set(duty.id, duty);
                 });
             });
@@ -138,7 +143,7 @@ export default class DutyStore {
         tempDuty.isCompleted = isCompleted;
 
         if (isCompleted) {
-            tempDuty.dateCompletion = (new Date()).toISOString();
+            tempDuty.dateCompletion = new Date();
         } else {
             const positions = this.dutiesNotCompleted
                 .map(duty => duty.position);
@@ -194,7 +199,7 @@ export default class DutyStore {
         this.setCreateLoading(true);
 
         duty.id = uuid();
-        duty.dateCreation = (new Date()).toISOString();
+        duty.dateCreation = new Date();
 
         try {
             await agent.Duties.create(duty);

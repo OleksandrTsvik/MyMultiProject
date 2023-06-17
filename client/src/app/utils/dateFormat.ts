@@ -1,10 +1,10 @@
 const defaultlocales: Intl.LocalesArgument = 'en-US';
 
 const defaultOptions: Intl.DateTimeFormatOptions = {
-    weekday: "long",
+    weekday: 'long',
     year: 'numeric',
-    month: "long",
-    day: "2-digit",
+    month: 'long',
+    day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, Modal } from 'semantic-ui-react';
+import { format } from 'date-fns';
 
 import { useStore } from '../../../app/stores/store';
-import dateFormat from '../../../app/utils/dateFormat';
 import { initialStyle, Style } from './DutyModalCreate';
 
 export default observer(function DutyModalDelete() {
@@ -47,7 +47,7 @@ export default observer(function DutyModalDelete() {
             <hr style={style} />
             <Modal.Content style={style} className="text-end">
                 <Icon name="calendar alternate" />&ensp;
-                {dateFormat(selectedDuty.dateCreation)}
+                {format(selectedDuty.dateCreation, "LLLL dd, iiii 'at' kk:mm:ss, y")}
             </Modal.Content>
             <Modal.Actions style={style}>
                 <Button

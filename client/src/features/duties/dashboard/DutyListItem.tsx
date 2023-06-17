@@ -1,12 +1,13 @@
 import { DragEvent, MouseEvent, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Card, Form, Grid, Icon, Popup } from 'semantic-ui-react';
+import { Button, Card, Grid, Icon, Popup } from 'semantic-ui-react';
+import { Form, Formik } from 'formik';
+import { format } from 'date-fns';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
 import { Style } from '../modal/DutyModalCreate';
-import dateFormat from '../../../app/utils/dateFormat';
-import DutyPickColor from './DutyPickColor';
+import FormikDutyPickColor from './FormikDutyPickColor';
 
 interface Props {
     duty: Duty;
@@ -103,7 +104,7 @@ export default observer(function DutyListItem(
                             trigger={
                                 <div>
                                     <Icon name="calendar alternate" />&ensp;
-                                    {dateFormat(dutyItem.dateCreation)}
+                                    {format(dutyItem.dateCreation, "LLLL dd, iiii 'at' kk:mm:ss, y")}
                                 </div>
                             }
                         />
@@ -154,15 +155,17 @@ export default observer(function DutyListItem(
                     <Card.Content
                         style={style}
                     >
-                        <Form>
-                            <DutyPickColor
-                                duty={dutyItem}
-                                style={style}
-                                setDuty={setDutyItem}
-                                setStyle={setStyle}
-                                onChangeColor={changeColor}
-                            />
-                        </Form>
+                        <Formik initialValues={dutyItem} onSubmit={changeColor}>
+                            {({ submitForm }) => (
+                                <Form className="ui form">
+                                    <FormikDutyPickColor
+                                        style={style}
+                                        setStyle={setStyle}
+                                        onChangeColor={submitForm}
+                                    />
+                                </Form>
+                            )}
+                        </Formik>
                     </Card.Content>
                 }
             </Card>

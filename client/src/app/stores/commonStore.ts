@@ -9,7 +9,11 @@ export default class CommonStore {
         makeAutoObservable(this);
     }
 
-    setServerError(error: ServerError) {
+    setServerError = (error: ServerError) => {
         this.error = error;
+    }
+
+    resetServerError = () => {
+        this.error = null;
     }
 }

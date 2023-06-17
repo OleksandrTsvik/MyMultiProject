@@ -1,21 +1,22 @@
 import { ChangeEvent, Dispatch } from 'react';
 import { Form } from 'semantic-ui-react';
+import { useField } from 'formik';
 
-import { Duty } from '../../../app/models/duty';
 import { Style } from '../modal/DutyModalCreate';
 import PopularColors from '../../../components/PopularColors';
 
 interface Props {
-    duty: Duty;
     style: Style;
-    setDuty: Dispatch<React.SetStateAction<Duty>>;
     setStyle: Dispatch<React.SetStateAction<Style>>;
-    onChangeColor?: (duty: Duty) => void;
+    onChangeColor?: () => void;
 }
 
-export default function DutyPickColor({ duty, setDuty, style, setStyle, onChangeColor }: Props) {
-    function handleChangeColor(duty: Duty) {
-        onChangeColor && onChangeColor(duty);
+export default function FormikDutyPickColor({ style, setStyle, onChangeColor }: Props) {
+    const [fieldBackgroundColor, , helpersBackgroundColor] = useField('backgroundColor');
+    const [fieldFontColor, , helpersFontColor] = useField('fontColor');
+
+    function handleChangeColor() {
+        onChangeColor && onChangeColor();
     }
 
     function handleInputColor(event: ChangeEvent<HTMLInputElement>) {
@@ -25,17 +26,17 @@ export default function DutyPickColor({ duty, setDuty, style, setStyle, onChange
 
     function handleClickColor(property: string, color: string) {
         updateColor(property, color);
-        handleChangeColor({ ...duty, [property]: color });
+        handleChangeColor();
     }
 
     function updateColor(property: string, value: string) {
-        setDuty({ ...duty, [property]: value });
-
         switch (property) {
             case 'fontColor':
+                helpersFontColor.setValue(value);
                 setStyle({ ...style, 'color': value, 'borderColor': value });
                 break;
             default:
+                helpersBackgroundColor.setValue(value);
                 setStyle({ ...style, [property]: value });
         }
     }
@@ -48,12 +49,11 @@ export default function DutyPickColor({ duty, setDuty, style, setStyle, onChange
                     onClickColor={(color) => handleClickColor('backgroundColor', color)}
                 />
                 <Form.Input
+                    {...fieldBackgroundColor}
                     type="color"
                     className="duty__input-color"
-                    name="backgroundColor"
-                    value={duty.backgroundColor}
                     onInput={handleInputColor}
-                    onBlur={() => handleChangeColor(duty)}
+                    onBlur={handleChangeColor}
                 />
             </Form.Field>
             <Form.Field>
@@ -62,12 +62,11 @@ export default function DutyPickColor({ duty, setDuty, style, setStyle, onChange
                     onClickColor={(color) => handleClickColor('fontColor', color)}
                 />
                 <Form.Input
+                    {...fieldFontColor}
                     type="color"
                     className="duty__input-color"
-                    name="fontColor"
-                    value={duty.fontColor}
                     onInput={handleInputColor}
-                    onBlur={() => handleChangeColor(duty)}
+                    onBlur={handleChangeColor}
                 />
             </Form.Field>
         </>
