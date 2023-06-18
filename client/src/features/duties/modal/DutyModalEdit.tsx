@@ -1,29 +1,28 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Form, Modal } from 'semantic-ui-react';
+import { Button, Modal } from 'semantic-ui-react';
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
+import FormikInput from '../../../components/FormikInput';
+import FormikTextArea from '../../../components/FormikTextArea';
 
 export default observer(function DutyModalEdit() {
     const { dutyStore } = useStore();
-    const { getIsLoading, selectedDuty, editDuty, editMode, closeEditMode } = dutyStore;
+    const { selectedDuty, editDuty, editMode, closeEditMode } = dutyStore;
 
     const [duty, setDuty] = useState<Duty | undefined>(selectedDuty);
+
+    const validationSchema = Yup.object({
+        title: Yup.string().required('The task title is required'),
+        description: Yup.string().required('The task description is required')
+    });
 
     useEffect(() => {
         setDuty(selectedDuty);
     }, [selectedDuty]);
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        if (!duty) {
-            return;
-        }
-
-        const { name, value } = event.target;
-
-        setDuty({ ...duty, [name]: value });
-    }
 
     if (!duty) {
         return null;
@@ -36,45 +35,48 @@ export default observer(function DutyModalEdit() {
             onClose={() => closeEditMode()}
         >
             <Modal.Header>Edit task</Modal.Header>
-            <Modal.Content>
-                <Form>
-                    <Form.Field>
-                        <Form.Input
-                            label="Title"
-                            name="title"
-                            placeholder="Title"
-                            value={duty.title}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <Form.TextArea
-                            style={{ minHeight: 100 }}
-                            label="Description"
-                            name="description"
-                            placeholder="Description"
-                            value={duty.description}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Field>
-                </Form>
-            </Modal.Content>
-            <Modal.Actions>
-                <Button
-                    negative
-                    onClick={() => closeEditMode()}
-                >
-                    Cancel
-                </Button>
-                <Button
-                    positive
-                    loading={getIsLoading(duty.id)}
-                    disabled={getIsLoading(duty.id)}
-                    onClick={() => editDuty(duty)}
-                >
-                    Update
-                </Button>
-            </Modal.Actions>
+            <Formik
+                initialValues={duty}
+                validationSchema={validationSchema}
+                enableReinitialize
+                onSubmit={editDuty}
+            >
+                {({ handleSubmit, submitForm, isSubmitting, isValid, dirty }) => (
+                    <>
+                        <Modal.Content>
+                            <Form className="ui form" onSubmit={handleSubmit}>
+                                <FormikInput
+                                    name="title"
+                                    label="Title"
+                                    placeholder="Title"
+                                />
+                                <FormikTextArea
+                                    name="description"
+                                    label="Description"
+                                    placeholder="Description"
+                                    style={{ minHeight: 100 }}
+                                />
+                            </Form>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button
+                                negative
+                                onClick={() => closeEditMode()}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                positive
+                                loading={isSubmitting}
+                                disabled={isSubmitting || !isValid || !dirty}
+                                onClick={submitForm}
+                            >
+                                Update
+                            </Button>
+                        </Modal.Actions>
+                    </>
+                )}
+            </Formik>
         </Modal>
     );
 });

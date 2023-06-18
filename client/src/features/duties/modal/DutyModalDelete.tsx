@@ -1,32 +1,23 @@
-import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { format } from 'date-fns';
 
 import { useStore } from '../../../app/stores/store';
-import { initialStyle, Style } from './DutyModalCreate';
+import { Style } from './DutyModalCreate';
 
 export default observer(function DutyModalDelete() {
     const { dutyStore } = useStore();
     const { getIsLoading, selectedDuty, deleteDuty, deleteMode, closeDeleteMode } = dutyStore;
 
-    const [style, setStyle] = useState<Style>(initialStyle);
-
-    useEffect(() => {
-        if (!selectedDuty) {
-            return;
-        }
-
-        setStyle({
-            color: selectedDuty.fontColor,
-            backgroundColor: selectedDuty.backgroundColor,
-            borderColor: selectedDuty.fontColor
-        });
-    }, [selectedDuty]);
-
     if (!selectedDuty) {
         return null;
     }
+
+    const style: Style = {
+        color: selectedDuty.fontColor,
+        backgroundColor: selectedDuty.backgroundColor,
+        borderColor: selectedDuty.fontColor
+    };
 
     return (
         <Modal
