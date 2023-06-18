@@ -35,12 +35,12 @@ public class ExceptionMiddleware
                 ? new AppException(context.Response.StatusCode, ex.Message, ex.StackTrace)
                 : new AppException(context.Response.StatusCode, "Internal Server Error");
 
-            var options = new JsonSerializerOptions
+            JsonSerializerOptions options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            var json = JsonSerializer.Serialize(response, options);
+            string json = JsonSerializer.Serialize(response, options);
 
             await context.Response.WriteAsync(json);
         }
