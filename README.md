@@ -1,6 +1,19 @@
 # Multi-project of Oleksandr Tsvik
 
 
+## Install dependencies for the client
+```sh
+cd client
+npm install
+```
+
+## Install dependencies for the server
+```sh
+cd server
+dotnet restore
+dotnet build
+```
+
 ## Create EF Migrations
 ```sh
 cd server
