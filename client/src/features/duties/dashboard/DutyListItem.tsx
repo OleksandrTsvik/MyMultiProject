@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
-import { Style } from '../modal/DutyModalCreate';
+import { Style } from '../modals/DutyModalCreate';
 import FormikDutyPickColor from './FormikDutyPickColor';
 
 interface Props {

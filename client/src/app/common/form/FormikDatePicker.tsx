@@ -1,14 +1,15 @@
 import { CSSProperties } from 'react';
 import { useField } from 'formik';
-import { Form, Label, Select, SelectProps } from 'semantic-ui-react';
+import { Form, Label } from 'semantic-ui-react';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 
-interface Props extends SelectProps {
+interface Props extends Partial<ReactDatePickerProps> {
     name: string;
     label?: string;
     labelStyle?: CSSProperties;
 }
 
-export default function FormikSelect(
+export default function FormikDatePicker(
     {
         name,
         label,
@@ -21,15 +22,13 @@ export default function FormikSelect(
     return (
         <Form.Field error={meta.touched && !!meta.error}>
             {label && <label style={labelStyle}>{label}</label>}
-            <Select
+            <DatePicker
                 {...props}
                 {...field}
-                value={field.value || null}
-                onChange={(event, data) => helpers.setValue(data.value)}
-                onBlur={() => helpers.setTouched(true)}
-                error={!!meta.error}
+                selected={field.value ? new Date(field.value) : null}
+                onChange={(value) => helpers.setValue(value)}
             />
-            {meta.error && <Label basic pointing color="red" content={meta.error} />}
+            {meta.touched && meta.error && <Label basic pointing color="red" content={meta.error} />}
         </Form.Field>
     );
 }

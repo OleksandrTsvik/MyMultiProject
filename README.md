@@ -20,5 +20,6 @@ npm start
 ```
 
 ## What's Included
-1. Task Manager
-2. Language and keyboard translator
+1. Login and registration
+2. Task Manager
+3. Language and keyboard translator

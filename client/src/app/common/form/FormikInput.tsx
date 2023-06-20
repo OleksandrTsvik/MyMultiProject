@@ -24,7 +24,7 @@ export default function FormikInput(
             <Form.Input
                 {...props}
                 {...field}
-                error={meta.error}
+                error={meta.touched ? meta.error : null}
             />
         </Form.Field>
     );

@@ -3,7 +3,7 @@ import { Button, Container, Header, Segment } from 'semantic-ui-react';
 import axios from 'axios';
 
 import { baseUrl } from '../../app/api/agent';
-import ValidationError from './ValidationError';
+import ValidationErrors from './ValidationErrors';
 
 export default function TestErrorsPage() {
     const [errors, setErrors] = useState<string[] | null>(null);
@@ -69,7 +69,7 @@ export default function TestErrorsPage() {
                     <Button onClick={handleBadGuid} content="Bad Guid" basic primary />
                 </Button.Group>
             </Segment>
-            {errors && <ValidationError errors={errors} />}
+            {errors && <ValidationErrors errors={errors} title="Validation Error Array" />}
         </Container>
     )
 }

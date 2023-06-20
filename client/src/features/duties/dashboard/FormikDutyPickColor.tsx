@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch } from 'react';
 import { Form } from 'semantic-ui-react';
 import { useField } from 'formik';
 
-import { Style } from '../modal/DutyModalCreate';
+import { Style } from '../modals/DutyModalCreate';
 import PopularColors from '../../../components/PopularColors';
 
 interface Props {

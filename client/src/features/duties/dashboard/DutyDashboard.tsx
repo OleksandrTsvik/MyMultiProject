@@ -3,19 +3,27 @@ import { observer } from 'mobx-react-lite';
 import { Segment } from 'semantic-ui-react';
 
 import { useStore } from '../../../app/stores/store';
-import DutyModalCreate from '../modal/DutyModalCreate';
-import DutyModalDelete from '../modal/DutyModalDelete';
-import DutyModalEdit from '../modal/DutyModalEdit';
+import Loading from '../../../components/Loading';
+import DutyModalCreate from '../modals/DutyModalCreate';
+import DutyModalDelete from '../modals/DutyModalDelete';
+import DutyModalEdit from '../modals/DutyModalEdit';
 import DutyList from './DutyList';
 import DutyCreate from './DutyCreate';
 
 export default observer(function DutyDashboard() {
     const { dutyStore } = useStore();
     const {
+        duties, loadDuties, loadingInitial,
         dutiesCompletedSortByDateCompletion,
         dutiesNotCompletedSortByPosition,
         countCompleted, setChangeColorMode
     } = dutyStore;
+
+    useEffect(() => {
+        if (duties.size === 0) {
+            loadDuties();
+        }
+    }, [duties.size, loadDuties]);
 
     useEffect(() => {
         function handleCloseChangeColorMode(event: MouseEvent) {
@@ -32,6 +40,10 @@ export default observer(function DutyDashboard() {
             document.removeEventListener('click', handleCloseChangeColorMode)
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    if (loadingInitial) {
+        return <Loading content="Loading tasks..." />;
+    }
 
     return (
         <>

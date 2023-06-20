@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
-import FormikInput from '../../../components/FormikInput';
-import FormikTextArea from '../../../components/FormikTextArea';
+import FormikInput from '../../../app/common/form/FormikInput';
+import FormikTextArea from '../../../app/common/form/FormikTextArea';
 
 export default observer(function DutyModalEdit() {
     const { dutyStore } = useStore();

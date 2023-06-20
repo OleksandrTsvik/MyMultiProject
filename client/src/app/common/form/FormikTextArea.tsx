@@ -24,7 +24,7 @@ export default function FormikTextArea(
             <Form.TextArea
                 {...props}
                 {...field}
-                error={meta.error}
+                error={meta.touched ? meta.error : null}
             />
         </Form.Field>
     );

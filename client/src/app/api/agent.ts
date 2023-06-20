@@ -1,14 +1,28 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 
 import { store } from '../stores/store';
 import { router } from '../router/Routes';
 import { Duty } from '../models/duty';
+import { User, UserLogin, UserRegister } from '../models/user';
 import sleep from '../utils/sleep';
 
 export const baseUrl = 'http://localhost:5000/api';
 
 axios.defaults.baseURL = baseUrl;
+
+axios.interceptors.request.use(
+    (config) => {
+        const token = store.commonStore.token;
+
+        if (token && config.headers) {
+            (config.headers as AxiosHeaders)
+                .set('Authorization', `Bearer ${token}`);
+        }
+
+        return config;
+    }
+);
 
 axios.interceptors.response.use(
     async (response) => {
@@ -35,6 +49,7 @@ axios.interceptors.response.use(
                     throw modalStateErrors.flat();
                 } else {
                     toast.error(data);
+                    throw data;
                 }
 
                 break;
@@ -77,8 +92,15 @@ const Duties = {
     updateList: (duties: Duty[]) => axios.put<void>('/duties/list', duties)
 };
 
+const Account = {
+    current: () => requests.get<User>('/account'),
+    login: (user: UserLogin) => requests.post<User>('/account/login', user),
+    register: (user: UserRegister) => requests.post<User>('/account/register', user)
+};
+
 const agent = {
-    Duties
+    Duties,
+    Account
 };
 
 export default agent;

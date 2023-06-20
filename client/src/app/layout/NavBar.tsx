@@ -4,10 +4,15 @@ import { Container, Dropdown, Icon, Menu } from 'semantic-ui-react';
 
 import { useStore } from '../stores/store';
 import IconPill from '../../components/IconPill';
+import LoginForm from '../../features/users/LoginForm';
+import RegisterForm from '../../features/users/RegisterForm';
 
 export default observer(function NavBar() {
-    const { dutyStore } = useStore();
+    const { dutyStore, userStore, modalStore } = useStore();
+
     const { countNotCompleted } = dutyStore;
+    const { isLoggedIn, user, logout } = userStore;
+    const { openModal } = modalStore;
 
     return (
         <Menu
@@ -79,6 +84,50 @@ export default observer(function NavBar() {
                     name="404"
                     className="justify-content-center"
                 />
+                <Menu.Menu position="right">
+                    {isLoggedIn
+                        ? <Dropdown
+                            item
+                            icon={
+                                <>
+                                    <Icon name="user circle" />
+                                    {user?.userName}
+                                    <Icon name="dropdown" />
+                                </>
+                            }
+                            className="justify-content-center"
+                        >
+                            <Dropdown.Menu>
+                                <Dropdown.Item
+                                    as={NavLink} to={`/profile/${user?.userName}`}
+                                    icon="user outline"
+                                    text="My Profile"
+                                />
+                                <Dropdown.Item
+                                    onClick={logout}
+                                    icon="power"
+                                    text="Logout"
+                                />
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        : <>
+                            <Menu.Item
+                                onClick={() => openModal(<LoginForm />, { size: 'mini' })}
+                                className="justify-content-center"
+                            >
+                                <Icon name="sign in" />
+                                Login
+                            </Menu.Item>
+                            <Menu.Item
+                                onClick={() => openModal(<RegisterForm />, { size: 'mini' })}
+                                className="justify-content-center"
+                            >
+                                <Icon name="user plus" />
+                                Register
+                            </Menu.Item>
+                        </>
+                    }
+                </Menu.Menu>
             </Container>
         </Menu>
     );

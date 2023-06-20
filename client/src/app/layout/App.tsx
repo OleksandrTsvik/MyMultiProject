@@ -4,32 +4,36 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { useStore } from '../stores/store';
+import ModalContainer from '../common/modals/ModalContainer';
 import Loading from '../../components/Loading';
 import NavBar from './NavBar';
 import Footer from './Footer';
 
 export default observer(function App() {
-  const { dutyStore } = useStore();
-  const { duties, loadDuties, loadingInitial } = dutyStore;
+    const { commonStore, userStore } = useStore();
 
-  useEffect(() => {
-    if (duties.size === 0) {
-      loadDuties();
+    useEffect(() => {
+        if (commonStore.token) {
+            userStore.getUser()
+                .finally(() => commonStore.setAppLoaded());
+        } else {
+            commonStore.setAppLoaded();
+        }
+    }, [commonStore, userStore]);
+
+    if (!commonStore.appLoaded) {
+        return <Loading content="Loading app..." />;
     }
-  }, [duties.size, loadDuties]);
 
-  if (loadingInitial) {
-    return <Loading content="Loading tasks..." />;
-  }
-
-  return (
-    <>
-      <ToastContainer position="bottom-right" theme="colored" />
-      <NavBar />
-      <main className="wrapper">
-        <Outlet />
-      </main>
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <NavBar />
+            <main className="wrapper">
+                <Outlet />
+            </main>
+            <Footer />
+            <ModalContainer />
+            <ToastContainer position="bottom-right" theme="colored" />
+        </>
+    );
 });
