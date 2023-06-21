@@ -7,7 +7,7 @@ interface Props extends Omit<MessageProps, 'icon'>, Omit<LabelProps, 'attached'>
 }
 
 export default function ValidationErrors({ errors, title, titleClassName, ...props }: Props) {
-    if (!errors || (!Array.isArray(errors) && typeof errors !== 'string')) {
+    if (!errors) {
         return null;
     }
 
@@ -15,7 +15,14 @@ export default function ValidationErrors({ errors, title, titleClassName, ...pro
         return null;
     }
 
-    if (!Array.isArray(errors) || (Array.isArray(errors) && errors.length === 1)) {
+    if (
+        (!Array.isArray(errors) && typeof errors !== 'string') ||
+        (Array.isArray(errors) && errors.some((error) => typeof error !== 'string'))
+    ) {
+        errors = "An error occurred, please check the data you entered";
+    }
+
+    if (typeof errors === 'string' || (Array.isArray(errors) && errors.length === 1)) {
         return (
             <>
                 {title && <Header color="red" content={title} className={titleClassName} />}

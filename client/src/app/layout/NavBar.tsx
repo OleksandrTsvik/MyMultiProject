@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { NavLink } from 'react-router-dom';
-import { Container, Dropdown, Icon, Menu } from 'semantic-ui-react';
+import { Container, Dropdown, Icon, Menu, Popup } from 'semantic-ui-react';
 
 import { useStore } from '../stores/store';
 import IconPill from '../../components/IconPill';
@@ -91,7 +91,13 @@ export default observer(function NavBar() {
                             icon={
                                 <>
                                     <Icon name="user circle" />
-                                    {user?.userName}
+                                    <Popup
+                                        content={<span className="text-break">{user?.userName}</span>}
+                                        position="bottom right"
+                                        trigger={
+                                            <span className="truncate-text menu__username">{user?.userName}</span>
+                                        }
+                                    />
                                     <Icon name="dropdown" />
                                 </>
                             }

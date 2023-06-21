@@ -38,15 +38,15 @@ axios.interceptors.response.use(
                 if (errors && config.method === 'get' && errors.hasOwnProperty('id')) {
                     router.navigate('not-found');
                 } else if (errors) {
-                    const modalStateErrors = [];
+                    const arrayErrors = [];
 
                     for (const key in errors) {
                         if (errors[key]) {
-                            modalStateErrors.push(errors[key]);
+                            arrayErrors.push(errors[key]);
                         }
                     }
 
-                    throw modalStateErrors.flat();
+                    throw arrayErrors.flat();
                 } else {
                     toast.error(data);
                     throw data;

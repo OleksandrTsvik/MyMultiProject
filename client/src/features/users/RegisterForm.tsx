@@ -24,9 +24,11 @@ export default observer(function RegisterForm() {
     };
 
     const validationSchema = Yup.object({
-        userName: Yup.string().required('The username is required'),
+        userName: Yup.string().required('The username is required')
+            .matches(/^\S{2,20}$/, 'Username must contain between 2 and 20 characters and no spaces'),
         email: Yup.string().email().required('The email is required'),
         password: Yup.string().required('The password is required')
+            .min(6, 'The password must contain at least 6 characters')
     });
 
     function handleSubmitForm(

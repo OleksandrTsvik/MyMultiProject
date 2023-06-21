@@ -54,6 +54,8 @@ export default class UserStore {
 
     logout = () => {
         store.commonStore.setToken(null);
+        store.dutyStore.resetDutyStore();
+
         this.user = null;
 
         router.navigate('/');

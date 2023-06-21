@@ -285,6 +285,15 @@ export default class DutyStore {
         this.cancelSelectedDuty();
     }
 
+    resetDutyStore = () => {
+        this.duties = new Map<string, Duty>();
+        this.selectedDuty = undefined;
+        this.selectedDutyForChangeColor = undefined;
+        this.changeColorMode = false;
+        this.loadingInitial = true;
+        this.arrLoadingDutiesId = [];
+    }
+
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
