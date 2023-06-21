@@ -148,7 +148,12 @@ export default class DutyStore {
             const positions = this.dutiesNotCompleted
                 .map(duty => duty.position);
 
-            tempDuty.position = Math.max(...positions) + 1;
+            if (positions.length > 0) {
+                tempDuty.position = Math.max(...positions) + 1;
+            } else {
+                tempDuty.position = 0;
+            }
+
             tempDuty.dateCompletion = null;
         }
 

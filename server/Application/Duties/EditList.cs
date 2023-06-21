@@ -1,8 +1,10 @@
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Duties;
@@ -25,25 +27,33 @@ public class EditList
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly DataContext _context;
+        private readonly IUserAccessor _userAccessor;
         private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IMapper mapper)
+        public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
         {
-            _mapper = mapper;
             _context = context;
+            _userAccessor = userAccessor;
+            _mapper = mapper;
         }
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             List<Guid> ids = request.Duties.Select(d => d.Id).ToList();
 
-            List<Duty> duties = _context.Duties
-                .Where(duty => ids.Contains(duty.Id))
-                .ToList();
+            AppUser user = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+
+            List<Duty> duties = await _context.Duties
+                .Where(x => x.AppUser.Id == user.Id && ids.Contains(x.Id))
+                .ToListAsync();
 
             duties.ForEach((duty) =>
             {
                 Duty updatedDuty = request.Duties.FirstOrDefault(d => d.Id == duty.Id);
+
+                updatedDuty.AppUserId = user.Id;
+                updatedDuty.AppUser = user;
 
                 if (updatedDuty != null)
                 {
@@ -51,9 +61,9 @@ public class EditList
                 }
             });
 
-            int result = await _context.SaveChangesAsync();
+            bool result = await _context.SaveChangesAsync() > 0;
 
-            if (result <= 0)
+            if (!result)
             {
                 return Result<Unit>.Failure("Failed to update duties");
             }

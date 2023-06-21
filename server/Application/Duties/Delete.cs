@@ -32,9 +32,9 @@ public class Delete
 
             _context.Duties.Remove(duty);
 
-            int result = await _context.SaveChangesAsync();
+            bool result = await _context.SaveChangesAsync() > 0;
 
-            if (result <= 0)
+            if (!result)
             {
                 return Result<Unit>.Failure("Failed to delete the duty");
             }

@@ -1,7 +1,9 @@
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Duties;
@@ -24,19 +26,27 @@ public class Create
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly DataContext _context;
+        private readonly IUserAccessor _userAccessor;
 
-        public Handler(DataContext context)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
+            _userAccessor = userAccessor;
         }
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
+            AppUser user = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+
+            request.Duty.AppUserId = user.Id;
+            request.Duty.AppUser = user;
+
             _context.Duties.Add(request.Duty);
 
-            int result = await _context.SaveChangesAsync();
+            bool result = await _context.SaveChangesAsync() > 0;
 
-            if (result <= 0)
+            if (!result)
             {
                 return Result<Unit>.Failure("Failed to create duty");
             }

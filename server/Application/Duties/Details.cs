@@ -1,31 +1,37 @@
 using Application.Core;
-using Domain;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Duties;
 
 public class Details
 {
-    public class Query : IRequest<Result<Duty>>
+    public class Query : IRequest<Result<DutyDto>>
     {
         public Guid Id { get; set; }
     }
 
-    public class Handler : IRequestHandler<Query, Result<Duty>>
+    public class Handler : IRequestHandler<Query, Result<DutyDto>>
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public Handler(DataContext context)
+        public Handler(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<Result<Duty>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<DutyDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            Duty duty = await _context.Duties.FindAsync(request.Id);
+            DutyDto duty = await _context.Duties
+                .ProjectTo<DutyDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(x => x.Id == request.Id);
 
-            return Result<Duty>.Success(duty);
+            return Result<DutyDto>.Success(duty);
         }
     }
 }

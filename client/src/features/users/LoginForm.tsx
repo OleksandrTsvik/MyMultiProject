@@ -16,7 +16,7 @@ export default observer(function LoginForm() {
     const { login } = userStore;
 
     const initialValues: Credentials = {
-        email: 'bob@test.com',
+        email: 'oleksandr.zwick@gmail.com',
         password: 'Pa$$w0rd',
         error: null
     };

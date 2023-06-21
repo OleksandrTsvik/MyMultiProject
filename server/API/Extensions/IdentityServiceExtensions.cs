@@ -1,7 +1,9 @@
 using System.Text;
 using API.Services;
 using Domain;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 
@@ -34,6 +36,15 @@ public static class IdentityServiceExtensions
                     ValidateAudience = false
                 };
             });
+
+        services.AddAuthorization(option =>
+        {
+            option.AddPolicy("IsOwnerDuty", policy =>
+            {
+                policy.Requirements.Add(new IsOwnerDutyRequirement());
+            });
+        });
+        services.AddTransient<IAuthorizationHandler, IsOwnerDutyRequirementHandler>();
 
         services.AddScoped<TokenService>();
 

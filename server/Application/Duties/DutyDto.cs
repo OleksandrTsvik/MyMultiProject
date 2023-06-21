@@ -1,10 +1,7 @@
-﻿namespace Domain;
+namespace Application.Duties;
 
-public class Duty
+public class DutyDto
 {
-    public string AppUserId { get; set; }
-    public AppUser AppUser { get; set; }
-
     public Guid Id { get; set; }
     public int Position { get; set; }
     public string Title { get; set; }
