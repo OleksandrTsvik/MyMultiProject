@@ -29,22 +29,29 @@ export default function TranslateKeyboardPage() {
     }
 
     function handleClickMenuItem(inputType: 'input' | 'output', keyboardLanguage: KeyboardLanguage) {
+        let selectedLang = {
+            ...selectedLanguages,
+            [inputType]: keyboardLanguage
+        };
+
         if (inputType === 'input' && selectedLanguages.output === keyboardLanguage) {
-            setSelectedLanguages((state) => ({
+            selectedLang = {
                 input: keyboardLanguage,
-                output: state.input
-            }));
+                output: selectedLanguages.input
+            };
         } else if (inputType === 'output' && selectedLanguages.input === keyboardLanguage) {
-            setSelectedLanguages((state) => ({
-                input: state.output,
+            selectedLang = {
+                input: selectedLanguages.output,
                 output: keyboardLanguage
-            }));
-        } else {
-            setSelectedLanguages((state) => ({
-                ...state,
-                [inputType]: keyboardLanguage
-            }));
+            };
         }
+
+        setSelectedLanguages(selectedLang);
+
+        setText((state) => ({
+            input: state.input,
+            output: translateKeyboard(state.input, selectedLang.input, selectedLang.output)
+        }));
     }
 
     function handleClickSwapLanguage() {
@@ -52,7 +59,7 @@ export default function TranslateKeyboardPage() {
             input: state.output,
             output: state.input
         }));
-        
+
         setText((state) => ({
             input: state.output,
             output: translateKeyboard(state.input, selectedLanguages.output, selectedLanguages.input)
