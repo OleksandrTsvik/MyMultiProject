@@ -3,12 +3,12 @@ import { observer } from 'mobx-react-lite';
 import { Segment } from 'semantic-ui-react';
 
 import { useStore } from '../../../app/stores/store';
-import Loading from '../../../components/Loading';
 import DutyModalCreate from '../modals/DutyModalCreate';
 import DutyModalDelete from '../modals/DutyModalDelete';
 import DutyModalEdit from '../modals/DutyModalEdit';
 import DutyList from './DutyList';
 import DutyCreate from './DutyCreate';
+import DutyLoading from './DutyLoading';
 
 export default observer(function DutyDashboard() {
     const { dutyStore } = useStore();
@@ -42,7 +42,7 @@ export default observer(function DutyDashboard() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (loadingInitial) {
-        return <Loading content="Loading tasks..." />;
+        return <DutyLoading />;
     }
 
     return (

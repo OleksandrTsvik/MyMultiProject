@@ -21,6 +21,7 @@ export default class UserStore {
             const user = await agent.Account.login(credentials);
 
             store.commonStore.setToken(user.token);
+            await store.dutyStore.loadDuties();
 
             runInAction(() => {
                 user.registrationDate = new Date(user.registrationDate);
@@ -64,6 +65,8 @@ export default class UserStore {
     getUser = async () => {
         try {
             const user = await agent.Account.current();
+
+            await store.dutyStore.loadDuties();
 
             runInAction(() => {
                 this.user = user;
