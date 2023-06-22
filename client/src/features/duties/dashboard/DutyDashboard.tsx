@@ -16,14 +16,21 @@ export default observer(function DutyDashboard() {
         duties, loadDuties, loadingInitial,
         dutiesCompletedSortByDateCompletion,
         dutiesNotCompletedSortByPosition,
-        countCompleted, setChangeColorMode
+        countCompleted, setChangeColorMode,
+        setLoadingInitial
     } = dutyStore;
 
     useEffect(() => {
         if (duties.size === 0) {
             loadDuties();
         }
-    }, [duties.size, loadDuties]);
+
+        return () => {
+            if (duties.size === 0) {
+                setLoadingInitial(true);
+            }
+        };
+    }, [duties.size, loadDuties, setLoadingInitial]);
 
     useEffect(() => {
         function handleCloseChangeColorMode(event: MouseEvent) {
@@ -37,7 +44,7 @@ export default observer(function DutyDashboard() {
         document.addEventListener('click', handleCloseChangeColorMode);
 
         return () => {
-            document.removeEventListener('click', handleCloseChangeColorMode)
+            document.removeEventListener('click', handleCloseChangeColorMode);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
