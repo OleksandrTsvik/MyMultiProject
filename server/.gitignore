@@ -1,9 +1,12 @@
-#SQLite Database
+# App Settings
+appsettings.json
+
+# SQLite Database
 mymultiproject.db
 mymultiproject.db-shm
 mymultiproject.db-wal
 
-#EF Migrations
+# EF Migrations
 Persistence/Migrations
 
 ## Ignore Visual Studio temporary files, build results, and
