@@ -7,6 +7,7 @@ namespace API.Controllers;
 
 public class DutiesController : BaseApiController
 {
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetDuties()
     {
@@ -20,6 +21,7 @@ public class DutiesController : BaseApiController
         return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateDuty(Duty duty)
     {
@@ -42,6 +44,7 @@ public class DutiesController : BaseApiController
         return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
     }
 
+    [Authorize]
     [HttpPut("list")]
     public async Task<IActionResult> EditDuties(List<Duty> duties)
     {

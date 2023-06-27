@@ -1,45 +1,34 @@
 using Application.Core;
 using Application.Interfaces;
-using AutoMapper;
 using Domain;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Duties;
+namespace Application.Photos;
 
-public class Edit
+public class SetMain
 {
     public class Command : IRequest<Result<Unit>>
     {
-        public Duty Duty { get; set; }
-    }
-
-    public class CommandValidator : AbstractValidator<Command>
-    {
-        public CommandValidator()
-        {
-            RuleFor(x => x.Duty).SetValidator(new DutyValidator());
-        }
+        public string Id { get; set; }
     }
 
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
             _userAccessor = userAccessor;
-            _mapper = mapper;
         }
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             AppUser user = await _context.Users
+                .Include(x => x.Photos)
                 .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
 
             if (user == null)
@@ -47,23 +36,27 @@ public class Edit
                 return null;
             }
 
-            request.Duty.AppUserId = user.Id;
-            request.Duty.AppUser = user;
+            Photo photo = user.Photos.FirstOrDefault(x => x.Id == request.Id);
 
-            Duty duty = await _context.Duties.FindAsync(request.Duty.Id);
-
-            if (duty == null)
+            if (photo == null)
             {
                 return null;
             }
 
-            _mapper.Map(request.Duty, duty);
+            Photo currentMainPhoto = user.Photos.FirstOrDefault(x => x.IsMain);
+
+            if (currentMainPhoto != null)
+            {
+                currentMainPhoto.IsMain = false;
+            }
+
+            photo.IsMain = true;
 
             bool result = await _context.SaveChangesAsync() > 0;
 
             if (!result)
             {
-                return Result<Unit>.Failure("Failed to update duty");
+                return Result<Unit>.Failure("Problem setting main photo");
             }
 
             return Result<Unit>.Success(Unit.Value);

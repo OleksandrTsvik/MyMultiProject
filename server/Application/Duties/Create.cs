@@ -39,6 +39,11 @@ public class Create
             AppUser user = await _context.Users
                 .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
 
+            if (user == null)
+            {
+                return null;
+            }
+
             request.Duty.AppUserId = user.Id;
             request.Duty.AppUser = user;
 

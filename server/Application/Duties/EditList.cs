@@ -39,10 +39,15 @@ public class EditList
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            List<Guid> ids = request.Duties.Select(d => d.Id).ToList();
-
             AppUser user = await _context.Users
                 .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            List<Guid> ids = request.Duties.Select(d => d.Id).ToList();
 
             List<Duty> duties = await _context.Duties
                 .Where(x => x.AppUser.Id == user.Id && ids.Contains(x.Id))
