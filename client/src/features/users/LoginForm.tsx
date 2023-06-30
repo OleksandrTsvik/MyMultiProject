@@ -65,6 +65,7 @@ export default observer(function LoginForm() {
                         positive
                         fluid
                         loading={isSubmitting}
+                        disabled={isSubmitting}
                     >
                         Login
                     </Button>

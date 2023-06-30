@@ -7,6 +7,7 @@ import NotFoundPage from '../../features/errors/NotFoundPage';
 import TranslateKeyboardPage from '../../features/translate/TranslateKeyboardPage';
 import TestErrorsPage from '../../features/errors/TestErrorPage';
 import ServerErrorPage from '../../features/errors/ServerErrorPage';
+import ProfilePage from '../../features/profiles/ProfilePage';
 
 export const routes: RouteObject[] = [
     {
@@ -22,6 +23,7 @@ export const routes: RouteObject[] = [
                     { path: 'keyboard', element: <TranslateKeyboardPage /> }
                 ]
             },
+            { path: 'profiles/:username', element: <ProfilePage /> },
             { path: 'games', element: <>Games</> },
             { path: 'errors', element: <TestErrorsPage /> },
             { path: 'server-error', element: <ServerErrorPage /> },

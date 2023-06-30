@@ -1,9 +1,9 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import { User, UserLogin, UserRegister } from '../models/user';
-import { store } from './store';
-import agent from '../api/agent';
 import { router } from '../router/Routes';
+import agent from '../api/agent';
+import { store } from './store';
 
 export default class UserStore {
     user: User | null = null;
@@ -73,6 +73,12 @@ export default class UserStore {
             });
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    setImage = (image: string | undefined) => {
+        if (this.user) {
+            this.user.image = image;
         }
     }
 }

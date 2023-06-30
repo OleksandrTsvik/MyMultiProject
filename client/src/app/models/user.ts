@@ -2,6 +2,7 @@ export interface User {
     userName: string;
     email: string;
     registrationDate: Date;
+    image?: string;
     token: string;
 }
 

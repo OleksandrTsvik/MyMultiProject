@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { NavLink } from 'react-router-dom';
-import { Container, Dropdown, Icon, Menu, Popup } from 'semantic-ui-react';
+import { Container, Dropdown, Icon, Image, Menu, Popup } from 'semantic-ui-react';
 
 import { useStore } from '../stores/store';
 import IconPill from '../../components/IconPill';
@@ -90,7 +90,12 @@ export default observer(function NavBar() {
                             item
                             icon={
                                 <>
-                                    <Icon name="user circle" />
+                                    {/* <Icon name="user circle" /> */}
+                                    <Image
+                                        avatar
+                                        className="me-0 mb-2"
+                                        src={user?.image || '/assets/user.png'}
+                                    />
                                     <Popup
                                         content={<span className="text-break">{user?.userName}</span>}
                                         position="bottom right"
@@ -105,7 +110,7 @@ export default observer(function NavBar() {
                         >
                             <Dropdown.Menu>
                                 <Dropdown.Item
-                                    as={NavLink} to={`/profile/${user?.userName}`}
+                                    as={NavLink} to={`/profiles/${user?.userName}`}
                                     icon="user outline"
                                     text="My Profile"
                                 />

@@ -51,6 +51,8 @@ npm start
 
 ## *References*
 - [Complete guide to building an app with .Net Core and React](https://www.udemy.com/course/complete-guide-to-building-an-app-with-net-core-and-react/)
+- [react-dropzone](https://react-dropzone.js.org/)
+- [react-cropper](https://github.com/react-cropper/react-cropper)
 
 ## What's Included
 1. Login and registration

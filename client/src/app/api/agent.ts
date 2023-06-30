@@ -5,6 +5,7 @@ import { store } from '../stores/store';
 import { router } from '../router/Routes';
 import { Duty } from '../models/duty';
 import { User, UserLogin, UserRegister } from '../models/user';
+import { Photo, Profile } from '../models/profile';
 import sleep from '../utils/sleep';
 
 export const baseUrl = 'http://localhost:5000/api';
@@ -86,10 +87,10 @@ const requests = {
 const Duties = {
     list: () => requests.get<Duty[]>('/duties'),
     details: (id: string) => requests.get<Duty>(`/duties/${id}`),
-    create: (duty: Duty) => axios.post<void>('/duties', duty),
-    update: (duty: Duty) => axios.put<void>(`/duties/${duty.id}`, duty),
-    delete: (id: string) => axios.delete<void>(`/duties/${id}`),
-    updateList: (duties: Duty[]) => axios.put<void>('/duties/list', duties)
+    create: (duty: Duty) => requests.post<void>('/duties', duty),
+    update: (duty: Duty) => requests.put<void>(`/duties/${duty.id}`, duty),
+    delete: (id: string) => requests.delete<void>(`/duties/${id}`),
+    updateList: (duties: Duty[]) => requests.put<void>('/duties/list', duties)
 };
 
 const Account = {
@@ -98,9 +99,28 @@ const Account = {
     register: (user: UserRegister) => requests.post<User>('/account/register', user)
 };
 
+const Profiles = {
+    get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+    uploadPhoto: (file: Blob) => {
+        let formData = new FormData();
+        formData.append('File', file);
+
+        return axios
+            .post<Photo>('/photos', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(responseBody);
+    },
+    setMainPhoto: (id: string) => requests.post<void>(`/photos/${id}/setMain`, {}),
+    deletePhoto: (id: string) => requests.delete<void>(`/photos/${id}`)
+};
+
 const agent = {
     Duties,
-    Account
+    Account,
+    Profiles
 };
 
 export default agent;
