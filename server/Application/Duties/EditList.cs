@@ -63,6 +63,7 @@ public class EditList
                 if (updatedDuty != null)
                 {
                     _mapper.Map(updatedDuty, duty);
+                    _context.Entry(duty).State = EntityState.Modified;
                 }
             });
 

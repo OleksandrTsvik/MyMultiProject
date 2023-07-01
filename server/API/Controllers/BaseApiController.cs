@@ -43,6 +43,13 @@ public class BaseApiController : ControllerBase
             return NotFound();
         }
 
+        if (result.ModelKey != null)
+        {
+            ModelState.AddModelError(result.ModelKey, result.Error);
+            
+            return ValidationProblem();
+        }
+
         return BadRequest(result.Error);
     }
 }
