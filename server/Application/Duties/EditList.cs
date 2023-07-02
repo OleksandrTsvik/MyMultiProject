@@ -57,7 +57,6 @@ public class EditList
             {
                 Duty updatedDuty = request.Duties.FirstOrDefault(d => d.Id == duty.Id);
 
-                updatedDuty.AppUserId = user.Id;
                 updatedDuty.AppUser = user;
 
                 if (updatedDuty != null)

@@ -2,9 +2,6 @@
 
 public class Duty
 {
-    public string AppUserId { get; set; }
-    public AppUser AppUser { get; set; }
-
     public Guid Id { get; set; }
     public int Position { get; set; }
     public string Title { get; set; }
@@ -16,4 +13,5 @@ public class Duty
     public string? BackgroundColor { get; set; }
     public string? FontColor { get; set; }
 #nullable disable
+    public AppUser AppUser { get; set; }
 }

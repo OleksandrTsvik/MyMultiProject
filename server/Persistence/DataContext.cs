@@ -20,11 +20,11 @@ public class DataContext : IdentityDbContext<AppUser>
         builder.Entity<Duty>()
             .HasOne(duty => duty.AppUser)
             .WithMany(user => user.Duties)
-            .HasForeignKey(duty => duty.AppUserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Duty>()
-            .Property(duty => duty.AppUserId)
-            .IsRequired();
+        builder.Entity<Photo>()
+            .HasOne(photo => photo.AppUser)
+            .WithMany(user => user.Photos)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -44,7 +44,6 @@ public class Create
                 return null;
             }
 
-            request.Duty.AppUserId = user.Id;
             request.Duty.AppUser = user;
 
             _context.Duties.Add(request.Duty);

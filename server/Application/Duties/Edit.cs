@@ -47,7 +47,6 @@ public class Edit
                 return null;
             }
 
-            request.Duty.AppUserId = user.Id;
             request.Duty.AppUser = user;
 
             Duty duty = await _context.Duties.FindAsync(request.Duty.Id);

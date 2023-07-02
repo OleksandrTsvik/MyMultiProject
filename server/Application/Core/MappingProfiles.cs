@@ -1,4 +1,5 @@
 using Application.Duties;
+using Application.Photos;
 using Application.Profiles;
 using Domain;
 
@@ -10,6 +11,8 @@ public class MappingProfiles : AutoMapper.Profile
     {
         CreateMap<Duty, Duty>();
         CreateMap<Duty, DutyDto>();
+
+        CreateMap<Photo, PhotoDto>();
 
         CreateMap<AppUser, QueryUser>();
 
