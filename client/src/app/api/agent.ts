@@ -5,7 +5,7 @@ import { store } from '../stores/store';
 import { router } from '../router/Routes';
 import { Duty } from '../models/duty';
 import { User, UserLogin, UserRegister } from '../models/user';
-import { Photo, Profile } from '../models/profile';
+import { ListFollowingsPredicate, Photo, Profile } from '../models/profile';
 import sleep from '../utils/sleep';
 
 export const baseUrl = 'http://localhost:5000/api';
@@ -114,7 +114,10 @@ const Profiles = {
             .then(responseBody);
     },
     setMainPhoto: (id: string) => requests.post<void>(`/photos/${id}/setMain`, {}),
-    deletePhoto: (id: string) => requests.delete<void>(`/photos/${id}`)
+    deletePhoto: (id: string) => requests.delete<void>(`/photos/${id}`),
+    updateFollowing: (username: string) => requests.post<void>(`/follow/${username}`, {}),
+    listFollowings: (username: string, predicate: ListFollowingsPredicate) =>
+        requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
 };
 
 const agent = {

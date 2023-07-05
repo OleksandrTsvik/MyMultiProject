@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { Photo, Profile } from '../models/profile';
+import { ListFollowingsPredicate, Photo, Profile } from '../models/profile';
 import agent from '../api/agent';
 import updateItemInArray from '../utils/updateItemInArray';
 import { store } from './store';
@@ -9,9 +9,14 @@ export default class ProfileStore {
     profile: Profile | null = null;
     loadingProfile: boolean = false;
 
+    // Photo
     uploading: boolean = false;
     loadingSetMain: boolean = false;
     loadingDelete: boolean = false;
+
+    followings: Profile[] = [];
+    loadingFollow: boolean = false;
+    loadingFollowings: boolean = true;
 
     constructor() {
         makeAutoObservable(this);
@@ -115,6 +120,78 @@ export default class ProfileStore {
         this.setLoadingDelete(false);
     }
 
+    updateFollowing = async (username: string, following: boolean) => {
+        this.setLoadingFollow(true);
+
+        try {
+            await agent.Profiles.updateFollowing(username);
+
+            runInAction(() => {
+                if (
+                    this.profile && this.profile.userName === username &&
+                    this.profile.userName !== store.userStore.user?.userName
+                ) {
+                    if (following) {
+                        this.profile.followersCount++;
+                    } else {
+                        this.profile.followersCount--;
+                    }
+
+                    this.profile.following = !this.profile.following;
+                }
+
+                if (this.profile && this.profile.userName === store.userStore.user?.userName) {
+                    if (following) {
+                        this.profile.followingCount++;
+                    } else {
+                        this.profile.followingCount--;
+                    }
+                }
+
+                this.followings.forEach((profile) => {
+                    if (profile.userName === username) {
+                        if (profile.following) {
+                            profile.followersCount--;
+                        } else {
+                            profile.followersCount++;
+                        }
+
+                        profile.following = !profile.following;
+                    }
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        this.setLoadingFollow(false);
+    }
+
+    loadFollowings = async (predicate: ListFollowingsPredicate) => {
+        if (!this.profile) {
+            return;
+        }
+
+        this.setLoadingFollowings(true);
+
+        try {
+            let followings = await agent.Profiles.listFollowings(this.profile.userName, predicate);
+
+            runInAction(() => {
+                this.followings = followings;
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        this.setLoadingFollowings(false);
+    }
+
+    resetFollowings = () => {
+        this.followings = [];
+        this.loadingFollowings = true;
+    }
+
     setLoadingProfile = (state: boolean) => {
         this.loadingProfile = state;
     }
@@ -129,5 +206,13 @@ export default class ProfileStore {
 
     setLoadingDelete = (state: boolean) => {
         this.loadingDelete = state;
+    }
+
+    setLoadingFollow = (state: boolean) => {
+        this.loadingFollow = state;
+    }
+
+    setLoadingFollowings = (state: boolean) => {
+        this.loadingFollowings = state;
     }
 }
