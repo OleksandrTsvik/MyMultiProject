@@ -4,6 +4,13 @@
 [![Email Badge](https://cdn.icon-icons.com/icons2/72/PNG/32/email_14410.png)](mailto:oleksandr.zwick@gmail.com)
 
 
+## What's Included
+1. Login and registration
+2. Task Manager
+3. Language and keyboard translator
+4. Uploading images
+5. Followers / Following feature
+
 ## Install dependencies for the client
 ```sh
 cd client
@@ -53,9 +60,3 @@ npm start
 - [Complete guide to building an app with .Net Core and React](https://www.udemy.com/course/complete-guide-to-building-an-app-with-net-core-and-react/)
 - [react-dropzone](https://react-dropzone.js.org/)
 - [react-cropper](https://github.com/react-cropper/react-cropper)
-
-## What's Included
-1. Login and registration
-2. Task Manager
-3. Language and keyboard translator
-4. Uploading images
