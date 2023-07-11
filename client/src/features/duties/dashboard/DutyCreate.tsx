@@ -4,8 +4,10 @@ import { Button, Icon, Label } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 
 export default observer(function DutyCreate() {
-    const { dutyStore } = useStore();
-    const { countNotCompleted, openCreateMode } = dutyStore;
+    const { dutyStore, userStore } = useStore();
+
+    const { openCreateMode } = dutyStore;
+    const { countNotCompletedDuties } = userStore;
 
     return (
         <div className="mb-3 text-end">
@@ -19,7 +21,7 @@ export default observer(function DutyCreate() {
                     Create
                 </Button>
                 <Label basic color="green" pointing="left">
-                    {countNotCompleted}
+                    {countNotCompletedDuties}
                 </Label>
             </Button>
         </div>

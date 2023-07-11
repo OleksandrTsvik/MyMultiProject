@@ -8,10 +8,9 @@ import LoginForm from '../../features/users/LoginForm';
 import RegisterForm from '../../features/users/RegisterForm';
 
 export default observer(function NavBar() {
-    const { dutyStore, userStore, modalStore } = useStore();
+    const { userStore, modalStore } = useStore();
 
-    const { countNotCompleted } = dutyStore;
-    const { isLoggedIn, user, logout } = userStore;
+    const { isLoggedIn, user, logout, countNotCompletedDuties } = userStore;
     const { openModal } = modalStore;
 
     return (
@@ -37,7 +36,7 @@ export default observer(function NavBar() {
                     <IconPill
                         name="tasks"
                         color="teal"
-                        value={countNotCompleted}
+                        value={countNotCompletedDuties}
                     />
                     Tasks
                 </Menu.Item>

@@ -4,6 +4,8 @@ export interface User {
     registrationDate: Date;
     image?: string;
     token: string;
+    countNotCompletedDuties: number;
+    countCompletedDuties: number;
 }
 
 export interface UserLogin {

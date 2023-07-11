@@ -69,7 +69,7 @@ export default function DutyList({ duties, draggable }: Props) {
     }
 
     return (
-        <Grid className="py-2">
+        <Grid className="px-3 pt-2 pb-3">
             {duties.map(duty => (
                 <DutyListItem
                     key={duty.id}

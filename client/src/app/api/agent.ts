@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosHeaders, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 
 import { store } from '../stores/store';
@@ -6,6 +6,7 @@ import { router } from '../router/Routes';
 import { Duty } from '../models/duty';
 import { User, UserLogin, UserRegister } from '../models/user';
 import { ListFollowingsPredicate, Photo, Profile } from '../models/profile';
+import { PaginatedResult } from '../models/pagination';
 import sleep from '../utils/sleep';
 
 export const baseUrl = 'http://localhost:5000/api';
@@ -28,6 +29,15 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     async (response) => {
         await sleep(1000);
+
+        const pagination = response.headers['pagination'];
+
+        if (pagination) {
+            response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+
+            return response as AxiosResponse<PaginatedResult<any>>;
+        }
+
         return response;
     },
     (error: AxiosError) => {
@@ -78,14 +88,14 @@ axios.interceptors.response.use(
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+    get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
     post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
     put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
     delete: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 };
 
 const Duties = {
-    list: () => requests.get<Duty[]>('/duties'),
+    list: (params: URLSearchParams) => requests.get<PaginatedResult<Duty[]>>('/duties', { params }),
     details: (id: string) => requests.get<Duty>(`/duties/${id}`),
     create: (duty: Duty) => requests.post<void>('/duties', duty),
     update: (duty: Duty) => requests.put<void>(`/duties/${duty.id}`, duty),

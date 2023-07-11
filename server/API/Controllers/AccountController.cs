@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 namespace API.Controllers;
 
@@ -13,11 +14,14 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
+    private readonly DataContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly TokenService _tokenService;
 
-    public AccountController(UserManager<AppUser> userManager, TokenService tokenService)
+    public AccountController(DataContext context, UserManager<AppUser> userManager,
+        TokenService tokenService)
     {
+        _context = context;
         _userManager = userManager;
         _tokenService = tokenService;
     }
@@ -42,7 +46,7 @@ public class AccountController : ControllerBase
             return Unauthorized();
         }
 
-        return CreateUserDto(user);
+        return await CreateUserDto(user);
     }
 
     [AllowAnonymous]
@@ -77,10 +81,9 @@ public class AccountController : ControllerBase
             return BadRequest(result.Errors);
         }
 
-        return CreateUserDto(user);
+        return await CreateUserDto(user);
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
@@ -88,10 +91,10 @@ public class AccountController : ControllerBase
             .Include(x => x.Photos)
             .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
 
-        return CreateUserDto(user);
+        return await CreateUserDto(user);
     }
 
-    private UserDto CreateUserDto(AppUser user)
+    private async Task<UserDto> CreateUserDto(AppUser user)
     {
         return new UserDto
         {
@@ -99,7 +102,9 @@ public class AccountController : ControllerBase
             Email = user.Email,
             RegistrationDate = user.RegistrationDate,
             Image = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-            Token = _tokenService.CreateToken(user)
+            Token = _tokenService.CreateToken(user),
+            CountNotCompletedDuties = await _context.Duties.CountAsync(x => x.AppUser.Id == user.Id && !x.IsCompleted),
+            CountCompletedDuties = await _context.Duties.CountAsync(x => x.AppUser.Id == user.Id && x.IsCompleted)
         };
     }
 }

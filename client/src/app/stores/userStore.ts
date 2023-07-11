@@ -12,6 +12,14 @@ export default class UserStore {
         makeAutoObservable(this);
     }
 
+    get countNotCompletedDuties(): number {
+        return this.user ? this.user.countNotCompletedDuties : 0;
+    }
+
+    get countCompletedDuties(): number {
+        return this.user ? this.user.countCompletedDuties : 0;
+    }
+
     get isLoggedIn(): boolean {
         return !!this.user;
     }
@@ -66,8 +74,6 @@ export default class UserStore {
         try {
             const user = await agent.Account.current();
 
-            await store.dutyStore.loadDuties();
-
             runInAction(() => {
                 this.user = user;
             });
@@ -79,6 +85,27 @@ export default class UserStore {
     setImage = (image: string | undefined) => {
         if (this.user) {
             this.user.image = image;
+        }
+    }
+
+    updateCountCompletedDuties = (num: number) => {
+        if (!this.user) {
+            return;
+        }
+
+        this.user.countCompletedDuties += num;
+        this.user.countNotCompletedDuties -= num;
+    }
+
+    updateCountDuties = (num: number, isCompleted: boolean) => {
+        if (!this.user) {
+            return;
+        }
+
+        if (isCompleted) {
+            this.user.countCompletedDuties += num;
+        } else {
+            this.user.countNotCompletedDuties += num;
         }
     }
 }

@@ -1,7 +1,9 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable, reaction, runInAction } from 'mobx';
 import { v4 as uuid } from 'uuid';
 
 import { Duty } from '../models/duty';
+import { Pagination, PagingParams } from '../models/pagination';
+import { store } from './store';
 import agent from '../api/agent';
 import compareDates from '../utils/compareDates';
 
@@ -20,47 +22,61 @@ export default class DutyStore {
     createLoading: boolean = false;
     arrLoadingDutiesId: string[] = [];
 
+    pagination: Pagination | null = null;
+    pagingParams: PagingParams = new PagingParams(1, 20);
+    predicate: Map<string, string> = new Map<string, string>();
+
     constructor() {
         makeAutoObservable(this);
+
+        reaction(
+            () => this.predicate.keys(),
+            () => {
+                this.pagingParams = new PagingParams(1, 20);
+                this.duties.clear();
+
+                this.loadDuties();
+            }
+        );
     }
 
-    get dutiesCompleted(): Duty[] {
-        return Array.from(this.duties.values())
-            .filter(duty => duty.isCompleted);
+    get dutiesArray(): Duty[] {
+        return Array.from(this.duties.values());
     }
 
-    get dutiesNotCompleted(): Duty[] {
-        return Array.from(this.duties.values())
-            .filter(duty => !duty.isCompleted);
-    }
-
-    get dutiesCompletedSortByDateCompletion(): Duty[] {
-        return this.dutiesCompleted
+    get dutiesSortByDateCompletion(): Duty[] {
+        return this.dutiesArray
             .sort((duty01, duty02) => compareDates(duty01.dateCompletion, duty02.dateCompletion));
     }
 
-    get dutiesNotCompletedSortByPosition(): Duty[] {
-        return this.dutiesNotCompleted
+    get dutiesSortByPosition(): Duty[] {
+        return this.dutiesArray
             .sort((duty01, duty02) => duty02.position - duty01.position);
     }
 
-    get countCompleted(): number {
-        return this.dutiesCompleted.length;
-    }
+    get axiosParams(): URLSearchParams {
+        const params = new URLSearchParams();
 
-    get countNotCompleted(): number {
-        return this.dutiesNotCompleted.length;
+        params.append('pageNumber', this.pagingParams.pageNumber.toString());
+        params.append('pageSize', this.pagingParams.pageSize.toString());
+
+        this.predicate.forEach((value, key) => {
+            params.append(key, value);
+        });
+
+        return params;
     }
 
     loadDuties = async () => {
         this.setLoadingInitial(true);
 
         try {
-            const duties = await agent.Duties.list();
+            const result = await agent.Duties.list(this.axiosParams);
 
             runInAction(() => {
-                duties.forEach((duty) => {
+                result.data.forEach((duty) => {
                     duty.dateCreation = new Date(duty.dateCreation);
+
                     if (duty.dateCompletion) {
                         duty.dateCompletion = new Date(duty.dateCompletion);
                     }
@@ -68,6 +84,8 @@ export default class DutyStore {
                     this.duties.set(duty.id, duty);
                 });
             });
+
+            this.setPagination(result.pagination);
         } catch (error) {
             console.log(error);
         }
@@ -78,7 +96,7 @@ export default class DutyStore {
     reorderDuties = (overDuty: Duty, dropDuty: Duty) => {
         let position = 0;
 
-        this.dutiesNotCompleted
+        this.dutiesArray
             .sort((duty01, duty02) => duty01.position - duty02.position)
             .forEach((duty) => {
                 if (duty.id === overDuty.id) {
@@ -112,7 +130,7 @@ export default class DutyStore {
         this.duties.set(overDuty.id, overDuty);
         this.duties.set(dropDuty.id, dropDuty);
 
-        this.dutiesNotCompleted
+        this.dutiesArray
             .sort((duty01, duty02) => duty01.position - duty02.position)
             .forEach((duty, index) => {
                 duty.position = index;
@@ -122,7 +140,7 @@ export default class DutyStore {
 
     reorderDutiesOnServer = async () => {
         try {
-            await agent.Duties.updateList(this.dutiesNotCompleted);
+            await agent.Duties.updateList(this.dutiesArray);
         } catch (error) {
             console.log(error);
         }
@@ -145,23 +163,17 @@ export default class DutyStore {
         if (isCompleted) {
             tempDuty.dateCompletion = new Date();
         } else {
-            const positions = this.dutiesNotCompleted
-                .map(duty => duty.position);
-
-            if (positions.length > 0) {
-                tempDuty.position = Math.max(...positions) + 1;
-            } else {
-                tempDuty.position = 0;
-            }
-
+            tempDuty.position = -1;
             tempDuty.dateCompletion = null;
         }
 
         try {
             await agent.Duties.update(tempDuty);
 
+            store.userStore.updateCountCompletedDuties(isCompleted ? 1 : -1);
+
             runInAction(() => {
-                this.duties.set(tempDuty.id, tempDuty);
+                this.duties.delete(tempDuty.id);
             });
         } catch (error) {
             console.log(error);
@@ -208,6 +220,8 @@ export default class DutyStore {
 
         try {
             await agent.Duties.create(duty);
+
+            store.userStore.updateCountDuties(1, duty.isCompleted);
 
             runInAction(() => {
                 this.duties.set(duty.id, duty);
@@ -267,6 +281,12 @@ export default class DutyStore {
 
         try {
             await agent.Duties.delete(id);
+
+            const tempDuty = this.duties.get(id);
+
+            if (tempDuty) {
+                store.userStore.updateCountDuties(-1, tempDuty.isCompleted);
+            }
 
             this.setLoading(id, true);
             this.closeDeleteMode(id);
@@ -336,5 +356,18 @@ export default class DutyStore {
 
     setDeleteMode = (state: boolean) => {
         this.deleteMode = state;
+    }
+
+    setPagination = (state: Pagination) => {
+        this.pagination = state;
+    }
+
+    setPagingParams = (state: PagingParams) => {
+        this.pagingParams = state;
+    }
+
+    setPredicate = (predicate: string, value: string | boolean) => {
+        this.predicate.delete(predicate);
+        this.predicate.set(predicate, value.toString());
     }
 }

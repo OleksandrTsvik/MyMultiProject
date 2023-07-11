@@ -8,6 +8,7 @@ import TranslateKeyboardPage from '../../features/translate/TranslateKeyboardPag
 import TestErrorsPage from '../../features/errors/TestErrorPage';
 import ServerErrorPage from '../../features/errors/ServerErrorPage';
 import ProfilePage from '../../features/profiles/ProfilePage';
+import RequireAuth from './RequireAuth';
 
 export const routes: RouteObject[] = [
     {
@@ -15,7 +16,12 @@ export const routes: RouteObject[] = [
         element: <App />,
         children: [
             { path: '', element: <HomePage /> },
-            { path: 'tasks', element: <DutyDashboard /> },
+            {
+                element: <RequireAuth />,
+                children: [
+                    { path: 'tasks', element: <DutyDashboard /> },
+                ]
+            },
             {
                 path: 'translate',
                 children: [

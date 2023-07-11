@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize]
 public class PhotosController : BaseApiController
 {
     [HttpPost]

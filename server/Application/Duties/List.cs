@@ -11,9 +11,12 @@ namespace Application.Duties;
 
 public class List
 {
-    public class Query : IRequest<Result<List<DutyDto>>> { }
+    public class Query : IRequest<Result<PagedList<DutyDto>>>
+    {
+        public DutyParams Params { get; set; }
+    }
 
-    public class Handler : IRequestHandler<Query, Result<List<DutyDto>>>
+    public class Handler : IRequestHandler<Query, Result<PagedList<DutyDto>>>
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
@@ -26,18 +29,36 @@ public class List
             _mapper = mapper;
         }
 
-        public async Task<Result<List<DutyDto>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PagedList<DutyDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
             QueryUser user = await _context.Users
                 .ProjectTo<QueryUser>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
 
-            List<DutyDto> duties = await _context.Duties
+            IQueryable<DutyDto> query = _context.Duties
                 .Where(x => x.AppUser.Id == user.Id)
                 .ProjectTo<DutyDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .AsQueryable();
 
-            return Result<List<DutyDto>>.Success(duties);
+            if (request.Params.IsCompleted)
+            {
+                query = query
+                    .Where(x => x.IsCompleted)
+                    .OrderBy(x => x.DateCompletion);
+            }
+            else
+            {
+                query = query
+                    .Where(x => !x.IsCompleted)
+                    .OrderBy(x => x.Position);
+            }
+
+            /* Title | DateCreation | BackgroundColor | FontColor */
+
+            PagedList<DutyDto> duties = await PagedList<DutyDto>
+                .CreateAsync(query, request.Params.PageNumber, request.Params.PageSize);
+
+            return Result<PagedList<DutyDto>>.Success(duties);
         }
     }
 }
