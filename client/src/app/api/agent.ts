@@ -9,7 +9,7 @@ import { ListFollowingsPredicate, Photo, Profile } from '../models/profile';
 import { PaginatedResult } from '../models/pagination';
 import sleep from '../utils/sleep';
 
-export const baseUrl = 'http://localhost:5000/api';
+export const baseUrl = process.env.REACT_APP_API_URL;
 
 axios.defaults.baseURL = baseUrl;
 
@@ -28,7 +28,9 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     async (response) => {
-        await sleep(1000);
+        if (process.env.NODE_ENV === 'development') {
+            await sleep(1000);
+        }
 
         const pagination = response.headers['pagination'];
 

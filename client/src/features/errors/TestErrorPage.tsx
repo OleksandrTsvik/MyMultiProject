@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { Button, Container, Header, Segment } from 'semantic-ui-react';
 import axios from 'axios';
 
-import { baseUrl } from '../../app/api/agent';
 import ValidationErrors from './ValidationErrors';
 
 export default function TestErrorsPage() {
     const [errors, setErrors] = useState<string[] | null>(null);
 
     function handleNotFound() {
-        axios.get(baseUrl + '/buggy/not-found')
+        axios.get('/buggy/not-found')
             .catch((err) => {
                 setErrors(null);
                 console.log(err.response);
@@ -17,7 +16,7 @@ export default function TestErrorsPage() {
     }
 
     function handleBadRequest() {
-        axios.get(baseUrl + '/buggy/bad-request')
+        axios.get('/buggy/bad-request')
             .catch((err) => {
                 setErrors(null);
                 console.log(err.response);
@@ -25,7 +24,7 @@ export default function TestErrorsPage() {
     }
 
     function handleValidationError() {
-        axios.post(baseUrl + '/duties', {})
+        axios.post('/duties', {})
             .catch((err) => {
                 setErrors(err);
                 console.log(err);
@@ -33,7 +32,7 @@ export default function TestErrorsPage() {
     }
 
     function handleServerError() {
-        axios.get(baseUrl + '/buggy/server-error')
+        axios.get('/buggy/server-error')
             .catch((err) => {
                 setErrors(null);
                 console.log(err.response);
@@ -41,7 +40,7 @@ export default function TestErrorsPage() {
     }
 
     function handleUnauthorised() {
-        axios.get(baseUrl + '/buggy/unauthorised')
+        axios.get('/buggy/unauthorised')
             .catch((err) => {
                 setErrors(null);
                 console.log(err.response);
@@ -49,7 +48,7 @@ export default function TestErrorsPage() {
     }
 
     function handleBadGuid() {
-        axios.get(baseUrl + '/duties/notaguid')
+        axios.get('/duties/notaguid')
             .catch((err) => {
                 setErrors(null);
                 console.log(err.response);

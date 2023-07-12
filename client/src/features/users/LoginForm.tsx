@@ -15,9 +15,11 @@ export default observer(function LoginForm() {
     const { userStore } = useStore();
     const { login } = userStore;
 
+    const isDevelopment = process.env.NODE_ENV === 'development';
+
     const initialValues: Credentials = {
-        email: 'oleksandr.zwick@gmail.com',
-        password: 'Pa$$w0rd',
+        email: isDevelopment ? 'oleksandr.zwick@gmail.com' : '',
+        password: isDevelopment ? 'Pa$$w0rd' : '',
         error: null
     };
 
