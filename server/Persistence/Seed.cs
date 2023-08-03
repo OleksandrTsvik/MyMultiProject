@@ -13,13 +13,13 @@ public class Seed
             {
                 new AppUser
                 {
-                    RegistrationDate = DateTime.Now,
+                    RegistrationDate = DateTime.UtcNow,
                     UserName = "san4ik",
                     Email = "oleksandr.zwick@gmail.com"
                 },
                 new AppUser
                 {
-                    RegistrationDate = DateTime.Now,
+                    RegistrationDate = DateTime.UtcNow,
                     UserName = "bob",
                     Email = "bob@test.com"
                 }

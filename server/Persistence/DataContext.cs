@@ -18,6 +18,11 @@ public class DataContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
+        builder.Entity<RefreshToken>()
+            .HasOne(refreshToken => refreshToken.AppUser)
+            .WithMany(user => user.RefreshTokens)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Entity<Duty>()
             .HasOne(duty => duty.AppUser)
             .WithMany(user => user.Duties)

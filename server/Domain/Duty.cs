@@ -13,5 +13,6 @@ public class Duty
     public string? BackgroundColor { get; set; }
     public string? FontColor { get; set; }
 #nullable disable
+
     public AppUser AppUser { get; set; }
 }
