@@ -1,8 +1,11 @@
-#Visual Studio Code
+# Visual Studio Code
 .vscode
 
-#Visual Studio IDE
+# Visual Studio IDE
 .vs
 
-#JetBrains IDEA
+# JetBrains IDEA
 .idea
+
+# draw.io
+/db-schema/.$*
