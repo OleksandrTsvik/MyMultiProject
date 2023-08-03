@@ -7,6 +7,7 @@ import { store } from './store';
 
 export default class UserStore {
     user: User | null = null;
+    refreshTokenTimeout?: ReturnType<typeof setTimeout>;
 
     constructor() {
         makeAutoObservable(this);
@@ -29,6 +30,8 @@ export default class UserStore {
             const user = await agent.Account.login(credentials);
 
             store.commonStore.setToken(user.token);
+            this.startRefreshTokenTimer(user);
+
             await store.dutyStore.loadDuties();
 
             runInAction(() => {
@@ -39,6 +42,8 @@ export default class UserStore {
             router.navigate('/');
             store.modalStore.closeModal();
         } catch (error) {
+            console.log(error);
+
             throw error;
         }
     }
@@ -48,6 +53,7 @@ export default class UserStore {
             const user = await agent.Account.register(credentials);
 
             store.commonStore.setToken(user.token);
+            this.startRefreshTokenTimer(user);
 
             runInAction(() => {
                 user.registrationDate = new Date(user.registrationDate);
@@ -57,11 +63,15 @@ export default class UserStore {
             router.navigate('/');
             store.modalStore.closeModal();
         } catch (error) {
+            console.log(error);
+
             throw error;
         }
     }
 
     logout = () => {
+        this.stopRefreshTokenTimer();
+        
         store.commonStore.setToken(null);
         store.dutyStore.resetDutyStore();
 
@@ -74,12 +84,48 @@ export default class UserStore {
         try {
             const user = await agent.Account.current();
 
+            store.commonStore.setToken(user.token);
+            this.startRefreshTokenTimer(user);
+
             runInAction(() => {
                 this.user = user;
             });
         } catch (error) {
             console.log(error);
         }
+    }
+
+    refreshToken = async () => {
+        this.stopRefreshTokenTimer();
+
+        try {
+            const user = await agent.Account.refreshToken();
+
+            store.commonStore.setToken(user.token);
+            this.startRefreshTokenTimer(user);
+
+            runInAction(() => {
+                this.user = user;
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    private startRefreshTokenTimer(user: User) {
+        const jwt = JSON.parse(atob(user.token.split('.')[1]));
+
+        // const bufferJWT = Buffer.from(user.token.split('.')[1], 'base64');
+        // const jwt = JSON.parse(bufferJWT.toString());
+
+        const expires = new Date(jwt.exp * 1000);
+        const timeout = expires.getTime() - Date.now() - (60 * 1000);
+
+        this.refreshTokenTimeout = setTimeout(this.refreshToken, timeout);
+    }
+
+    private stopRefreshTokenTimer() {
+        clearTimeout(this.refreshTokenTimeout);
     }
 
     setImage = (image: string | undefined) => {

@@ -43,7 +43,7 @@ axios.interceptors.response.use(
         return response;
     },
     (error: AxiosError) => {
-        const { data, status, config } = error.response as AxiosResponse;
+        const { data, status, config, headers } = error.response as AxiosResponse;
         const { errors } = data;
 
         switch (status) {
@@ -67,7 +67,13 @@ axios.interceptors.response.use(
 
                 break;
             case 401:
-                toast.error('Unauthorised');
+                if (headers['www-authenticate']?.startsWith('Bearer error="invalid_token"')) {
+                    store.userStore.logout();
+                    toast.error('Session expired - please login again');
+                } else {
+                    toast.error('Unauthorised');
+                }
+
                 break;
             case 403:
                 toast.error('Forbidden');
@@ -91,7 +97,7 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
     get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
-    post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
+    post: <T>(url: string, body?: {}) => axios.post<T>(url, body).then(responseBody),
     put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
     delete: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 };
@@ -108,7 +114,8 @@ const Duties = {
 const Account = {
     current: () => requests.get<User>('/account'),
     login: (user: UserLogin) => requests.post<User>('/account/login', user),
-    register: (user: UserRegister) => requests.post<User>('/account/register', user)
+    register: (user: UserRegister) => requests.post<User>('/account/register', user),
+    refreshToken: () => requests.post<User>('/account/refreshToken')
 };
 
 const Profiles = {
