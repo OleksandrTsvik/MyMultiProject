@@ -65,6 +65,22 @@ cd ../server/API
 dotnet run
 ```
 
+
+## Useful commands
+
+### Possible to fix server errors in VS Code
+```sh
+cd server/API
+dotnet restore
+dotnet build
+```
+
+### Drop database
+```sh
+cd server
+dotnet ef database drop -s API -p Persistence
+```
+
 ## *References*
 - [Complete guide to building an app with .Net Core and React](https://www.udemy.com/course/complete-guide-to-building-an-app-with-net-core-and-react/)
 - [Create React App](https://create-react-app.dev/)
@@ -75,3 +91,5 @@ dotnet run
 - [react-dropzone](https://react-dropzone.js.org/)
 - [react-cropper](https://github.com/react-cropper/react-cropper)
 - [react-infinite-scroller](https://github.com/danbovey/react-infinite-scroller)
+
+- [*EditorConfig*](https://editorconfig.org/)
