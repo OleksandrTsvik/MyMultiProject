@@ -1,8 +1,7 @@
 using Application.Core;
 using Application.Interfaces;
+using Application.Mappers;
 using Application.Profiles;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -20,24 +19,34 @@ public class List
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
             _userAccessor = userAccessor;
-            _mapper = mapper;
         }
 
         public async Task<Result<PagedList<DutyDto>>> Handle(Query request, CancellationToken cancellationToken)
         {
             QueryUser user = await _context.Users
-                .ProjectTo<QueryUser>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+                .Where(x => x.UserName == _userAccessor.GetUserName())
+                .Select(x => x.ToQueryUser())
+                .FirstOrDefaultAsync();
 
             IQueryable<DutyDto> query = _context.Duties
                 .Where(x => x.AppUser.Id == user.Id)
-                .ProjectTo<DutyDto>(_mapper.ConfigurationProvider)
+                .Select(x => new DutyDto
+                {
+                    Id = x.Id,
+                    Position = x.Position,
+                    Title = x.Title,
+                    Description = x.Description,
+                    IsCompleted = x.IsCompleted,
+                    DateCreation = x.DateCreation,
+                    DateCompletion = x.DateCompletion,
+                    BackgroundColor = x.BackgroundColor,
+                    FontColor = x.FontColor
+                })
                 .AsQueryable();
 
             if (request.Params.IsCompleted)

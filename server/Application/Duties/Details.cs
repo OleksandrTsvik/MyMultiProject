@@ -1,6 +1,5 @@
 using Application.Core;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Application.Mappers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -17,18 +16,16 @@ public class Details
     public class Handler : IRequestHandler<Query, Result<DutyDto>>
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IMapper mapper)
+        public Handler(DataContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<Result<DutyDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             DutyDto duty = await _context.Duties
-                .ProjectTo<DutyDto>(_mapper.ConfigurationProvider)
+                .Select(x => x.ToDutyDto())
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 
             return Result<DutyDto>.Success(duty);

@@ -1,6 +1,6 @@
 using Application.Core;
 using Application.Interfaces;
-using AutoMapper;
+using Application.Mappers;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -28,13 +28,11 @@ public class Edit
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
             _userAccessor = userAccessor;
-            _mapper = mapper;
         }
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
@@ -56,7 +54,7 @@ public class Edit
                 return null;
             }
 
-            _mapper.Map(request.Duty, duty);
+            duty.Update(request.Duty);
 
             bool result = await _context.SaveChangesAsync() > 0;
 
