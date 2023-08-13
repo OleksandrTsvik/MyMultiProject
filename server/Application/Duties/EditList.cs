@@ -1,6 +1,6 @@
 using Application.Core;
 using Application.Interfaces;
-using AutoMapper;
+using Application.Mappers;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -28,13 +28,11 @@ public class EditList
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
             _userAccessor = userAccessor;
-            _mapper = mapper;
         }
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
@@ -61,7 +59,7 @@ public class EditList
 
                 if (updatedDuty != null)
                 {
-                    _mapper.Map(updatedDuty, duty);
+                    duty.Update(updatedDuty);
                     _context.Entry(duty).State = EntityState.Modified;
                 }
             });

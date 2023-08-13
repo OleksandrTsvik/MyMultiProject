@@ -1,4 +1,3 @@
-using Application.Core;
 using Application.Duties;
 using Application.Interfaces;
 using FluentValidation;
@@ -39,8 +38,6 @@ public static class ApplicationServiceExtensions
         });
 
         services.AddMediatR(typeof(List.Handler));
-
-        services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<Create>();

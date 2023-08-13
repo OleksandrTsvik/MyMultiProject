@@ -1,6 +1,6 @@
 using Application.Core;
 using Application.Interfaces;
-using AutoMapper;
+using Application.Mappers;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -21,15 +21,13 @@ public class Add
         private readonly DataContext _context;
         private readonly IPhotoAccessor _photoAccessor;
         private readonly IUserAccessor _userAccessor;
-        private readonly IMapper _mapper;
 
         public Handler(DataContext context, IPhotoAccessor photoAccessor,
-            IUserAccessor userAccessor, IMapper mapper)
+            IUserAccessor userAccessor)
         {
             _context = context;
             _photoAccessor = photoAccessor;
             _userAccessor = userAccessor;
-            _mapper = mapper;
         }
 
         public async Task<Result<PhotoDto>> Handle(Command request, CancellationToken cancellationToken)
@@ -70,7 +68,7 @@ public class Add
                 return Result<PhotoDto>.Failure("Failed to add photo");
             }
 
-            return Result<PhotoDto>.Success(_mapper.Map<PhotoDto>(photo));
+            return Result<PhotoDto>.Success(photo.ToPhotoDto());
         }
     }
 }

@@ -1,7 +1,6 @@
 using Application.Core;
 using Application.Interfaces;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Application.Mappers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -19,21 +18,23 @@ public class Details
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
             _userAccessor = userAccessor;
-            _mapper = mapper;
         }
 
         public async Task<Result<Profile>> Handle(Query request, CancellationToken cancellationToken)
         {
             Profile profile = await _context.Users
-                .ProjectTo<Profiles.Profile>(_mapper.ConfigurationProvider,
-                    new { currentUserName = _userAccessor.GetUserName() })
-                .FirstOrDefaultAsync(x => x.UserName == request.UserName);
+                .Where(x => x.UserName == request.UserName)
+                    .Include(x => x.Followers)
+                        .ThenInclude(f => f.Observer)
+                    .Include(x => x.Followings)
+                    .Include(x => x.Photos)
+                .Select(x => x.ToProfile(_userAccessor.GetUserName()))
+                .FirstOrDefaultAsync();
 
             return Result<Profile>.Success(profile);
         }

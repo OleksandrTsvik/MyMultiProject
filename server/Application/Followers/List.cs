@@ -1,7 +1,6 @@
 using Application.Core;
 using Application.Interfaces;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Application.Mappers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -20,13 +19,11 @@ public class List
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
-        private readonly IMapper _mapper;
 
-        public Handler(DataContext context, IUserAccessor userAccessor, IMapper mapper)
+        public Handler(DataContext context, IUserAccessor userAccessor)
         {
             _context = context;
             _userAccessor = userAccessor;
-            _mapper = mapper;
         }
 
         public async Task<Result<List<Profiles.Profile>>> Handle(Query request, CancellationToken cancellationToken)
@@ -38,18 +35,22 @@ public class List
                 case "followers":
                     profiles = await _context.UserFollowings
                         .Where(x => x.Target.UserName == request.UserName)
-                        .Select(x => x.Observer)
-                        .ProjectTo<Profiles.Profile>(_mapper.ConfigurationProvider,
-                            new { currentUserName = _userAccessor.GetUserName() })
+                            .Include(x => x.Observer.Followers)
+                                .ThenInclude(f => f.Observer)
+                            .Include(x => x.Observer.Followings)
+                            .Include(x => x.Observer.Photos)
+                        .Select(x => x.Observer.ToProfile(_userAccessor.GetUserName()))
                         .ToListAsync();
 
                     break;
                 case "following":
                     profiles = await _context.UserFollowings
                         .Where(x => x.Observer.UserName == request.UserName)
-                        .Select(x => x.Target)
-                        .ProjectTo<Profiles.Profile>(_mapper.ConfigurationProvider,
-                            new { currentUserName = _userAccessor.GetUserName() })
+                            .Include(x => x.Target.Followers)
+                                .ThenInclude(f => f.Observer)
+                            .Include(x => x.Target.Followings)
+                            .Include(x => x.Target.Photos)
+                        .Select(x => x.Target.ToProfile(_userAccessor.GetUserName()))
                         .ToListAsync();
 
                     break;
