@@ -9,22 +9,46 @@ import TestErrorsPage from '../../features/errors/TestErrorPage';
 import ServerErrorPage from '../../features/errors/ServerErrorPage';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import RequireAuth from './RequireAuth';
+import DictionaryPage from '../../features/dictionary/DictionaryPage';
+import CategoriesPage from '../../features/dictionary/CategoriesPage';
+import RulesPage from '../../features/dictionary/RulesPage';
+import CategoryPage from '../../features/dictionary/CategoryPage';
+import CategoryItemForm from '../../features/dictionary/CategoryItemForm';
+import RuleItemForm from '../../features/dictionary/RuleItemForm';
 
 export const routes: RouteObject[] = [
     {
         path: '/',
         element: <App />,
         children: [
-            { path: '', element: <HomePage /> },
+            { index: true, element: <HomePage /> },
             {
                 element: <RequireAuth />,
                 children: [
                     { path: 'tasks', element: <DutyDashboard /> },
+                    {
+                        path: 'dictionary',
+                        element: <DictionaryPage />,
+                        children: [
+                            { index: true, element: <Navigate to="/dictionary/categories" replace /> },
+                            { path: 'categories', element: <CategoriesPage /> },
+                            { path: 'rules', element: <RulesPage /> }
+                        ]
+                    },
+                    {
+                        path: 'dictionary',
+                        children: [
+                            { path: 'categories/:categoryId', element: <CategoryPage /> },
+                            { path: 'categories/:categoryId/item/:itemId', element: <CategoryItemForm /> },
+                            { path: 'rules/:ruleId', element: <RuleItemForm /> }
+                        ]
+                    }
                 ]
             },
             {
                 path: 'translate',
                 children: [
+                    { index: true, element: <Navigate to="/translate/language" replace /> },
                     { path: 'language', element: <HomePage /> },
                     { path: 'keyboard', element: <TranslateKeyboardPage /> }
                 ]

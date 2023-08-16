@@ -20,7 +20,7 @@ export default observer(function NavBar() {
             icon="labeled"
             size="tiny"
         >
-            <Container>
+            <Container className="flex-wrap">
                 <Menu.Item
                     as={NavLink} to="/"
                     header
@@ -39,6 +39,13 @@ export default observer(function NavBar() {
                         value={countNotCompletedDuties}
                     />
                     Tasks
+                </Menu.Item>
+                <Menu.Item
+                    as={NavLink} to="/dictionary/categories"
+                    className="justify-content-center"
+                >
+                    <Icon name="book" />
+                    Dictionary
                 </Menu.Item>
                 <Dropdown
                     item

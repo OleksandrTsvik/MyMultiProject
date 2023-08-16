@@ -1,3 +1,5 @@
+$darkTextColor: #212121;
+
 body {
     background-color: #eaeaea;
 }
@@ -105,4 +107,24 @@ body {
     align-items: center;
     padding: 5px 10px 10px;
     border-bottom: 1px solid #008080;
+}
+
+.dictionary {
+    &__categories-item {
+        color: $darkTextColor !important;
+
+        &:hover {
+            background-color: rgba(0, 181, 173, 0.25);
+        }
+    }
+}
+
+.grammar-rule {
+    &__item {
+        color: $darkTextColor !important;
+
+        &:hover {
+            background-color: rgba(0, 181, 173, 0.25);
+        }
+    }
 }

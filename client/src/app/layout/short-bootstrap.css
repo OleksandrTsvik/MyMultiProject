@@ -170,6 +170,11 @@
     display: table-cell !important;
 }
 
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch
+}
+
 .d-flex {
     display: flex !important;
 }

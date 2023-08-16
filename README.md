@@ -6,10 +6,11 @@
 
 ## What's Included
 1. Login and registration (access_token and refresh_token)
-2. Task Manager
-3. ~~Language and~~ keyboard translator
-4. Uploading images
-5. Followers / Following feature
+2. Task Manager (drag and drop)
+3. Dictionary
+4. ~~Language and~~ keyboard translator
+5. Uploading images
+6. Followers / Following feature
 
 ## Install dependencies for the client
 ```sh
