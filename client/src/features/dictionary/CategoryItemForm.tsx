@@ -1,6 +1,7 @@
-import { Button, Container, Form, Header, Input, TextArea } from 'semantic-ui-react';
+import { Button, Container, Form, Header, TextArea } from 'semantic-ui-react';
 
 import LinkBack from '../../components/LinkBack';
+import StatusDropdown from './StatusDropdown';
 
 interface Props {
   title: string;
@@ -25,7 +26,7 @@ export default function CategoryItemForm(
       <Header as="h2" className="text-center">{title}</Header>
       <Form>
         <Form.Field
-          control={Input}
+          control={StatusDropdown}
           label='Status'
         />
         <Form.Field

@@ -61,7 +61,7 @@ export default observer(function CategoriesPage() {
                     <Flag name="america" />
                   </Table.Cell>
                   <Table.Cell collapsing>
-                    <Label horizontal color="teal">11</Label>
+                    <Label horizontal color="violet">11</Label>
                   </Table.Cell>
                   <Table.Cell>
                     Category
