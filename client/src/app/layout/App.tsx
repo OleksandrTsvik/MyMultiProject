@@ -10,31 +10,31 @@ import NavBar from './NavBar';
 import Footer from './Footer';
 
 export default observer(function App() {
-    const { commonStore, userStore } = useStore();
+  const { commonStore, userStore } = useStore();
 
-    useEffect(() => {
-        if (commonStore.token) {
-            userStore.getUser()
-                .finally(() => commonStore.setAppLoaded());
-        } else {
-            commonStore.setAppLoaded();
-        }
-    }, [commonStore, userStore]);
-
-    if (!commonStore.appLoaded) {
-        return <Loading content="Loading app..." />;
+  useEffect(() => {
+    if (commonStore.token) {
+      userStore.getUser()
+        .finally(() => commonStore.setAppLoaded());
+    } else {
+      commonStore.setAppLoaded();
     }
+  }, [commonStore, userStore]);
 
-    return (
-        <>
-            <ScrollRestoration />
-            <NavBar />
-            <main className="wrapper">
-                <Outlet />
-            </main>
-            <Footer />
-            <ModalContainer />
-            <ToastContainer position="bottom-right" theme="colored" />
-        </>
-    );
+  if (!commonStore.appLoaded) {
+    return <Loading content="Loading app..." />;
+  }
+
+  return (
+    <>
+      <ScrollRestoration />
+      <NavBar />
+      <main className="wrapper">
+        <Outlet />
+      </main>
+      <Footer />
+      <ModalContainer />
+      <ToastContainer position="bottom-right" theme="colored" />
+    </>
+  );
 });

@@ -9,57 +9,57 @@ import EmptyBlock from '../../components/EmptyBlock';
 import ProfilePhotosList from './ProfilePhotosList';
 
 interface Props {
-    profile: Profile;
+  profile: Profile;
 }
 
 export default observer(function ProfilePhotos({ profile }: Props) {
-    const { profileStore } = useStore();
-    const { isCurrentUser, uploadPhoto, uploading } = profileStore;
+  const { profileStore } = useStore();
+  const { isCurrentUser, uploadPhoto, uploading } = profileStore;
 
-    const [addPhotoMode, setAddPhotoMode] = useState<boolean>(false);
+  const [addPhotoMode, setAddPhotoMode] = useState<boolean>(false);
 
-    if (!isCurrentUser && profile.photos.length === 0) {
-        return <EmptyBlock text="There are no photos" />;
-    }
+  if (!isCurrentUser && profile.photos.length === 0) {
+    return <EmptyBlock text="There are no photos" />;
+  }
 
-    function handlePhotoUpload(file: Blob) {
-        uploadPhoto(file)
-            .then(() => setAddPhotoMode(false));
-    }
+  function handlePhotoUpload(file: Blob) {
+    uploadPhoto(file)
+      .then(() => setAddPhotoMode(false));
+  }
 
-    return (
-        <Tab.Pane>
-            <Grid>
-                <Grid.Column width={16}>
-                    <Header
-                        icon="images"
-                        floated="left"
-                        content="Photos"
-                    />
-                    {isCurrentUser &&
-                        <Button
-                            basic
-                            floated="right"
-                            loading={uploading}
-                            disabled={uploading}
-                            color={addPhotoMode ? 'red' : 'teal'}
-                            content={addPhotoMode ? 'Cancel' : 'Add Photo'}
-                            onClick={() => setAddPhotoMode(!addPhotoMode)}
-                        />
-                    }
-                </Grid.Column>
-                <Grid.Column width={16}>
-                    {isCurrentUser && addPhotoMode
-                        ? <PhotoUploadWidget
-                            loading={uploading}
-                            onPhotoUpload={handlePhotoUpload}
-                        />
-                        : profile.photos.length === 0
-                            ? <EmptyBlock text="There are no photos" />
-                            : <ProfilePhotosList profile={profile} />
-                    }
-                </Grid.Column>
-            </Grid>
-        </Tab.Pane>
-    );
+  return (
+    <Tab.Pane>
+      <Grid>
+        <Grid.Column width={16}>
+          <Header
+            icon="images"
+            floated="left"
+            content="Photos"
+          />
+          {isCurrentUser &&
+            <Button
+              basic
+              floated="right"
+              loading={uploading}
+              disabled={uploading}
+              color={addPhotoMode ? 'red' : 'teal'}
+              content={addPhotoMode ? 'Cancel' : 'Add Photo'}
+              onClick={() => setAddPhotoMode(!addPhotoMode)}
+            />
+          }
+        </Grid.Column>
+        <Grid.Column width={16}>
+          {isCurrentUser && addPhotoMode
+            ? <PhotoUploadWidget
+              loading={uploading}
+              onPhotoUpload={handlePhotoUpload}
+            />
+            : profile.photos.length === 0
+              ? <EmptyBlock text="There are no photos" />
+              : <ProfilePhotosList profile={profile} />
+          }
+        </Grid.Column>
+      </Grid>
+    </Tab.Pane>
+  );
 });

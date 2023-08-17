@@ -10,33 +10,33 @@ import ProfileHeader from './ProfileHeader';
 import ProfileContent from './ProfileContent';
 
 export default observer(function ProfilePage() {
-    const { username } = useParams();
-    const { profileStore } = useStore();
+  const { username } = useParams();
+  const { profileStore } = useStore();
 
-    const { loadingProfile, loadProfile, profile } = profileStore;
+  const { loadingProfile, loadProfile, profile } = profileStore;
 
-    useEffect(() => {
-        if (username) {
-            loadProfile(username);
-        }
-    }, [username, loadProfile]);
-
-    if (loadingProfile) {
-        return <Loading content="Loading profile..." />;
+  useEffect(() => {
+    if (username) {
+      loadProfile(username);
     }
+  }, [username, loadProfile]);
 
-    if (!profile) {
-        return <EmptyBlock text="The profile is empty" />;
-    }
+  if (loadingProfile) {
+    return <Loading content="Loading profile..." />;
+  }
 
-    return (
-        <Container>
-            <Grid>
-                <Grid.Column width={16}>
-                    <ProfileHeader profile={profile} />
-                    <ProfileContent profile={profile} />
-                </Grid.Column>
-            </Grid>
-        </Container>
-    );
+  if (!profile) {
+    return <EmptyBlock text="The profile is empty" />;
+  }
+
+  return (
+    <Container>
+      <Grid>
+        <Grid.Column width={16}>
+          <ProfileHeader profile={profile} />
+          <ProfileContent profile={profile} />
+        </Grid.Column>
+      </Grid>
+    </Container>
+  );
 });

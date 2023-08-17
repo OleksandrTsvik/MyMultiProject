@@ -6,49 +6,49 @@ import { Profile } from '../../app/models/profile';
 import { useStore } from '../../app/stores/store';
 
 interface Props {
-    profile: Profile;
+  profile: Profile;
 }
 
 export default observer(function FollowButton({ profile }: Props) {
-    const { profileStore, userStore } = useStore();
+  const { profileStore, userStore } = useStore();
 
-    const { updateFollowing, loadingFollow } = profileStore;
-    const { user } = userStore;
+  const { updateFollowing, loadingFollow } = profileStore;
+  const { user } = userStore;
 
-    if (user === null || user.userName === profile.userName) {
-        return null;
+  if (user === null || user.userName === profile.userName) {
+    return null;
+  }
+
+  function handleFollow(event: SyntheticEvent) {
+    event.preventDefault();
+
+    if (profile.following) {
+      updateFollowing(profile.userName, false);
+    } else {
+      updateFollowing(profile.userName, true);
     }
+  }
 
-    function handleFollow(event: SyntheticEvent) {
-        event.preventDefault();
-
-        if (profile.following) {
-            updateFollowing(profile.userName, false);
-        } else {
-            updateFollowing(profile.userName, true);
-        }
-    }
-
-    return (
-        <Reveal animated="move">
-            <Reveal.Content visible className="w-100">
-                <Button
-                    fluid
-                    color="teal"
-                    content={profile.following ? 'Following' : 'Not following'}
-                />
-            </Reveal.Content>
-            <Reveal.Content hidden className="w-100">
-                <Button
-                    fluid
-                    basic
-                    loading={loadingFollow}
-                    disabled={loadingFollow}
-                    color={profile.following ? 'red' : 'green'}
-                    content={profile.following ? 'Unfollow' : 'Follow'}
-                    onClick={handleFollow}
-                />
-            </Reveal.Content>
-        </Reveal>
-    );
+  return (
+    <Reveal animated="move">
+      <Reveal.Content visible className="w-100">
+        <Button
+          fluid
+          color="teal"
+          content={profile.following ? 'Following' : 'Not following'}
+        />
+      </Reveal.Content>
+      <Reveal.Content hidden className="w-100">
+        <Button
+          fluid
+          basic
+          loading={loadingFollow}
+          disabled={loadingFollow}
+          color={profile.following ? 'red' : 'green'}
+          content={profile.following ? 'Unfollow' : 'Follow'}
+          onClick={handleFollow}
+        />
+      </Reveal.Content>
+    </Reveal>
+  );
 });

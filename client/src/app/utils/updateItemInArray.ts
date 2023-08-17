@@ -7,20 +7,20 @@
  * findIndex immediately returns that element index. Otherwise, findIndex returns -1.
  */
 export default function updateItemInArray<T>(
-    array: T[],
-    item: Partial<T>,
-    predicate: (value: T, index: number, obj: T[]) => unknown
+  array: T[],
+  item: Partial<T>,
+  predicate: (value: T, index: number, obj: T[]) => unknown
 ): number {
-    let updateIndex = array.findIndex(predicate);
+  let updateIndex = array.findIndex(predicate);
 
-    if (updateIndex < 0) {
-        return -1;
-    }
+  if (updateIndex < 0) {
+    return -1;
+  }
 
-    array[updateIndex] = {
-        ...array[updateIndex],
-        ...item
-    };
+  array[updateIndex] = {
+    ...array[updateIndex],
+    ...item
+  };
 
-    return 1;
+  return 1;
 }

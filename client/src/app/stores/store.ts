@@ -7,23 +7,23 @@ import ModalStore from './modalStore';
 import ProfileStore from './profileStore';
 
 interface Store {
-    dutyStore: DutyStore;
-    commonStore: CommonStore;
-    userStore: UserStore;
-    modalStore: ModalStore;
-    profileStore: ProfileStore;
+  dutyStore: DutyStore;
+  commonStore: CommonStore;
+  userStore: UserStore;
+  modalStore: ModalStore;
+  profileStore: ProfileStore;
 }
 
 export const store: Store = {
-    dutyStore: new DutyStore(),
-    commonStore: new CommonStore(),
-    userStore: new UserStore(),
-    modalStore: new ModalStore(),
-    profileStore: new ProfileStore()
+  dutyStore: new DutyStore(),
+  commonStore: new CommonStore(),
+  userStore: new UserStore(),
+  modalStore: new ModalStore(),
+  profileStore: new ProfileStore()
 };
 
 export const StoreContext = createContext(store);
 
 export function useStore(): Store {
-    return useContext(StoreContext);
+  return useContext(StoreContext);
 }

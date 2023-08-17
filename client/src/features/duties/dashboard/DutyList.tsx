@@ -7,81 +7,81 @@ import DutyListItem from './DutyListItem';
 import EmptyBlock from '../../../components/EmptyBlock';
 
 interface Props {
-    duties: Duty[];
-    draggable?: boolean;
+  duties: Duty[];
+  draggable?: boolean;
 }
 
 export default function DutyList({ duties, draggable }: Props) {
-    const { dutyStore } = useStore();
-    const { reorderDuties, reorderDutiesOnServer } = dutyStore;
+  const { dutyStore } = useStore();
+  const { reorderDuties, reorderDutiesOnServer } = dutyStore;
 
-    const [draggingDuty, setDraggingDuty] = useState<Duty | undefined>(undefined);
+  const [draggingDuty, setDraggingDuty] = useState<Duty | undefined>(undefined);
 
-    if (duties.length === 0) {
-        return <EmptyBlock />;
+  if (duties.length === 0) {
+    return <EmptyBlock />;
+  }
+
+  function handleMouseDownDraggableElem(event: MouseEvent<HTMLDivElement>) {
+    let target = event.target as HTMLDivElement;
+    target = target.closest('.duty__draggable') as HTMLDivElement;
+
+    if (!target) {
+      return;
     }
 
-    function handleMouseDownDraggableElem(event: MouseEvent<HTMLDivElement>) {
-        let target = event.target as HTMLDivElement;
-        target = target.closest('.duty__draggable') as HTMLDivElement;
+    target.draggable = true;
+  }
 
-        if (!target) {
-            return;
-        }
+  function handleMouseUpDraggableElem(event: MouseEvent<HTMLDivElement>) {
+    let target = event.target as HTMLDivElement;
+    target = target.closest('.duty__draggable') as HTMLDivElement;
 
-        target.draggable = true;
+    if (!target) {
+      return;
     }
 
-    function handleMouseUpDraggableElem(event: MouseEvent<HTMLDivElement>) {
-        let target = event.target as HTMLDivElement;
-        target = target.closest('.duty__draggable') as HTMLDivElement;
+    target.draggable = false;
+  }
 
-        if (!target) {
-            return;
-        }
+  function handleDragStart(event: DragEvent<HTMLDivElement>, duty: Duty) {
+    const target = event.target as HTMLDivElement;
+    target.classList.add('dragging');
 
-        target.draggable = false;
+    setDraggingDuty(duty);
+  }
+
+  function handleDragEnd(event: DragEvent<HTMLDivElement>) {
+    const target = event.target as HTMLDivElement;
+
+    target.draggable = false;
+    target.classList.remove('dragging');
+
+    setDraggingDuty(undefined);
+    reorderDutiesOnServer();
+  }
+
+  function handleDragOver(event: DragEvent<HTMLDivElement>, duty: Duty) {
+    event.preventDefault();
+
+    if (draggingDuty && draggingDuty.id !== duty.id) {
+      reorderDuties(duty, draggingDuty);
     }
+  }
 
-    function handleDragStart(event: DragEvent<HTMLDivElement>, duty: Duty) {
-        const target = event.target as HTMLDivElement;
-        target.classList.add('dragging');
-
-        setDraggingDuty(duty);
-    }
-
-    function handleDragEnd(event: DragEvent<HTMLDivElement>) {
-        const target = event.target as HTMLDivElement;
-
-        target.draggable = false;
-        target.classList.remove('dragging');
-
-        setDraggingDuty(undefined);
-        reorderDutiesOnServer();
-    }
-
-    function handleDragOver(event: DragEvent<HTMLDivElement>, duty: Duty) {
-        event.preventDefault();
-
-        if (draggingDuty && draggingDuty.id !== duty.id) {
-            reorderDuties(duty, draggingDuty);
-        }
-    }
-
-    return (
-        <Grid className="px-3 pt-2 pb-3">
-            {duties.map(duty => (
-                <DutyListItem
-                    key={duty.id}
-                    duty={duty}
-                    draggable={draggable}
-                    onMouseDownDraggableElem={handleMouseDownDraggableElem}
-                    onMouseUpDraggableElem={handleMouseUpDraggableElem}
-                    onDragStart={handleDragStart}
-                    onDragEnd={handleDragEnd}
-                    onDragOver={handleDragOver}
-                />
-            ))}
-        </Grid>
-    );
+  return (
+    <Grid className="px-3 pt-2 pb-3">
+      {duties.map(duty => (
+        <DutyListItem
+          key={duty.id}
+          duty={duty}
+          draggable={draggable}
+          onMouseDownDraggableElem={handleMouseDownDraggableElem}
+          onMouseUpDraggableElem={handleMouseUpDraggableElem}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+        />
+      ))}
+    </Grid>
+  );
 }

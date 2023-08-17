@@ -8,71 +8,71 @@ import FormikInput from '../../app/common/form/FormikInput';
 import ValidationErrors from '../errors/ValidationErrors';
 
 interface Credentials extends UserLogin {
-    error: string | null;
+  error: string | null;
 }
 
 export default observer(function LoginForm() {
-    const { userStore } = useStore();
-    const { login } = userStore;
+  const { userStore } = useStore();
+  const { login } = userStore;
 
-    const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
-    const initialValues: Credentials = {
-        email: isDevelopment ? 'oleksandr.zwick@gmail.com' : '',
-        password: isDevelopment ? 'Pa$$w0rd' : '',
-        error: null
-    };
+  const initialValues: Credentials = {
+    email: isDevelopment ? 'oleksandr.zwick@gmail.com' : '',
+    password: isDevelopment ? 'Pa$$w0rd' : '',
+    error: null
+  };
 
-    function handleSubmitForm(
-        values: Credentials,
-        { setErrors, setSubmitting }: FormikHelpers<Credentials>
-    ): void | Promise<any> {
-        login(values)
-            .catch(() => setErrors({ error: 'Invalid email or password' }))
-            .finally(() => setSubmitting(false));
-    }
+  function handleSubmitForm(
+    values: Credentials,
+    { setErrors, setSubmitting }: FormikHelpers<Credentials>
+  ): void | Promise<any> {
+    login(values)
+      .catch(() => setErrors({ error: 'Invalid email or password' }))
+      .finally(() => setSubmitting(false));
+  }
 
-    return (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={handleSubmitForm}
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmitForm}
+    >
+      {({ handleSubmit, isSubmitting, errors }) => (
+        <Form
+          className="ui form"
+          onSubmit={handleSubmit}
+          autoComplete="off"
         >
-            {({ handleSubmit, isSubmitting, errors }) => (
-                <Form
-                    className="ui form"
-                    onSubmit={handleSubmit}
-                    autoComplete="off"
-                >
-                    <Header
-                        as="h2"
-                        content="Login form"
-                        textAlign="center"
-                        color="teal"
-                    />
-                    <ErrorMessage
-                        name="error"
-                        render={() => <ValidationErrors errors={errors.error} className="mb-3" />}
-                    />
-                    <FormikInput
-                        name="email"
-                        label="Email"
-                    />
-                    <FormikInput
-                        name="password"
-                        label="Password"
-                        type="password"
-                    />
-                    <Button
-                        type="submit"
-                        positive
-                        fluid
-                        loading={isSubmitting}
-                        disabled={isSubmitting}
-                    >
-                        Login
-                    </Button>
-                </Form>
-            )}
-        </Formik>
-    );
+          <Header
+            as="h2"
+            content="Login form"
+            textAlign="center"
+            color="teal"
+          />
+          <ErrorMessage
+            name="error"
+            render={() => <ValidationErrors errors={errors.error} className="mb-3" />}
+          />
+          <FormikInput
+            name="email"
+            label="Email"
+          />
+          <FormikInput
+            name="password"
+            label="Password"
+            type="password"
+          />
+          <Button
+            type="submit"
+            positive
+            fluid
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
+            Login
+          </Button>
+        </Form>
+      )}
+    </Formik>
+  );
 });
