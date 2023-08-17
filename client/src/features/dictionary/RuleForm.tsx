@@ -9,7 +9,7 @@ interface Props {
     textToBack?: string;
 }
 
-export default function CategoryItemForm(
+export default function RuleForm(
     {
         title,
         textForSubmitBtn,
@@ -26,15 +26,19 @@ export default function CategoryItemForm(
             <Form>
                 <Form.Field
                     control={Input}
-                    label='Status'
+                    label="Language"
+                />
+                <Form.Field
+                    control={Input}
+                    label="Status"
+                />
+                <Form.Field
+                    control={Input}
+                    label="Title"
                 />
                 <Form.Field
                     control={TextArea}
-                    label='Text'
-                />
-                <Form.Field
-                    control={TextArea}
-                    label='Translation'
+                    label="Description"
                 />
                 <Button
                     type="submit"

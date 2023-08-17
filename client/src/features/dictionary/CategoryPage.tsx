@@ -1,22 +1,23 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Button, Container, Header, Icon, Label, Table } from 'semantic-ui-react';
+
+import LinkBack from '../../components/LinkBack';
 
 export default function CategoryPage() {
     const { categoryId } = useParams();
-    const navigate = useNavigate();
 
     return (
         <Container>
             <div className="mb-3">
-                <Button
-                    secondary
-                    as={Link} to="/dictionary/categories"
-                >
-                    <Icon name="angle left" />
-                    Back
-                </Button>
+                <LinkBack link="/dictionary/categories" />
             </div>
             <Header as="h2" className="text-center">CategoryPage (58) --- ID {categoryId}</Header>
+            <div className="text-end mb-3">
+                <Button as={Link} to={`/dictionary/categories/${categoryId}/item/add`}>
+                    <Icon name="add" />
+                    Add category item
+                </Button>
+            </div>
             <div className="table-responsive">
                 <Table celled striped selectable unstackable>
                     <Table.Body>
@@ -38,7 +39,7 @@ export default function CategoryPage() {
                                             icon="pencil alternate"
                                             color="blue"
                                             className="m-0"
-                                            onClick={() => navigate(`/dictionary/categories/${categoryId}/item/${index}`)}
+                                            as={Link} to={`/dictionary/categories/${categoryId}/item/edit/${index}`}
                                         />
                                         <Button
                                             icon="trash alternate"

@@ -13,8 +13,11 @@ import DictionaryPage from '../../features/dictionary/DictionaryPage';
 import CategoriesPage from '../../features/dictionary/CategoriesPage';
 import RulesPage from '../../features/dictionary/RulesPage';
 import CategoryPage from '../../features/dictionary/CategoryPage';
-import CategoryItemForm from '../../features/dictionary/CategoryItemForm';
-import RuleItemForm from '../../features/dictionary/RuleItemForm';
+import AddRulePage from '../../features/dictionary/AddRulePage';
+import EditRulePage from '../../features/dictionary/EditRulePage';
+import RuleItemPage from '../../features/dictionary/RuleItemPage';
+import AddCategoryItemPage from '../../features/dictionary/AddCategoryItemPage';
+import EditCategoryItemPage from '../../features/dictionary/EditCategoryItemPage';
 
 export const routes: RouteObject[] = [
     {
@@ -39,8 +42,11 @@ export const routes: RouteObject[] = [
                         path: 'dictionary',
                         children: [
                             { path: 'categories/:categoryId', element: <CategoryPage /> },
-                            { path: 'categories/:categoryId/item/:itemId', element: <CategoryItemForm /> },
-                            { path: 'rules/:ruleId', element: <RuleItemForm /> }
+                            { path: 'categories/:categoryId/item/add', element: <AddCategoryItemPage /> },
+                            { path: 'categories/:categoryId/item/edit/:itemId', element: <EditCategoryItemPage /> },
+                            { path: 'rules/add', element: <AddRulePage /> },
+                            { path: 'rules/edit/:ruleId', element: <EditRulePage /> },
+                            { path: 'rules/:ruleId', element: <RuleItemPage /> }
                         ]
                     }
                 ]
