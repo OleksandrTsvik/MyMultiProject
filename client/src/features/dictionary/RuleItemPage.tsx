@@ -1,10 +1,30 @@
+import { SyntheticEvent } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Container, Flag, Header, Label, Segment } from 'semantic-ui-react';
 
+import { useStore } from '../../app/stores/store';
+import ModalConfirm from '../../app/common/modals/ModalConfirm';
 import LinkBack from '../../components/LinkBack';
 
-export default function RuleItemPage() {
+export default observer(function RuleItemPage() {
   const { ruleId } = useParams();
+
+  const { modalStore } = useStore();
+  const { openModal } = modalStore;
+
+  function handleOpenDeleteRule(event: SyntheticEvent) {
+    event.stopPropagation();
+
+    openModal(
+      <ModalConfirm
+        content={`Delete the rule ${'title'}.`}
+        onConfirm={() => console.log('onConfirm Rule')}
+      />,
+      {},
+      true
+    );
+  }
 
   return (
     <Container>
@@ -26,8 +46,9 @@ export default function RuleItemPage() {
         <Button
           content="Delete"
           color="red"
+          onClick={handleOpenDeleteRule}
         />
       </div>
     </Container>
   );
-}
+});

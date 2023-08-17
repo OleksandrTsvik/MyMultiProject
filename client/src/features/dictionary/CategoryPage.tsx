@@ -1,10 +1,26 @@
 import { Link, useParams } from 'react-router-dom';
 import { Button, Container, Header, Icon, Label, Table } from 'semantic-ui-react';
 
+import { useStore } from '../../app/stores/store';
+import ModalConfirm from '../../app/common/modals/ModalConfirm';
 import LinkBack from '../../components/LinkBack';
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
+
+  const { modalStore } = useStore();
+  const { openModal } = modalStore;
+
+  function handleOpenDeleteCategoryItem() {
+    openModal(
+      <ModalConfirm
+        content={`Delete the category item ${'title'}.`}
+        onConfirm={() => console.log('onConfirm Category Item')}
+      />,
+      {},
+      true
+    );
+  }
 
   return (
     <Container>
@@ -36,15 +52,16 @@ export default function CategoryPage() {
                 <Table.Cell collapsing>
                   <div className="d-flex gap-2">
                     <Button
+                      className="m-0"
                       icon="pencil alternate"
                       color="blue"
-                      className="m-0"
                       as={Link} to={`/dictionary/categories/${categoryId}/item/edit/${index}`}
                     />
                     <Button
+                      className="m-0"
                       icon="trash alternate"
                       color="red"
-                      className="m-0"
+                      onClick={handleOpenDeleteCategoryItem}
                     />
                   </div>
                 </Table.Cell>
