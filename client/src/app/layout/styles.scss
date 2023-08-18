@@ -99,6 +99,12 @@ body {
     border-bottom: 1px solid #008080;
 }
 
+.ui.dropdown.status-dropdown__placeholder input.search+.divider.text,
+.ui.dropdown.status-dropdown__placeholder input.search:focus+.divider.text {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
 /********** GENERAL **********/
 .formatted-text {
     white-space: pre-wrap;

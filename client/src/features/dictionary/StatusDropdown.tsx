@@ -30,10 +30,20 @@ export default function StatusDropdown(
     ...Object.keys(statuses).map((status) => getDropdownItem(status, statuses[status]))
   ]);
 
+  function getDropdownItem(status: string, color: string): DropdownItemProps {
+    return {
+      key: status,
+      label: { color, empty: true, circular: true },
+      text: status,
+      value: status,
+      onClick: (event, data) => setCurrentValue(data.value)
+    };
+  }
+
   function handleAddition(event: SyntheticEvent, data: DropdownProps) {
     const value = data.value?.toString().trim();
 
-    if (!value) {
+    if (!value || options.some((item) => item.text === value)) {
       return;
     }
 
@@ -44,7 +54,14 @@ export default function StatusDropdown(
   }
 
   function handleChange(event: SyntheticEvent, data: DropdownProps) {
-    setCurrentValue(data.value);
+    setCurrentValue((state) => {
+      // if nothing was selected, then you do not need to select the first item
+      if (!state) {
+        return '';
+      }
+
+      return data.value;
+    });
   }
 
   return (
@@ -54,24 +71,16 @@ export default function StatusDropdown(
       selection
       clearable
       allowAdditions
-      placeholder="Select status"
+      placeholder="Select status or add your own"
       {...dropdownProps}
       options={options}
       value={currentValue}
-      onAddItem={handleAddition}
-      onChange={handleChange}
+      className={currentValue ? 'status-dropdown__placeholder' : ''}
       style={getStatusCSS(currentValue?.toString())}
+      onChange={handleChange}
+      onAddItem={handleAddition}
     />
   );
-}
-
-function getDropdownItem(status: string, color: string) {
-  return {
-    key: status,
-    label: { color, empty: true, circular: true },
-    text: status,
-    value: status
-  };
 }
 
 export function getStatusCSS(status?: string): CSSProperties | undefined {
