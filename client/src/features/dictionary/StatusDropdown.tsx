@@ -106,9 +106,9 @@ export interface Status {
 }
 
 export const statuses: Status = {
-  'Remember': 'green',
-  'Repeat': 'yellow',
-  'Study': 'blue',
-  'New': 'orange',
-  'Forgot': 'red'
+  Remember: 'green',
+  Repeat: 'yellow',
+  Study: 'blue',
+  New: 'orange',
+  Forgot: 'red'
 };

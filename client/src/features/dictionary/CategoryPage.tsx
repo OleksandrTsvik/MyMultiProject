@@ -1,9 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
-import { Button, Container, Header, Icon, Label, Table } from 'semantic-ui-react';
+import { Button, Container, Header, Icon, Table } from 'semantic-ui-react';
 
 import { useStore } from '../../app/stores/store';
 import ModalConfirm from '../../app/common/modals/ModalConfirm';
 import LinkBack from '../../components/LinkBack';
+import StatusLabel from './StatusLabel';
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
@@ -43,7 +44,7 @@ export default function CategoryPage() {
                   <Icon name="block layout" />
                 </Table.Cell>
                 <Table.Cell>
-                  <Label horizontal color="teal">Status</Label>
+                  <StatusLabel status={'Status'} />
                   Text
                 </Table.Cell>
                 <Table.Cell>

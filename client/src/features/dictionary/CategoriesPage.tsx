@@ -1,13 +1,14 @@
 import { SyntheticEvent } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { Button, Flag, Icon, Label, Table } from 'semantic-ui-react';
+import { Button, Flag, Icon, Table } from 'semantic-ui-react';
 
 import { useStore } from '../../app/stores/store';
 import ModalConfirm from '../../app/common/modals/ModalConfirm';
 import EmptyBlock from '../../components/EmptyBlock';
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
+import StatusLabel from './StatusLabel';
 
 export default observer(function CategoriesPage() {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ export default observer(function CategoriesPage() {
                     <Flag name="america" />
                   </Table.Cell>
                   <Table.Cell collapsing>
-                    <Label horizontal color="violet">11</Label>
+                    <StatusLabel counter content={11} />
                   </Table.Cell>
                   <Table.Cell>
                     Category

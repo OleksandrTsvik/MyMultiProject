@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Flag, Icon, Label, Table } from 'semantic-ui-react';
+import { Button, Flag, Icon, Table } from 'semantic-ui-react';
 
 import EmptyBlock from '../../components/EmptyBlock';
+import StatusLabel from './StatusLabel';
 
 export default function RulesPage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function RulesPage() {
                     <Flag name="america" />
                   </Table.Cell>
                   <Table.Cell collapsing>
-                    <Label horizontal color="teal">Status</Label>
+                    <StatusLabel status={'Status'} />
                   </Table.Cell>
                   <Table.Cell>
                     Rule
