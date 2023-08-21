@@ -5,7 +5,7 @@ import { store } from '../stores/store';
 import { router } from '../router/Routes';
 import { Duty } from '../models/duty';
 import { User, UserLogin, UserRegister } from '../models/user';
-import { ListFollowingsPredicate, Photo, Profile } from '../models/profile';
+import { Image, ListFollowingsPredicate, Photo, Profile } from '../models/profile';
 import { PaginatedResult } from '../models/pagination';
 import sleep from '../utils/sleep';
 
@@ -95,6 +95,17 @@ axios.interceptors.response.use(
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
+const uploadFile = <T>(file: Blob, url: string, fieldName: string = 'File') => {
+  let formData = new FormData();
+  formData.append(fieldName, file);
+
+  return axios
+    .post<T>(url, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    .then(responseBody);
+}
+
 const requests = {
   get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
   post: <T>(url: string, body?: {}) => axios.post<T>(url, body).then(responseBody),
@@ -120,23 +131,14 @@ const Account = {
 
 const Profiles = {
   get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
-  uploadPhoto: (file: Blob) => {
-    let formData = new FormData();
-    formData.append('File', file);
-
-    return axios
-      .post<Photo>('/photos', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(responseBody);
-  },
+  uploadPhoto: (file: Blob) => uploadFile<Photo>(file, '/photos'),
   setMainPhoto: (id: string) => requests.post<void>(`/photos/${id}/setMain`, {}),
   deletePhoto: (id: string) => requests.delete<void>(`/photos/${id}`),
   updateFollowing: (username: string) => requests.post<void>(`/follow/${username}`, {}),
   listFollowings: (username: string, predicate: ListFollowingsPredicate) =>
-    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+  uploadImage: (file: Blob) => uploadFile<Image>(file, '/images', 'Image'),
+  getImage: (name: string) => requests.get<Blob>(`/images/${name}`, { responseType: 'blob' })
 };
 
 const agent = {

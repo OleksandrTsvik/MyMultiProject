@@ -92,5 +92,6 @@ dotnet ef database drop -s API -p Persistence
 - [react-dropzone](https://react-dropzone.js.org/)
 - [react-cropper](https://github.com/react-cropper/react-cropper)
 - [react-infinite-scroller](https://github.com/danbovey/react-infinite-scroller)
+- [react-draft-wysiwyg](https://www.npmjs.com/package/react-draft-wysiwyg)
 
 - [*EditorConfig*](https://editorconfig.org/)

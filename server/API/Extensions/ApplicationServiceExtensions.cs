@@ -2,6 +2,8 @@ using Application.Duties;
 using Application.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Folders;
+using Infrastructure.Images;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
@@ -47,6 +49,9 @@ public static class ApplicationServiceExtensions
 
         services.AddScoped<IPhotoAccessor, PhotoAccessor>();
         services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+
+        services.AddScoped<IFolderAccessor, FolderAccessor>();
+        services.AddScoped<IImageAccessor, ImageAccessor>();
 
         services.AddSignalR();
 

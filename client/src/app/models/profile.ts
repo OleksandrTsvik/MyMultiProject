@@ -19,3 +19,9 @@ export enum ListFollowingsPredicate {
   followers = 'followers',
   following = 'following'
 }
+
+export interface Image {
+  id: string;
+  name: string;
+  url: string;
+}

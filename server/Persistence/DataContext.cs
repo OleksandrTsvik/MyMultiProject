@@ -10,6 +10,7 @@ public class DataContext : IdentityDbContext<AppUser>
     public DbSet<Duty> Duties { get; set; }
     public DbSet<Photo> Photos { get; set; }
     public DbSet<UserFollowing> UserFollowings { get; set; }
+    public DbSet<Image> Images { get; set; }
 
     public DataContext(DbContextOptions options) : base(options)
     {
@@ -23,5 +24,6 @@ public class DataContext : IdentityDbContext<AppUser>
         builder.ApplyConfiguration(new DutyConfiguration());
         builder.ApplyConfiguration(new PhotoConfiguration());
         builder.ApplyConfiguration(new UserFollowingConfiguration());
+        builder.ApplyConfiguration(new ImageConfiguration());
     }
 }

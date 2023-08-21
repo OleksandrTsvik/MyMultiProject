@@ -11,6 +11,7 @@ public class AppUser : IdentityUser
     public ICollection<Photo> Photos { get; set; }
     public ICollection<UserFollowing> Followings { get; set; }
     public ICollection<UserFollowing> Followers { get; set; }
+    public ICollection<Image> Images { get; set; }
 
     public AppUser()
     {
@@ -19,5 +20,6 @@ public class AppUser : IdentityUser
         Photos = new List<Photo>();
         Followings = new List<UserFollowing>();
         Followers = new List<UserFollowing>();
+        Images = new List<Image>();
     }
 }

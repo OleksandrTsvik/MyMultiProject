@@ -1,5 +1,6 @@
 import { Button, Container, Form, Header, Input, TextArea } from 'semantic-ui-react';
 
+import TextEditorWithImages from '../../app/common/imageUpload/TextEditorWithImages';
 import LinkBack from '../../components/LinkBack';
 import CountryDropdown from '../../components/CountryDropdown';
 import StatusDropdown from './StatusDropdown';
@@ -42,6 +43,9 @@ export default function RuleForm(
           control={TextArea}
           label="Description"
         />
+        <div className="mb-3">
+          <TextEditorWithImages />
+        </div>
         <Button
           type="submit"
           primary
