@@ -5,7 +5,7 @@ namespace Application.Interfaces;
 
 public interface IImageAccessor
 {
-    Task<byte[]> GetImage(string name);
+    string GetImagePath(string name);
     Task<ImageUploadResult> AddImage(IFormFile image);
     string DeleteImage(string name);
 }

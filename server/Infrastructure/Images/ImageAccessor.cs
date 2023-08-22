@@ -17,13 +17,9 @@ public class ImageAccessor : IImageAccessor
         _folderAccessor = folderAccessor;
     }
 
-    public async Task<byte[]> GetImage(string name)
+    public string GetImagePath(string name)
     {
-        string imagePath = Path.Combine(_folderAccessor.GetFolderPath(ImagesFolder), name);
-
-        byte[] imageBytes = await File.ReadAllBytesAsync(imagePath);
-
-        return imageBytes;
+        return Path.Combine(_folderAccessor.GetFolderPath(ImagesFolder), name);
     }
 
     public async Task<ImageUploadResult> AddImage(IFormFile image)

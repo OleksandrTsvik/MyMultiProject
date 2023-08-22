@@ -1,18 +1,19 @@
 using Application.Core;
 using Application.Images;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 public class ImagesController : BaseApiController
 {
+    [AllowAnonymous]
     [HttpGet("{name}")]
     public async Task<IActionResult> GetImage(string name)
     {
-        // TODO: solve 401 (Unauthorized)
-        Result<byte[]> result = await Mediator.Send(new Details.Query { Name = name });
+        Result<string> result = await Mediator.Send(new Details.Query { Name = name });
 
-        return File(result.Value, "application/octet-stream");
+        return PhysicalFile(result.Value, "application/octet-stream");
     }
 
     [HttpPost]

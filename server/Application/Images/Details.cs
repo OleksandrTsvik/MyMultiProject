@@ -9,45 +9,35 @@ namespace Application.Images;
 
 public class Details
 {
-    public class Query : IRequest<Result<byte[]>>
+    public class Query : IRequest<Result<string>>
     {
         public string Name { get; set; }
     }
 
-    public class Handler : IRequestHandler<Query, Result<byte[]>>
+    public class Handler : IRequestHandler<Query, Result<string>>
     {
         private readonly DataContext _context;
         private readonly IImageAccessor _imageAccessor;
-        private readonly IUserAccessor _userAccessor;
 
-        public Handler(DataContext context, IImageAccessor imageAccessor, IUserAccessor userAccessor)
+        public Handler(DataContext context, IImageAccessor imageAccessor)
         {
             _context = context;
             _imageAccessor = imageAccessor;
-            _userAccessor = userAccessor;
         }
 
-        public async Task<Result<byte[]>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(Query request, CancellationToken cancellationToken)
         {
-            AppUser user = await _context.Users
-                .Include(x => x.Images)
-                .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            Image image = user.Images.FirstOrDefault(x => x.Name == request.Name);
+            Image image = await _context.Images
+                .FirstOrDefaultAsync(x => x.Name == request.Name);
 
             if (image == null)
             {
                 return null;
             }
 
-            byte[] imageBytes = await _imageAccessor.GetImage(image.Name);
+            string imagePath = _imageAccessor.GetImagePath(image.Name);
 
-            return Result<byte[]>.Success(imageBytes);
+            return Result<string>.Success(imagePath);
         }
     }
 }
