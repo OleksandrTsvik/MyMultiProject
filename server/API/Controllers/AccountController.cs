@@ -125,6 +125,7 @@ public class AccountController : ControllerBase
         return await CreateUserDto(user);
     }
 
+    [NonAction]
     private async Task SetRefreshToken(AppUser user)
     {
         RefreshToken refreshToken = _tokenService.GenerateRefreshToken();
@@ -141,6 +142,7 @@ public class AccountController : ControllerBase
         Response.Cookies.Append("refresh_token", refreshToken.Token, cookieOptions);
     }
 
+    [NonAction]
     private async Task<UserDto> CreateUserDto(AppUser user)
     {
         return new UserDto

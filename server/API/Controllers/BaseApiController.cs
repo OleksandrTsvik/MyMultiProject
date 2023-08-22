@@ -27,6 +27,7 @@ public class BaseApiController : ControllerBase
         }
     }
 
+    [NonAction]
     protected ActionResult HandleResult<T>(Result<T> result)
     {
         if (result == null)
@@ -54,6 +55,7 @@ public class BaseApiController : ControllerBase
         return BadRequest(result.Error);
     }
 
+    [NonAction]
     protected ActionResult HandlePagedResult<T>(Result<PagedList<T>> result)
     {
         if (result != null && result.IsSuccess && result.Value != null)

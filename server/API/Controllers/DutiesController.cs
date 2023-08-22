@@ -1,4 +1,3 @@
-using Application.Core;
 using Application.Duties;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
