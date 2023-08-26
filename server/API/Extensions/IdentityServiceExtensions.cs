@@ -62,8 +62,15 @@ public static class IdentityServiceExtensions
             {
                 policy.Requirements.Add(new IsOwnerDutyRequirement());
             });
+
+            option.AddPolicy("IsOwnerCategory", policy =>
+            {
+                policy.Requirements.Add(new IsOwnerCategoryRequirement());
+            });
         });
+
         services.AddTransient<IAuthorizationHandler, IsOwnerDutyRequirementHandler>();
+        services.AddTransient<IAuthorizationHandler, IsOwnerCategoryRequirementHandler>();
 
         services.AddScoped<TokenService>();
 
