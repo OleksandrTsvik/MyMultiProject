@@ -7,7 +7,6 @@ namespace Application.DictionaryCategories;
 
 public class Delete
 {
-
     public class Command : IRequest<Result<Unit>>
     {
         public Guid Id { get; set; }

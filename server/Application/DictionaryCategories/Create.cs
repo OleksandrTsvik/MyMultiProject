@@ -20,7 +20,7 @@ public class Create
     {
         public CommandValidator()
         {
-            RuleFor(x => x.CreateDto).SetValidator(new CreateDictionaryCategoryValidator());
+            RuleFor(x => x.CreateDto).SetValidator(new CreateDtoValidator());
         }
     }
 

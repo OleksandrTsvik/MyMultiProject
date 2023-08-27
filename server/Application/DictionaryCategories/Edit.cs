@@ -19,7 +19,7 @@ public class Edit
     {
         public CommandValidator()
         {
-            RuleFor(x => x.EditDto).SetValidator(new CreateDictionaryCategoryValidator());
+            RuleFor(x => x.EditDto).SetValidator(new CreateDtoValidator());
         }
     }
 

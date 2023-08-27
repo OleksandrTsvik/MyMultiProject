@@ -35,11 +35,11 @@ public class Sort
 
             foreach (DictionaryCategory category in categories)
             {
-                SortDto editedCategory = request.SortDtos.FirstOrDefault(x => x.Id == category.Id);
+                SortDto sortedCategory = request.SortDtos.FirstOrDefault(x => x.Id == category.Id);
 
-                if (editedCategory != null)
+                if (sortedCategory != null)
                 {
-                    category.Position = editedCategory.Position;
+                    category.Position = sortedCategory.Position;
                 }
             }
 
@@ -47,7 +47,7 @@ public class Sort
 
             if (!result)
             {
-                return Result<Unit>.Failure("Failed to update dictionary categories");
+                return Result<Unit>.Failure("Failed to sort dictionary categories");
             }
 
             return Result<Unit>.Success(Unit.Value);

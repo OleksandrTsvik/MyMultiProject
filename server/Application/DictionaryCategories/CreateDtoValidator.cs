@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Application.DictionaryCategories;
 
-public class CreateDictionaryCategoryValidator : AbstractValidator<CreateDto>
+public class CreateDtoValidator : AbstractValidator<CreateDto>
 {
-    public CreateDictionaryCategoryValidator()
+    public CreateDtoValidator()
     {
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.Language).NotEmpty();
