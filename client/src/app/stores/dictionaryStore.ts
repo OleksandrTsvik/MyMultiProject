@@ -112,8 +112,6 @@ export default class DictionaryStore {
   }
 
   resetCategories = () => {
-    this.quantity = undefined;
-    this.setLoadingQuantity(true);
     this.categories.clear();
     this.setLoadingCategories(true);
   }
