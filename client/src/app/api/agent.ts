@@ -7,7 +7,7 @@ import { PaginatedResult } from '../models/pagination';
 import sleep from '../utils/sleep';
 import { Duties } from './duties';
 import { Account } from './account';
-import { DictionaryCategories, DictionaryItems } from './dictionary';
+import { Dictionary, DictionaryCategories, DictionaryItems } from './dictionary';
 import { Profiles } from './profiles';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
@@ -119,6 +119,7 @@ const agent = {
   Duties,
   Account,
   Profiles,
+  Dictionary,
   DictionaryCategories,
   DictionaryItems
 };

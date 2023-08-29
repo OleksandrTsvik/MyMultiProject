@@ -3,12 +3,17 @@ import {
   CreateDictionaryItemDto,
   DictionaryCategory,
   DictionaryItem,
+  DictionaryQuantity,
   EditDictionaryCategoryDto,
   EditDictionaryItemDto,
   SortDictionaryCategoryDto,
   SortDictionaryItemDto
 } from '../models/dictionary';
 import { requests } from './agent';
+
+export const Dictionary = {
+  quantity: () => requests.get<DictionaryQuantity>('/dictionary/quantity')
+};
 
 export const DictionaryCategories = {
   list: () => requests.get<DictionaryCategory[]>('/dictionary/categories'),

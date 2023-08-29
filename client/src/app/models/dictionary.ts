@@ -1,3 +1,8 @@
+export interface DictionaryQuantity {
+  countCategories: number;
+  countRules: number;
+}
+
 export interface DictionaryCategory {
   id: string;
   title: string;

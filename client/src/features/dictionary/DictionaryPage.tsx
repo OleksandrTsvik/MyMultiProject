@@ -1,7 +1,19 @@
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Container, Label, Menu } from 'semantic-ui-react';
+import { Container, Menu } from 'semantic-ui-react';
 
-export default function DictionaryPage() {
+import { useStore } from '../../app/stores/store';
+import Counter from '../../components/Counter';
+
+export default observer(function DictionaryPage() {
+  const { dictionaryStore } = useStore();
+  const { loadQuantity, quantity, loadingQuantity } = dictionaryStore;
+
+  useEffect(() => {
+    loadQuantity();
+  }, [loadQuantity]);
+
   return (
     <Container>
       <Menu
@@ -13,11 +25,11 @@ export default function DictionaryPage() {
       >
         <Menu.Item as={NavLink} to="/dictionary/categories">
           Categories
-          <Label color="blue">10</Label>
+          <Counter loading={loadingQuantity} value={quantity?.countCategories} />
         </Menu.Item>
         <Menu.Item as={NavLink} to="/dictionary/rules">
           Rules
-          <Label color="blue">50</Label>
+          <Counter loading={loadingQuantity} value={quantity?.countRules} />
         </Menu.Item>
       </Menu>
       <div className="mt-3">
@@ -25,4 +37,4 @@ export default function DictionaryPage() {
       </div>
     </Container>
   );
-}
+});

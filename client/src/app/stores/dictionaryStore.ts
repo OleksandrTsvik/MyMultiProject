@@ -1,11 +1,13 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { CreateDictionaryCategoryDto, DictionaryCategory, EditDictionaryCategoryDto } from '../models/dictionary';
+import { CreateDictionaryCategoryDto, DictionaryCategory, DictionaryQuantity, EditDictionaryCategoryDto } from '../models/dictionary';
 import agent from '../api/agent';
 
 export default class DictionaryStore {
-  categories: Map<string, DictionaryCategory> = new Map<string, DictionaryCategory>();
+  quantity?: DictionaryQuantity;
+  loadingQuantity: boolean = true;
 
+  categories: Map<string, DictionaryCategory> = new Map<string, DictionaryCategory>();
   loadingCategories: boolean = true;
 
   constructor() {
@@ -19,6 +21,30 @@ export default class DictionaryStore {
   get categoriesSortByPosition(): DictionaryCategory[] {
     return this.categoriesArray
       .sort((category01, category02) => category02.position - category01.position);
+  }
+
+  loadQuantity = async () => {
+    this.setLoadingQuantity(true);
+
+    try {
+      const quantity = await agent.Dictionary.quantity();
+
+      runInAction(() => {
+        this.quantity = quantity;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    this.setLoadingQuantity(false);
+  }
+
+  updateQuantity = (num: number, key: keyof DictionaryQuantity) => {
+    if (!this.quantity) {
+      return;
+    }
+
+    this.quantity[key] += num;
   }
 
   loadCategories = async () => {
@@ -48,6 +74,8 @@ export default class DictionaryStore {
       runInAction(() => {
         this.categories.set(addedCategory.id, addedCategory);
       });
+
+      this.updateQuantity(1, 'countCategories');
     } catch (error) {
       console.log(error);
 
@@ -76,14 +104,22 @@ export default class DictionaryStore {
       runInAction(() => {
         this.categories.delete(id);
       });
+
+      this.updateQuantity(-1, 'countCategories');
     } catch (error) {
       console.log(error);
     }
   }
 
   resetCategories = () => {
+    this.quantity = undefined;
+    this.setLoadingQuantity(true);
     this.categories.clear();
     this.setLoadingCategories(true);
+  }
+
+  setLoadingQuantity = (state: boolean) => {
+    this.loadingQuantity = state;
   }
 
   setLoadingCategories = (state: boolean) => {
