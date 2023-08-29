@@ -87,6 +87,7 @@ dotnet ef database drop -s API -p Persistence
 - [Create React App](https://create-react-app.dev/)
 - [semantic-ui](https://react.semantic-ui.com/usage/)
 - [Formik](https://formik.org/)
+- [yup](https://github.com/jquense/yup)
 - [date-fns#format](https://date-fns.org/v2.30.0/docs/format)
 - [react-toastify](https://fkhadra.github.io/react-toastify/introduction/)
 - [react-dropzone](https://react-dropzone.js.org/)

@@ -8,7 +8,6 @@ interface Props {
   header?: string;
   onConfirm: () => void;
   onCancel?: () => void;
-  isLoading?: boolean;
   closeAfterConfirm?: boolean;
   closeAfterCancel?: boolean;
   btnConfirmProps?: ButtonProps;
@@ -25,8 +24,7 @@ export default observer(
       header = 'Are you sure?',
       onConfirm,
       onCancel,
-      isLoading,
-      closeAfterConfirm,
+      closeAfterConfirm = true,
       closeAfterCancel = true,
       btnConfirmProps,
       btnCancelProps,
@@ -36,11 +34,16 @@ export default observer(
     }: Props
   ) {
     const { modalStore } = useStore();
-    const { closeModal } = modalStore;
+    const { closeModal, setIsLoading, isLoading } = modalStore;
 
     function handleConfirm() {
-      onConfirm && onConfirm();
-      closeAfterConfirm && closeModal();
+      setIsLoading(true);
+
+      Promise.resolve(onConfirm())
+        .then(() => {
+          closeAfterConfirm && closeModal();
+        })
+        .finally(() => setIsLoading(false));
     }
 
     function handleCancel() {
@@ -56,6 +59,7 @@ export default observer(
           <Button
             content={<><Icon name="remove" /> Cancel</>}
             {...btnConfirmProps}
+            disabled={isLoading}
             onClick={handleCancel}
           />
           <Button

@@ -6,6 +6,16 @@ import { router } from '../router/Routes';
 import { Duty } from '../models/duty';
 import { User, UserLogin, UserRegister } from '../models/user';
 import { Image, ListFollowingsPredicate, Photo, Profile } from '../models/profile';
+import {
+  CreateDictionaryCategoryDto,
+  CreateDictionaryItemDto,
+  DictionaryCategory,
+  DictionaryItem,
+  EditDictionaryCategoryDto,
+  EditDictionaryItemDto,
+  SortDictionaryCategoryDto,
+  SortDictionaryItemDto
+} from '../models/dictionary';
 import { PaginatedResult } from '../models/pagination';
 import sleep from '../utils/sleep';
 
@@ -110,7 +120,8 @@ const requests = {
   get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
   post: <T>(url: string, body?: {}) => axios.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  delete: <T>(url: string) => axios.delete<T>(url).then(responseBody)
+  delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+  patch: <T>(url: string, body: {}) => axios.patch<T>(url, body).then(responseBody)
 };
 
 const Duties = {
@@ -141,10 +152,32 @@ const Profiles = {
   getImage: (name: string) => requests.get<Blob>(`/images/${name}`, { responseType: 'blob' })
 };
 
+const DictionaryCategories = {
+  list: () => requests.get<DictionaryCategory[]>('/dictionary/categories'),
+  create: (category: CreateDictionaryCategoryDto) => requests
+    .post<DictionaryCategory>('/dictionary/categories', category),
+  update: (category: EditDictionaryCategoryDto) => requests
+    .put<DictionaryCategory>(`/dictionary/categories/${category.id}`, category),
+  delete: (id: string) => requests.delete<void>(`/dictionary/categories/${id}`),
+  sort: (categories: SortDictionaryCategoryDto[]) => requests.patch<void>('/dictionary/categories', categories)
+};
+
+const DictionaryItems = {
+  list: () => requests.get<DictionaryItem[]>('/dictionary/items'),
+  create: (item: CreateDictionaryItemDto) => requests
+    .post<DictionaryItem>('/dictionary/items', item),
+  update: (item: EditDictionaryItemDto) => requests
+    .put<DictionaryItem>(`/dictionary/items/${item.id}`, item),
+  delete: (id: string) => requests.delete<void>(`/dictionary/items/${id}`),
+  sort: (items: SortDictionaryItemDto[]) => requests.patch<void>('/dictionary/items', items)
+};
+
 const agent = {
   Duties,
   Account,
-  Profiles
+  Profiles,
+  DictionaryCategories,
+  DictionaryItems
 };
 
 export default agent;
