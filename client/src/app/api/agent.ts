@@ -3,21 +3,12 @@ import { toast } from 'react-toastify';
 
 import { store } from '../stores/store';
 import { router } from '../router/Routes';
-import { Duty } from '../models/duty';
-import { User, UserLogin, UserRegister } from '../models/user';
-import { Image, ListFollowingsPredicate, Photo, Profile } from '../models/profile';
-import {
-  CreateDictionaryCategoryDto,
-  CreateDictionaryItemDto,
-  DictionaryCategory,
-  DictionaryItem,
-  EditDictionaryCategoryDto,
-  EditDictionaryItemDto,
-  SortDictionaryCategoryDto,
-  SortDictionaryItemDto
-} from '../models/dictionary';
 import { PaginatedResult } from '../models/pagination';
 import sleep from '../utils/sleep';
+import { Duties } from './duties';
+import { Account } from './account';
+import { DictionaryCategories, DictionaryItems } from './dictionary';
+import { Profiles } from './profiles';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -103,9 +94,17 @@ axios.interceptors.response.use(
   }
 );
 
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+export const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
-const uploadFile = <T>(file: Blob, url: string, fieldName: string = 'File') => {
+export const requests = {
+  get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
+  post: <T>(url: string, body?: {}) => axios.post<T>(url, body).then(responseBody),
+  put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
+  delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+  patch: <T>(url: string, body: {}) => axios.patch<T>(url, body).then(responseBody)
+};
+
+export const uploadFile = <T>(file: Blob, url: string, fieldName: string = 'File') => {
   let formData = new FormData();
   formData.append(fieldName, file);
 
@@ -115,62 +114,6 @@ const uploadFile = <T>(file: Blob, url: string, fieldName: string = 'File') => {
     })
     .then(responseBody);
 }
-
-const requests = {
-  get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
-  post: <T>(url: string, body?: {}) => axios.post<T>(url, body).then(responseBody),
-  put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
-  patch: <T>(url: string, body: {}) => axios.patch<T>(url, body).then(responseBody)
-};
-
-const Duties = {
-  list: (params: URLSearchParams) => requests.get<PaginatedResult<Duty[]>>('/duties', { params }),
-  details: (id: string) => requests.get<Duty>(`/duties/${id}`),
-  create: (duty: Duty) => requests.post<void>('/duties', duty),
-  update: (duty: Duty) => requests.put<void>(`/duties/${duty.id}`, duty),
-  delete: (id: string) => requests.delete<void>(`/duties/${id}`),
-  updateList: (duties: Duty[]) => requests.put<void>('/duties/list', duties)
-};
-
-const Account = {
-  current: () => requests.get<User>('/account'),
-  login: (user: UserLogin) => requests.post<User>('/account/login', user),
-  register: (user: UserRegister) => requests.post<User>('/account/register', user),
-  refreshToken: () => requests.post<User>('/account/refreshToken')
-};
-
-const Profiles = {
-  get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
-  uploadPhoto: (file: Blob) => uploadFile<Photo>(file, '/photos'),
-  setMainPhoto: (id: string) => requests.post<void>(`/photos/${id}/setMain`, {}),
-  deletePhoto: (id: string) => requests.delete<void>(`/photos/${id}`),
-  updateFollowing: (username: string) => requests.post<void>(`/follow/${username}`, {}),
-  listFollowings: (username: string, predicate: ListFollowingsPredicate) =>
-    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
-  uploadImage: (file: Blob) => uploadFile<Image>(file, '/images', 'Image'),
-  getImage: (name: string) => requests.get<Blob>(`/images/${name}`, { responseType: 'blob' })
-};
-
-const DictionaryCategories = {
-  list: () => requests.get<DictionaryCategory[]>('/dictionary/categories'),
-  create: (category: CreateDictionaryCategoryDto) => requests
-    .post<DictionaryCategory>('/dictionary/categories', category),
-  update: (category: EditDictionaryCategoryDto) => requests
-    .put<DictionaryCategory>(`/dictionary/categories/${category.id}`, category),
-  delete: (id: string) => requests.delete<void>(`/dictionary/categories/${id}`),
-  sort: (categories: SortDictionaryCategoryDto[]) => requests.patch<void>('/dictionary/categories', categories)
-};
-
-const DictionaryItems = {
-  list: () => requests.get<DictionaryItem[]>('/dictionary/items'),
-  create: (item: CreateDictionaryItemDto) => requests
-    .post<DictionaryItem>('/dictionary/items', item),
-  update: (item: EditDictionaryItemDto) => requests
-    .put<DictionaryItem>(`/dictionary/items/${item.id}`, item),
-  delete: (id: string) => requests.delete<void>(`/dictionary/items/${id}`),
-  sort: (items: SortDictionaryItemDto[]) => requests.patch<void>('/dictionary/items', items)
-};
 
 const agent = {
   Duties,
