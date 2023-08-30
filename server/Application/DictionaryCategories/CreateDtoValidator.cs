@@ -8,6 +8,5 @@ public class CreateDtoValidator : AbstractValidator<CreateDto>
     {
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.Language).NotEmpty();
-        RuleFor(x => x.Position).NotNull();
     }
 }

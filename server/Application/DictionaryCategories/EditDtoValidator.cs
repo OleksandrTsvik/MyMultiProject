@@ -8,6 +8,5 @@ public class EditDtoValidator : AbstractValidator<EditDto>
     {
         RuleFor(x => x.Title).NotEmpty();
         RuleFor(x => x.Language).NotEmpty();
-        RuleFor(x => x.Position).NotNull();
     }
 }

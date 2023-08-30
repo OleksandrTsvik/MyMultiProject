@@ -45,7 +45,6 @@ public class Edit
 
             category.Title = editedCategory.Title;
             category.Language = editedCategory.Language;
-            category.Position = editedCategory.Position;
 
             bool result = await _context.SaveChangesAsync() > 0;
 

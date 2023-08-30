@@ -51,7 +51,7 @@ public class Create
             {
                 Title = addedCategory.Title,
                 Language = addedCategory.Language,
-                Position = addedCategory.Position,
+                Position = -1,
                 DateCreation = DateTime.UtcNow,
                 AppUser = user
             };

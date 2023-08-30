@@ -1,6 +1,12 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import { CreateDictionaryCategoryDto, DictionaryCategory, DictionaryQuantity, EditDictionaryCategoryDto } from '../models/dictionary';
+import {
+  CreateDictionaryCategoryDto,
+  DictionaryCategory,
+  DictionaryQuantity,
+  EditDictionaryCategoryDto,
+  SortDictionaryCategoryDto
+} from '../models/dictionary';
 import agent from '../api/agent';
 
 export default class DictionaryStore {
@@ -20,7 +26,7 @@ export default class DictionaryStore {
 
   get categoriesSortByPosition(): DictionaryCategory[] {
     return this.categoriesArray
-      .sort((category01, category02) => category02.position - category01.position);
+      .sort((category01, category02) => category01.position - category02.position);
   }
 
   loadQuantity = async () => {
@@ -106,6 +112,38 @@ export default class DictionaryStore {
       });
 
       this.updateQuantity(-1, 'countCategories');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  changePositions = async (sourceIndex: number, destinationIndex: number) => {
+    if (sourceIndex === destinationIndex) {
+      return;
+    }
+
+    let position = 1;
+    const sortedCategoriesDto: SortDictionaryCategoryDto[] = [];
+    const sortedCategories = this.categoriesArray;
+
+    // remove the element with the source index and insert before the destination index
+    sortedCategories.splice(destinationIndex, 0, sortedCategories.splice(sourceIndex, 1)[0]);
+
+    for (const category of sortedCategories) {
+      category.position = position;
+
+      this.categories.set(category.id, category);
+
+      sortedCategoriesDto.push({
+        id: category.id,
+        position: category.position
+      });
+
+      position++;
+    }
+
+    try {
+      await agent.DictionaryCategories.sort(sortedCategoriesDto);
     } catch (error) {
       console.log(error);
     }

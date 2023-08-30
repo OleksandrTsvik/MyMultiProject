@@ -94,5 +94,15 @@ dotnet ef database drop -s API -p Persistence
 - [react-cropper](https://github.com/react-cropper/react-cropper)
 - [react-infinite-scroller](https://github.com/danbovey/react-infinite-scroller)
 - [react-draft-wysiwyg](https://www.npmjs.com/package/react-draft-wysiwyg)
+- [react-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd)
+  <a href="https://youtu.be/y1w6C9A5a2A?si=zqZtrJR0656WhYQM" target="_blank">
+    <img
+      width="20"
+      height="20"
+      src="https://cdn.icon-icons.com/icons2/2699/PNG/32/youtube_logo_icon_168737.png"
+      alt="YouTube"
+      title="Advanced ReactJS: Drag and drop to re order a list with react beautiful dnd library"
+    />
+  </a>
 
 - [*EditorConfig*](https://editorconfig.org/)
