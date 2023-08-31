@@ -2,9 +2,12 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import {
   CreateDictionaryCategoryDto,
+  CreateDictionaryItemDto,
   DictionaryCategory,
+  DictionaryItem,
   DictionaryQuantity,
   EditDictionaryCategoryDto,
+  EditDictionaryItemDto,
   SortDictionaryCategoryDto
 } from '../models/dictionary';
 import agent from '../api/agent';
@@ -15,6 +18,12 @@ export default class DictionaryStore {
 
   categories: Map<string, DictionaryCategory> = new Map<string, DictionaryCategory>();
   loadingCategories: boolean = true;
+
+  categoryDetails?: DictionaryCategory;
+  loadingCategoryDetails: boolean = true;
+
+  items: Map<string, DictionaryItem> = new Map<string, DictionaryItem>();
+  loadingItems: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -27,6 +36,15 @@ export default class DictionaryStore {
   get categoriesSortByPosition(): DictionaryCategory[] {
     return this.categoriesArray
       .sort((category01, category02) => category01.position - category02.position);
+  }
+
+  get itemsArray(): DictionaryItem[] {
+    return Array.from(this.items.values());
+  }
+
+  get itemsSortByPosition(): DictionaryItem[] {
+    return this.itemsArray
+      .sort((item01, item02) => item01.position - item02.position);
   }
 
   loadQuantity = async () => {
@@ -154,11 +172,117 @@ export default class DictionaryStore {
     this.setLoadingCategories(true);
   }
 
+  loadCategoryDetails = async (id: string) => {
+    this.setLoadingCategoryDetails(true);
+
+    try {
+      const categoryDetails = await agent.DictionaryCategories.details(id);
+
+      runInAction(() => {
+        this.categoryDetails = categoryDetails;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    this.setLoadingCategoryDetails(false);
+  }
+
+  resetCategoryDetails = () => {
+    this.categoryDetails = undefined;
+    this.setLoadingCategoryDetails(true);
+  }
+
+  loadItems = async () => {
+    this.setLoadingItems(true);
+
+    try {
+      const items = await agent.DictionaryItems.list();
+
+      runInAction(() => {
+        for (const item of items) {
+          item.dateCreation = new Date(item.dateCreation);
+
+          this.items.set(item.id, item);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    this.setLoadingItems(false);
+  }
+
+  createItem = async (item: CreateDictionaryItemDto) => {
+    try {
+      const addedItem = await agent.DictionaryItems.create(item);
+
+      runInAction(() => {
+        this.items.set(addedItem.id, addedItem);
+      });
+
+      this.updateCountItems(1);
+    } catch (error) {
+      console.log(error);
+
+      throw error;
+    }
+  }
+
+  editItem = async (item: EditDictionaryItemDto) => {
+    try {
+      const editedItem = await agent.DictionaryItems.update(item);
+
+      runInAction(() => {
+        this.items.set(editedItem.id, editedItem);
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw error;
+    }
+  }
+
+  deleteItem = async (id: string) => {
+    try {
+      await agent.DictionaryItems.delete(id);
+
+      runInAction(() => {
+        this.items.delete(id);
+      });
+
+      this.updateCountItems(-1);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  updateCountItems = (num: number) => {
+    if (!this.categoryDetails) {
+      return;
+    }
+
+    this.categoryDetails.countItems += num;
+  }
+
+  resetItems = () => {
+    this.items.clear();
+    this.setLoadingItems(true);
+  }
+
   setLoadingQuantity = (state: boolean) => {
     this.loadingQuantity = state;
   }
 
   setLoadingCategories = (state: boolean) => {
     this.loadingCategories = state;
+  }
+
+  setLoadingCategoryDetails = (state: boolean) => {
+    this.loadingCategoryDetails = state;
+  }
+
+  setLoadingItems = (state: boolean) => {
+    this.loadingItems = state;
   }
 }

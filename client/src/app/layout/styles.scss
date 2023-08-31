@@ -129,6 +129,23 @@ body {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.flag {
+    $width: 16px;
+    $height: 11px;
+
+    &__medium {
+        $scale: 1.8;
+
+        width: $width * $scale !important;
+        height: $height * $scale !important;
+        line-height: $height * $scale !important;
+
+        &::before {
+            transform: scale($scale);
+        }
+    }
+}
+
 /********** GENERAL **********/
 .formatted-text {
     white-space: pre-wrap;

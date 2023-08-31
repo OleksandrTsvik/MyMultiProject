@@ -17,6 +17,7 @@ export const Dictionary = {
 
 export const DictionaryCategories = {
   list: () => requests.get<DictionaryCategory[]>('/dictionary/categories'),
+  details: (id: string) => requests.get<DictionaryCategory>(`/dictionary/categories/${id}`),
   create: (category: CreateDictionaryCategoryDto) => requests
     .post<DictionaryCategory>('/dictionary/categories', category),
   update: (category: EditDictionaryCategoryDto) => requests

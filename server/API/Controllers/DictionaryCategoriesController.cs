@@ -13,6 +13,13 @@ public class DictionaryCategoriesController : BaseApiController
         return HandleResult(await Mediator.Send(new List.Query { }));
     }
 
+    [Authorize(Policy = "IsOwnerCategory")]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCategory(Guid id)
+    {
+        return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateCategory(CreateDto category)
     {

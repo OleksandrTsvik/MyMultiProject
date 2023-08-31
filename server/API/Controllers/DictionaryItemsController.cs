@@ -25,7 +25,7 @@ public class DictionaryItemsController : BaseApiController
 
         return HandleResult(await Mediator.Send(new Edit.Command { EditDto = item }));
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteItem(Guid id)
     {

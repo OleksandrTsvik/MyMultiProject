@@ -23,6 +23,10 @@ export default function StatusLabel({ status, counter, ...props }: Props) {
     return defaultStatusColor;
   }, [counter, status]);
 
+  if (!status) {
+    return null;
+  }
+
   return (
     <Label
       horizontal
