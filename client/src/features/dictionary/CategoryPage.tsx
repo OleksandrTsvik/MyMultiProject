@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { Button, Container, Flag, Header, Icon, Table } from 'semantic-ui-react';
+import { Button, Container, Header, Icon, Table } from 'semantic-ui-react';
 
 import { useStore } from '../../app/stores/store';
 import ModalConfirm from '../../app/common/modals/ModalConfirm';
-import getSemanticFlagName from '../../app/utils/getSemanticFlagName';
 import LinkBack from '../../components/LinkBack';
 import Loading from '../../components/Loading';
 import EmptyBlock from '../../components/EmptyBlock';
+import CustomFlag from '../../components/CustomFlag';
 import StatusLabel from './StatusLabel';
 
 export default observer(function CategoryPage() {
@@ -67,7 +67,7 @@ export default observer(function CategoryPage() {
         <LinkBack link="/dictionary/categories" />
       </div>
       <Header as="h2" className="text-center">
-        <Flag className="flag__medium" name={getSemanticFlagName(categoryDetails.language)} />
+        <CustomFlag className="flag__medium" strName={categoryDetails.language} />
         {categoryDetails.title} ({categoryDetails.countItems})
       </Header>
       <div className="text-end mb-3">

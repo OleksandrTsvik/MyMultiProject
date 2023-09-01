@@ -1,17 +1,28 @@
 import { FlagNameValues } from 'semantic-ui-react';
 
-export default function getSemanticFlagName(flagName?: string): FlagNameValues {
-  let flag: FlagNameValues = 'ukraine';
+import { countries } from '../../components/CountryDropdown';
 
-  if (!flagName) {
-    return flag;
+export default function getSemanticFlagName(flagName: string): FlagNameValues | null {
+  const flag = flagName.toLowerCase();
+
+  if (isFlagNameValue(flag as FlagNameValues)) {
+    return flag as FlagNameValues;
   }
 
-  try {
-    flag = flagName.toLowerCase() as FlagNameValues;
-  } catch (error) {
-    console.log(error);
-  }
-
-  return flag;
+  return null;
 }
+
+export function isFlagNameValue(value: FlagNameValues): value is FlagNameValues {
+  return validFlagValues.includes(value);
+}
+
+export const validFlagValues: FlagNameValues[] = countries.reduce((accumulator, country) => {
+  accumulator.push(country.name.toLowerCase() as FlagNameValues);
+  accumulator.push(country.countryCode.toLowerCase() as FlagNameValues);
+
+  if (country.alias) {
+    accumulator.push(country.alias.toLowerCase() as FlagNameValues);
+  }
+
+  return accumulator;
+}, [] as FlagNameValues[]);

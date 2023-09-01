@@ -1,13 +1,13 @@
 import { SyntheticEvent } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { Button, Flag, Icon, Table } from 'semantic-ui-react';
+import { Button, Icon, Table } from 'semantic-ui-react';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 import { DictionaryCategory } from '../../app/models/dictionary';
 import { useStore } from '../../app/stores/store';
 import ModalConfirm from '../../app/common/modals/ModalConfirm';
-import getSemanticFlagName from '../../app/utils/getSemanticFlagName';
+import CustomFlag from '../../components/CustomFlag';
 import EditCategory from './EditCategory';
 import StatusLabel from './StatusLabel';
 
@@ -64,7 +64,7 @@ export default observer(function CategoryListItem(
         <Icon name="block layout" />
       </Table.Cell>
       <Table.Cell collapsing>
-        <Flag name={getSemanticFlagName(category.language)} />
+        <CustomFlag strName={category.language} />
       </Table.Cell>
       <Table.Cell collapsing>
         <StatusLabel counter content={category.countItems} />
