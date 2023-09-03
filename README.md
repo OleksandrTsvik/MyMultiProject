@@ -2,6 +2,7 @@
 ### Connect with me:
 
 [![Email Badge](https://cdn.icon-icons.com/icons2/72/PNG/32/email_14410.png)](mailto:oleksandr.zwick@gmail.com)
+[![LinkedIn Badge](https://cdn.icon-icons.com/icons2/99/PNG/32/linkedin_socialnetwork_17441.png)](https://www.linkedin.com/in/oleksandr-tsvik-7a951928b/)
 
 
 ## What's Included
