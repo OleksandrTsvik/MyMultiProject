@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon } from 'semantic-ui-react';
 
-import { useStore } from '../../app/stores/store';
-import EmptyBlock from '../../components/EmptyBlock';
-import Loading from '../../components/Loading';
+import { useStore } from '../../../app/stores/store';
+import EmptyBlock from '../../../components/EmptyBlock';
+import Loading from '../../../components/Loading';
 import AddCategory from './AddCategory';
 import CategoriesList from './CategoriesList';
 

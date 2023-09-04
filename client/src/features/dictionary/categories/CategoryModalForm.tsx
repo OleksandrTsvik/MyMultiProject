@@ -4,10 +4,10 @@ import { Button, Modal } from 'semantic-ui-react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 
-import { useStore } from '../../app/stores/store';
-import FormikInput from '../../app/common/form/FormikInput';
-import FormikCountryDropdown from '../../app/common/form/FormikCountryDropdown';
-import ValidationErrors from '../errors/ValidationErrors';
+import { useStore } from '../../../app/stores/store';
+import FormikInput from '../../../app/common/form/FormikInput';
+import FormikCountryDropdown from '../../../app/common/form/FormikCountryDropdown';
+import ValidationErrors from '../../errors/ValidationErrors';
 
 export interface DictionaryCategoryForm {
   title: string;

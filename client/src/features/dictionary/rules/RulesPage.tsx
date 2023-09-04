@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Flag, Icon, Table } from 'semantic-ui-react';
 
-import EmptyBlock from '../../components/EmptyBlock';
-import StatusLabel from './StatusLabel';
+import EmptyBlock from '../../../components/EmptyBlock';
+import StatusLabel from '../StatusLabel';
 
 export default function RulesPage() {
   const navigate = useNavigate();

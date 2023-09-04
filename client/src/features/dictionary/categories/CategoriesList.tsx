@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { Table } from 'semantic-ui-react';
 import { DragDropContext, Draggable, DropResult, Droppable, ResponderProvided } from 'react-beautiful-dnd';
 
-import { useStore } from '../../app/stores/store';
+import { useStore } from '../../../app/stores/store';
 import CategoryListItem from './CategoryListItem';
 
 export default observer(function CategoriesPage() {

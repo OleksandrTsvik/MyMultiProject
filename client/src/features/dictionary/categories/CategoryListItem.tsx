@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Icon, Table } from 'semantic-ui-react';
 import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
-import { DictionaryCategory } from '../../app/models/dictionary';
-import { useStore } from '../../app/stores/store';
-import ModalConfirm from '../../app/common/modals/ModalConfirm';
-import CustomFlag from '../../components/CustomFlag';
+import { DictionaryCategory } from '../../../app/models/dictionary';
+import { useStore } from '../../../app/stores/store';
+import ModalConfirm from '../../../app/common/modals/ModalConfirm';
+import CustomFlag from '../../../components/CustomFlag';
 import EditCategory from './EditCategory';
-import StatusLabel from './StatusLabel';
+import StatusLabel from '../StatusLabel';
 
 interface Props {
   category: DictionaryCategory;

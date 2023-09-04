@@ -1,7 +1,9 @@
-import { Button, Container, Form, Header, TextArea } from 'semantic-ui-react';
+import { Button, Container, Form, Header, Input, TextArea } from 'semantic-ui-react';
 
-import LinkBack from '../../components/LinkBack';
-import StatusDropdown from './StatusDropdown';
+import TextEditorWithImages from '../../../app/common/imageUpload/TextEditorWithImages';
+import LinkBack from '../../../components/LinkBack';
+import CountryDropdown from '../../../components/CountryDropdown';
+import StatusDropdown from '../StatusDropdown';
 
 interface Props {
   title: string;
@@ -10,7 +12,7 @@ interface Props {
   textToBack?: string;
 }
 
-export default function CategoryItemForm(
+export default function RuleForm(
   {
     title,
     textForSubmitBtn,
@@ -26,17 +28,24 @@ export default function CategoryItemForm(
       <Header as="h2" className="text-center">{title}</Header>
       <Form>
         <Form.Field
+          control={CountryDropdown}
+          label="Language"
+        />
+        <Form.Field
           control={StatusDropdown}
-          label='Status'
+          label="Status"
+        />
+        <Form.Field
+          control={Input}
+          label="Title"
         />
         <Form.Field
           control={TextArea}
-          label='Text'
+          label="Description"
         />
-        <Form.Field
-          control={TextArea}
-          label='Translation'
-        />
+        <div className="mb-3">
+          <TextEditorWithImages />
+        </div>
         <Button
           type="submit"
           primary

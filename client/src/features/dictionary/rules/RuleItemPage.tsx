@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Container, Flag, Header, Label, Segment } from 'semantic-ui-react';
 
-import { useStore } from '../../app/stores/store';
-import ModalConfirm from '../../app/common/modals/ModalConfirm';
-import LinkBack from '../../components/LinkBack';
+import { useStore } from '../../../app/stores/store';
+import ModalConfirm from '../../../app/common/modals/ModalConfirm';
+import LinkBack from '../../../components/LinkBack';
 
 export default observer(function RuleItemPage() {
   const { ruleId } = useParams();

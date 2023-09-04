@@ -3,13 +3,13 @@ import { observer } from 'mobx-react-lite';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { Button, Container, Header, Icon, Table } from 'semantic-ui-react';
 
-import { useStore } from '../../app/stores/store';
-import ModalConfirm from '../../app/common/modals/ModalConfirm';
-import LinkBack from '../../components/LinkBack';
-import Loading from '../../components/Loading';
-import EmptyBlock from '../../components/EmptyBlock';
-import CustomFlag from '../../components/CustomFlag';
-import StatusLabel from './StatusLabel';
+import { useStore } from '../../../app/stores/store';
+import ModalConfirm from '../../../app/common/modals/ModalConfirm';
+import LinkBack from '../../../components/LinkBack';
+import Loading from '../../../components/Loading';
+import EmptyBlock from '../../../components/EmptyBlock';
+import CustomFlag from '../../../components/CustomFlag';
+import StatusLabel from '../StatusLabel';
 
 export default observer(function CategoryPage() {
   const { categoryId } = useParams();

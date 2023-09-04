@@ -10,14 +10,14 @@ import ServerErrorPage from '../../features/errors/ServerErrorPage';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import RequireAuth from './RequireAuth';
 import DictionaryPage from '../../features/dictionary/DictionaryPage';
-import CategoriesPage from '../../features/dictionary/CategoriesPage';
-import RulesPage from '../../features/dictionary/RulesPage';
-import CategoryPage from '../../features/dictionary/CategoryPage';
-import AddRulePage from '../../features/dictionary/AddRulePage';
-import EditRulePage from '../../features/dictionary/EditRulePage';
-import RuleItemPage from '../../features/dictionary/RuleItemPage';
-import AddCategoryItemPage from '../../features/dictionary/AddCategoryItemPage';
-import EditCategoryItemPage from '../../features/dictionary/EditCategoryItemPage';
+import CategoriesPage from '../../features/dictionary/categories/CategoriesPage';
+import RulesPage from '../../features/dictionary/rules/RulesPage';
+import CategoryPage from '../../features/dictionary/items/CategoryPage';
+import AddRulePage from '../../features/dictionary/rules/AddRulePage';
+import EditRulePage from '../../features/dictionary/rules/EditRulePage';
+import RuleItemPage from '../../features/dictionary/rules/RuleItemPage';
+import AddCategoryItemPage from '../../features/dictionary/items/AddCategoryItemPage';
+import EditCategoryItemPage from '../../features/dictionary/items/EditCategoryItemPage';
 
 export const routes: RouteObject[] = [
   {
