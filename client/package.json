@@ -15,7 +15,10 @@
     "@types/react-dom": "^18.0.10",
     "axios": "^1.2.2",
     "date-fns": "^2.30.0",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
     "formik": "^2.4.2",
+    "html-to-draftjs": "^1.5.0",
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
     "react": "^18.2.0",
@@ -63,6 +66,9 @@
     ]
   },
   "devDependencies": {
+    "@types/draft-js": "^0.11.12",
+    "@types/draftjs-to-html": "^0.8.1",
+    "@types/html-to-draftjs": "^1.4.0",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-datepicker": "^4.11.2",
     "@types/react-draft-wysiwyg": "^1.13.4",

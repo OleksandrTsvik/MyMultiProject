@@ -26,8 +26,10 @@ export default observer(function CategoryPage() {
   } = dictionaryStore;
 
   useEffect(() => {
-    loadItems()
-  }, [loadItems]);
+    if (categoryId) {
+      loadItems(categoryId);
+    }
+  }, [categoryId, loadItems]);
 
   useEffect(() => {
     if (categoryId) {
@@ -88,10 +90,10 @@ export default observer(function CategoryPage() {
                   </Table.Cell>
                   <Table.Cell>
                     <StatusLabel status={item.status} />
-                    {item.text}
+                    <div dangerouslySetInnerHTML={{ __html: item.text }} />
                   </Table.Cell>
                   <Table.Cell>
-                    {item.translation}
+                    <div dangerouslySetInnerHTML={{ __html: item.translation }} />
                   </Table.Cell>
                   <Table.Cell collapsing>
                     <div className="d-flex gap-2">

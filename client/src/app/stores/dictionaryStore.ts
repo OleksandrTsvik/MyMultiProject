@@ -193,11 +193,11 @@ export default class DictionaryStore {
     this.setLoadingCategoryDetails(true);
   }
 
-  loadItems = async () => {
+  loadItems = async (categoryId: string) => {
     this.setLoadingItems(true);
 
     try {
-      const items = await agent.DictionaryItems.list();
+      const items = await agent.DictionaryItems.list(categoryId);
 
       runInAction(() => {
         for (const item of items) {

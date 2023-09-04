@@ -12,18 +12,18 @@ export type DropdownValue =
 
 export const defaultStatusColor: SemanticCOLORS = 'teal';
 
-interface Props {
+interface Props extends DropdownProps {
   additionalStatuses?: string[];
-  dropdownProps?: DropdownProps;
 }
 
 export default function StatusDropdown(
   {
     additionalStatuses = [],
-    dropdownProps
+    onChange,
+    ...props
   }: Props
 ) {
-  const [currentValue, setCurrentValue] = useState<DropdownValue>();
+  const [currentValue, setCurrentValue] = useState<DropdownValue>(props.value);
 
   const [options, setOptions] = useState<DropdownItemProps[]>([
     ...additionalStatuses.map((status) => getDropdownItem(status, defaultStatusColor)),
@@ -53,7 +53,9 @@ export default function StatusDropdown(
     ]);
   }
 
-  function handleChange(event: SyntheticEvent, data: DropdownProps) {
+  function handleChange(event: SyntheticEvent<HTMLElement>, data: DropdownProps) {
+    onChange && onChange(event, data);
+
     setCurrentValue((state) => {
       // if nothing was selected, then you do not need to select the first item
       if (!state) {
@@ -72,7 +74,7 @@ export default function StatusDropdown(
       clearable
       allowAdditions
       placeholder="Select status or add your own"
-      {...dropdownProps}
+      {...props}
       options={options}
       value={currentValue}
       className={currentValue ? 'status-dropdown__placeholder' : ''}

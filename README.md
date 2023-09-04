@@ -2,7 +2,7 @@
 ### Connect with me:
 
 [![Email Badge](https://cdn.icon-icons.com/icons2/72/PNG/32/email_14410.png)](mailto:oleksandr.zwick@gmail.com)
-[![LinkedIn Badge](https://cdn.icon-icons.com/icons2/99/PNG/32/linkedin_socialnetwork_17441.png)](https://www.linkedin.com/in/oleksandr-tsvik-7a951928b/)
+[![LinkedIn Badge](https://cdn.icon-icons.com/icons2/99/PNG/32/linkedin_socialnetwork_17441.png)](https://www.linkedin.com/in/oleksandr-tsvik/)
 
 
 ## What's Included
@@ -95,6 +95,15 @@ dotnet ef database drop -s API -p Persistence
 - [react-cropper](https://github.com/react-cropper/react-cropper)
 - [react-infinite-scroller](https://github.com/danbovey/react-infinite-scroller)
 - [react-draft-wysiwyg](https://www.npmjs.com/package/react-draft-wysiwyg)
+  <a href="https://codesandbox.io/s/formik-and-react-draft-wysiwyg-v5rfp?file=/src/TextEditor.tsx" target="_blank">
+    <img
+      width="20"
+      height="20"
+      src="https://cdn.icon-icons.com/icons2/3911/PNG/32/codesandbox_logo_icon_247306.png"
+      alt="CodeSandbox"
+      title="formik and react-draft-wysiwyg"
+    />
+  </a>
 - [react-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd)
   <a href="https://youtu.be/y1w6C9A5a2A?si=zqZtrJR0656WhYQM" target="_blank">
     <img

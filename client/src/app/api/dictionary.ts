@@ -27,7 +27,8 @@ export const DictionaryCategories = {
 };
 
 export const DictionaryItems = {
-  list: () => requests.get<DictionaryItem[]>('/dictionary/items'),
+  list: (categoryId: string) => requests.get<DictionaryItem[]>('/dictionary/items', { params: { categoryId } }),
+  details: (id: string) => requests.get<DictionaryItem>(`/dictionary/items/${id}`),
   create: (item: CreateDictionaryItemDto) => requests
     .post<DictionaryItem>('/dictionary/items', item),
   update: (item: EditDictionaryItemDto) => requests
