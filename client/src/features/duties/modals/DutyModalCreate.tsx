@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
-import FormikInput from '../../../app/common/form/FormikInput';
 import FormikTextArea from '../../../app/common/form/FormikTextArea';
+import FormikAutoComplete from '../../../app/common/form/FormikAutoComplete';
 import FormikDutyPickColor from '../dashboard/FormikDutyPickColor';
 
 export interface Style {
@@ -36,7 +36,11 @@ export const initialStyle: Style = {
 
 export default observer(function DutyModalCreate() {
   const { dutyStore } = useStore();
-  const { createLoading, createDuty, createMode, closeCreateMode } = dutyStore;
+  const {
+    createLoading, createDuty,
+    createMode, closeCreateMode,
+    loadTitles, titles, loadingTitles
+  } = dutyStore;
 
   const [duty, setDuty] = useState<Duty>(initialState);
   const [style, setStyle] = useState<Style>(initialStyle);
@@ -50,6 +54,12 @@ export default observer(function DutyModalCreate() {
     setDuty(initialState);
     setStyle(initialStyle);
   }, [createMode]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (titles.length === 0) {
+      loadTitles();
+    }
+  }, [titles, loadTitles]);
 
   return (
     <Modal
@@ -69,11 +79,13 @@ export default observer(function DutyModalCreate() {
           <>
             <Modal.Content style={style}>
               <Form className="ui form" onSubmit={handleSubmit}>
-                <FormikInput
+                <FormikAutoComplete
                   name="title"
                   label="Title"
                   labelStyle={style}
                   placeholder="Title"
+                  data={titles}
+                  loading={loadingTitles}
                 />
                 <FormikTextArea
                   name="description"

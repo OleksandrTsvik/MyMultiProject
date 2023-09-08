@@ -6,12 +6,16 @@ import * as Yup from 'yup';
 
 import { Duty } from '../../../app/models/duty';
 import { useStore } from '../../../app/stores/store';
-import FormikInput from '../../../app/common/form/FormikInput';
 import FormikTextArea from '../../../app/common/form/FormikTextArea';
+import FormikAutoComplete from '../../../app/common/form/FormikAutoComplete';
 
 export default observer(function DutyModalEdit() {
   const { dutyStore } = useStore();
-  const { selectedDuty, editDuty, editMode, closeEditMode } = dutyStore;
+  const {
+    selectedDuty, editDuty,
+    editMode, closeEditMode,
+    loadTitles, titles, loadingTitles
+  } = dutyStore;
 
   const [duty, setDuty] = useState<Duty | undefined>(selectedDuty);
 
@@ -23,6 +27,12 @@ export default observer(function DutyModalEdit() {
   useEffect(() => {
     setDuty(selectedDuty);
   }, [selectedDuty]);
+
+  useEffect(() => {
+    if (titles.length === 0) {
+      loadTitles();
+    }
+  }, [titles, loadTitles]);
 
   if (!duty) {
     return null;
@@ -45,10 +55,12 @@ export default observer(function DutyModalEdit() {
           <>
             <Modal.Content>
               <Form className="ui form" onSubmit={handleSubmit}>
-                <FormikInput
+                <FormikAutoComplete
                   name="title"
                   label="Title"
                   placeholder="Title"
+                  data={titles}
+                  loading={loadingTitles}
                 />
                 <FormikTextArea
                   name="description"

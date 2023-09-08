@@ -8,5 +8,6 @@ export const Duties = {
   create: (duty: Duty) => requests.post<void>('/duties', duty),
   update: (duty: Duty) => requests.put<void>(`/duties/${duty.id}`, duty),
   delete: (id: string) => requests.delete<void>(`/duties/${id}`),
-  updateList: (duties: Duty[]) => requests.put<void>('/duties/list', duties)
+  updateList: (duties: Duty[]) => requests.put<void>('/duties/list', duties),
+  titles: () => requests.get<string[]>('/duties/titles')
 };

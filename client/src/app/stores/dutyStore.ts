@@ -22,6 +22,9 @@ export default class DutyStore {
   createLoading: boolean = false;
   arrLoadingDutiesId: string[] = [];
 
+  titles: string[] = [];
+  loadingTitles: boolean = false;
+
   pagination: Pagination | null = null;
   pagingParams: PagingParams = new PagingParams(1, 20);
   predicate: Map<string, string> = new Map<string, string>();
@@ -225,6 +228,10 @@ export default class DutyStore {
 
       runInAction(() => {
         this.duties.set(duty.id, duty);
+
+        if (!this.titles.some((title) => title === duty.title)) {
+          this.titles.push(duty.title);
+        }
       });
 
       this.setCreateLoading(false);
@@ -252,6 +259,10 @@ export default class DutyStore {
 
       runInAction(() => {
         this.duties.set(duty.id, duty);
+
+        if (!this.titles.some((title) => title === duty.title)) {
+          this.titles.push(duty.title);
+        }
       });
 
       this.setLoading(duty.id, true);
@@ -314,6 +325,22 @@ export default class DutyStore {
     this.arrLoadingDutiesId = [];
   }
 
+  loadTitles = async () => {
+    this.setLoadingTitles(true);
+
+    try {
+      const titles = await agent.Duties.titles();
+
+      runInAction(() => {
+        this.titles = titles;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    this.setLoadingTitles(false);
+  }
+
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
   }
@@ -369,5 +396,9 @@ export default class DutyStore {
   setPredicate = (predicate: string, value: string | boolean) => {
     this.predicate.delete(predicate);
     this.predicate.set(predicate, value.toString());
+  }
+
+  setLoadingTitles = (state: boolean) => {
+    this.loadingTitles = state;
   }
 }

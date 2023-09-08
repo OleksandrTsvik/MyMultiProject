@@ -13,6 +13,12 @@ public class DutiesController : BaseApiController
         return HandlePagedResult(await Mediator.Send(new List.Query { Params = param }));
     }
 
+    [HttpGet("titles")]
+    public async Task<IActionResult> GetTitles()
+    {
+        return HandleResult(await Mediator.Send(new Titles.Query { }));
+    }
+
     [Authorize(Policy = "IsOwnerDuty")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetDuty(Guid id)

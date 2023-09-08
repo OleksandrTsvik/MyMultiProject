@@ -2,13 +2,7 @@ import { CSSProperties, SyntheticEvent, useState } from 'react';
 import { Dropdown, DropdownItemProps, DropdownProps, SemanticCOLORS } from 'semantic-ui-react';
 
 import semanticColorToHex from '../../app/utils/semanticColorToHex';
-
-export type DropdownValue =
-  | boolean
-  | number
-  | string
-  | (boolean | number | string)[]
-  | undefined;
+import { DropdownValue } from '../../components/AutoComplete';
 
 export const defaultStatusColor: SemanticCOLORS = 'teal';
 
