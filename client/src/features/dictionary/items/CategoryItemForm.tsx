@@ -65,6 +65,7 @@ export default function CategoryItemForm(
             <FormikStatusDropdown
               name="status"
               label="Status"
+              additionalStatuses={initialValues.status ? [initialValues.status] : undefined}
             />
             <FormikTextEditor
               name="text"

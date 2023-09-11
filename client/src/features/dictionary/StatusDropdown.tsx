@@ -41,6 +41,8 @@ export default function StatusDropdown(
       return;
     }
 
+    setCurrentValue(value);
+
     setOptions([
       getDropdownItem(value, defaultStatusColor),
       ...options
