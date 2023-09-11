@@ -26,7 +26,7 @@ export default function FormikTextEditor(
   const [editorState, setEditorState] = useState<EditorState>(
     field.value ? prepareDraft(field.value) : EditorState.createEmpty()
   );
-  
+
   return (
     <Form.Field error={meta.touched && !!meta.error}>
       {label && <label style={labelStyle}>{label}</label>}

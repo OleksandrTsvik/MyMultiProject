@@ -12,13 +12,13 @@ import FormikStatusDropdown from '../FormikStatusDropdown';
 export interface DictionaryItemForm {
   text: string;
   translation: string;
-  status?: string;
+  status?: string | null;
 }
 
 const validationSchema: Yup.Schema<DictionaryItemForm> = Yup.object({
   text: Yup.string().min(9, 'The item text is required').required('The item text is required'),
   translation: Yup.string().min(9, 'The item translation is required').required('The item translation is required'),
-  status: Yup.string().optional()
+  status: Yup.string().optional().nullable()
 });
 
 interface Props {

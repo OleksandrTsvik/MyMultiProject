@@ -48,7 +48,9 @@ export default function StatusDropdown(
   }
 
   function handleChange(event: SyntheticEvent<HTMLElement>, data: DropdownProps) {
-    onChange && onChange(event, data);
+    if (event.cancelable) {
+      onChange && onChange(event, data);
+    }
 
     setCurrentValue((state) => {
       // if nothing was selected, then you do not need to select the first item

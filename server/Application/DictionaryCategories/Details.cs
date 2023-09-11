@@ -25,12 +25,20 @@ public class Details
 
         public async Task<Result<DictionaryCategoryDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            DictionaryCategoryDto item = await _context.DictionaryCategories
+            DictionaryCategoryDto category = await _context.DictionaryCategories
                 .Where(x => x.Id == request.Id)
-                .Select(x => x.ToDictionaryCategoryDto())
+                .Select(x => new DictionaryCategoryDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Language = x.Language,
+                    Position = x.Position,
+                    DateCreation = x.DateCreation,
+                    CountItems = x.Items.Count
+                })
                 .FirstOrDefaultAsync();
 
-            return Result<DictionaryCategoryDto>.Success(item);
+            return Result<DictionaryCategoryDto>.Success(category);
         }
     }
 }

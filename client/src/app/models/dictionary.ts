@@ -32,7 +32,7 @@ export interface DictionaryItem {
   id: string;
   text: string;
   translation: string;
-  status?: string;
+  status?: string | null;
   dateCreation: Date;
   position: number;
 }
@@ -41,14 +41,14 @@ export interface CreateDictionaryItemDto {
   categoryId: string;
   text: string;
   translation: string;
-  status?: string;
+  status?: string | null;
 }
 
 export interface EditDictionaryItemDto {
   id: string;
   text: string;
   translation: string;
-  status?: string;
+  status?: string | null;
 }
 
 export interface SortDictionaryItemDto {

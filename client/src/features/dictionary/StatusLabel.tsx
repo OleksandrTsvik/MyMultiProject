@@ -6,7 +6,7 @@ import { defaultStatusColor, statuses } from './StatusDropdown';
 export const defaultCounterColor: SemanticCOLORS = 'violet';
 
 interface Props extends LabelProps {
-  status?: string;
+  status?: string | null;
   counter?: boolean;
 }
 
@@ -23,7 +23,7 @@ export default function StatusLabel({ status, counter, ...props }: Props) {
     return defaultStatusColor;
   }, [counter, status]);
 
-  if (!status) {
+  if (!status && !counter) {
     return null;
   }
 

@@ -215,13 +215,7 @@ export default class DictionaryStore {
 
   createItem = async (item: CreateDictionaryItemDto) => {
     try {
-      const addedItem = await agent.DictionaryItems.create(item);
-
-      runInAction(() => {
-        this.items.set(addedItem.id, addedItem);
-      });
-
-      this.updateCountItems(1);
+      await agent.DictionaryItems.create(item);
     } catch (error) {
       console.log(error);
 
@@ -231,11 +225,7 @@ export default class DictionaryStore {
 
   editItem = async (item: EditDictionaryItemDto) => {
     try {
-      const editedItem = await agent.DictionaryItems.update(item);
-
-      runInAction(() => {
-        this.items.set(editedItem.id, editedItem);
-      });
+      await agent.DictionaryItems.update(item);
     } catch (error) {
       console.log(error);
 

@@ -42,7 +42,10 @@ export default observer(function CategoryListItem(
 
     openModal(
       <ModalConfirm
-        content={`Delete the category "${category.title}".`}
+        content={<>
+          <p>Delete the category "${category.title}".</p>
+          <i>when deleting a category, the items are not deleted</i>
+        </>}
         onConfirm={() => deleteCategory(category.id)}
       />,
       {},
@@ -67,7 +70,7 @@ export default observer(function CategoryListItem(
         <CustomFlag strName={category.language} />
       </Table.Cell>
       <Table.Cell collapsing>
-        <StatusLabel counter content={category.countItems} />
+        <StatusLabel counter className="m-0" content={category.countItems} />
       </Table.Cell>
       <Table.Cell className={snapshot.isDragging ? 'w-100' : ''}>
         {category.title}

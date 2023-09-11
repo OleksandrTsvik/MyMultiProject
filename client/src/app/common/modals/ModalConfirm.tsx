@@ -1,11 +1,12 @@
+import { ReactNode } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Button, ButtonProps, Icon, Modal, ModalActionsProps, ModalContentProps, ModalHeaderProps } from 'semantic-ui-react';
 
 import { useStore } from '../../stores/store';
 
 interface Props {
-  content?: string;
-  header?: string;
+  content?: ReactNode;
+  header?: ReactNode;
   onConfirm: () => void;
   onCancel?: () => void;
   closeAfterConfirm?: boolean;

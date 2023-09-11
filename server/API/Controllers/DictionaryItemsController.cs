@@ -12,6 +12,12 @@ public class DictionaryItemsController : BaseApiController
         return HandleResult(await Mediator.Send(new List.Query { Params = param }));
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetItem(Guid id)
+    {
+        return HandleResult(await Mediator.Send(new Details.Query { Id = id }));
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateItem(CreateDto item)
     {

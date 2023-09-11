@@ -89,11 +89,13 @@ export default observer(function CategoryPage() {
                     <Icon name="block layout" />
                   </Table.Cell>
                   <Table.Cell>
-                    <StatusLabel status={item.status} />
                     <div dangerouslySetInnerHTML={{ __html: item.text }} />
                   </Table.Cell>
                   <Table.Cell>
                     <div dangerouslySetInnerHTML={{ __html: item.translation }} />
+                  </Table.Cell>
+                  <Table.Cell collapsing>
+                    <StatusLabel className="m-0" status={item.status} />
                   </Table.Cell>
                   <Table.Cell collapsing>
                     <div className="d-flex gap-2">
