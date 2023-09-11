@@ -43,7 +43,7 @@ export default observer(function CategoryListItem(
     openModal(
       <ModalConfirm
         content={<>
-          <p>Delete the category "${category.title}".</p>
+          <p>Delete the category "{category.title}".</p>
           <i>when deleting a category, the items are not deleted</i>
         </>}
         onConfirm={() => deleteCategory(category.id)}
