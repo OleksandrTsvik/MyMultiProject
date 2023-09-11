@@ -1,6 +1,7 @@
+using Application.DictionaryCategories.DTOs;
 using FluentValidation;
 
-namespace Application.DictionaryCategories;
+namespace Application.DictionaryCategories.Validators;
 
 public class EditDtoValidator : AbstractValidator<EditDto>
 {

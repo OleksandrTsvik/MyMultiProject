@@ -1,4 +1,4 @@
-namespace Application.DictionaryItems;
+namespace Application.DictionaryItems.DTOs;
 
 public class CreateDto
 {

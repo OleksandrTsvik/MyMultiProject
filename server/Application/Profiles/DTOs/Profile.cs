@@ -1,7 +1,6 @@
-using Application.Photos;
-using Domain;
+using Application.Photos.DTOs;
 
-namespace Application.Profiles;
+namespace Application.Profiles.DTOs;
 
 public class Profile
 {

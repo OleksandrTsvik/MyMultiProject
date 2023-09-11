@@ -1,6 +1,7 @@
+using Application.DictionaryItems.DTOs;
 using FluentValidation;
 
-namespace Application.DictionaryItems;
+namespace Application.DictionaryItems.Validators;
 
 public class CreateDtoValidator : AbstractValidator<CreateDto>
 {

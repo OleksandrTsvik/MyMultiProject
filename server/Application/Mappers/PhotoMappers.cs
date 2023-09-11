@@ -1,4 +1,4 @@
-using Application.Photos;
+using Application.Photos.DTOs;
 using Domain;
 
 namespace Application.Mappers;

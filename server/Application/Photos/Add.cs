@@ -1,6 +1,7 @@
 using Application.Core;
 using Application.Interfaces;
 using Application.Mappers;
+using Application.Photos.DTOs;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;

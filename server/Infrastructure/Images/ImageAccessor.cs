@@ -1,4 +1,4 @@
-using Application.Images;
+using Application.Images.DTOs;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 

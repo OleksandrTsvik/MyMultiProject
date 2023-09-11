@@ -1,7 +1,7 @@
 using Domain;
 using FluentValidation;
 
-namespace Application.Duties;
+namespace Application.Duties.Validators;
 
 public class DutyValidator : AbstractValidator<Duty>
 {

@@ -1,4 +1,4 @@
-namespace Application.Photos;
+namespace Application.Photos.DTOs;
 
 public class PhotoDto
 {

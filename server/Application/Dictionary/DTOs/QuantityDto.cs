@@ -1,4 +1,4 @@
-namespace Application.Dictionary;
+namespace Application.Dictionary.DTOs;
 
 public class QuantityDto
 {

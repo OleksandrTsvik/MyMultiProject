@@ -1,4 +1,4 @@
-namespace Application.Duties;
+namespace Application.Duties.DTOs;
 
 public class DutyDto
 {

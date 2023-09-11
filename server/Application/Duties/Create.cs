@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.Duties.Validators;
 using Application.Interfaces;
 using Domain;
 using FluentValidation;

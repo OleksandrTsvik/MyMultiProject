@@ -1,4 +1,4 @@
-using Application.Profiles;
+using Application.Profiles.DTOs;
 using Domain;
 
 namespace Application.Mappers;

@@ -1,4 +1,4 @@
-namespace Application.Profiles;
+namespace Application.Profiles.DTOs;
 
 public class QueryUser
 {

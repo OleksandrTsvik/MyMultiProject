@@ -1,4 +1,5 @@
 using Application.DictionaryCategories;
+using Application.DictionaryCategories.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.Images.DTOs;
 using Application.Interfaces;
 using Application.Mappers;
 using Domain;
@@ -62,7 +63,7 @@ public class Add
             {
                 return Result<ImageDto>.Failure("Failed to add image");
             }
-            
+
             return Result<ImageDto>.Success(image.ToImageDto(imageUploadResult));
         }
     }

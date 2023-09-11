@@ -1,4 +1,5 @@
 using Application.Core;
+using Application.DictionaryCategories.DTOs;
 using Application.Interfaces;
 using Domain;
 using MediatR;

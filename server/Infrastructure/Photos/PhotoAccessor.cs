@@ -1,5 +1,5 @@
 using Application.Interfaces;
-using Application.Photos;
+using Application.Photos.DTOs;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;

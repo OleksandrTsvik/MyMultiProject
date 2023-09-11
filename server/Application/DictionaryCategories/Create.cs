@@ -1,4 +1,6 @@
 using Application.Core;
+using Application.DictionaryCategories.DTOs;
+using Application.DictionaryCategories.Validators;
 using Application.Interfaces;
 using Application.Mappers;
 using Domain;

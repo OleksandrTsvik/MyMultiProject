@@ -1,6 +1,7 @@
 using Application.Core;
 using Application.Interfaces;
 using Application.Mappers;
+using Application.Profiles.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;

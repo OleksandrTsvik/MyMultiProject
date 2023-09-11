@@ -1,4 +1,5 @@
 using Application.DictionaryItems;
+using Application.DictionaryItems.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;

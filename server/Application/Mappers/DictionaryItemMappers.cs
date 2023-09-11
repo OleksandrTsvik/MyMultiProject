@@ -1,4 +1,4 @@
-using Application.DictionaryItems;
+using Application.DictionaryItems.DTOs;
 using Domain;
 
 namespace Application.Mappers;

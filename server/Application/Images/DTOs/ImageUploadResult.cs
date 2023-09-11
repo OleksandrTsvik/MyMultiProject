@@ -1,4 +1,4 @@
-namespace Application.Images;
+namespace Application.Images.DTOs;
 
 public class ImageUploadResult
 {

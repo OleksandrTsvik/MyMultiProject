@@ -1,6 +1,7 @@
 using Application.Core;
 using Application.Interfaces;
 using Application.Mappers;
+using Application.Profiles.DTOs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -9,13 +10,13 @@ namespace Application.Followers;
 
 public class List
 {
-    public class Query : IRequest<Result<List<Profiles.Profile>>>
+    public class Query : IRequest<Result<List<Profile>>>
     {
         public string Predicate { get; set; }
         public string UserName { get; set; }
     }
 
-    public class Handler : IRequestHandler<Query, Result<List<Profiles.Profile>>>
+    public class Handler : IRequestHandler<Query, Result<List<Profile>>>
     {
         private readonly DataContext _context;
         private readonly IUserAccessor _userAccessor;
@@ -26,9 +27,9 @@ public class List
             _userAccessor = userAccessor;
         }
 
-        public async Task<Result<List<Profiles.Profile>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<Profile>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            List<Profiles.Profile> profiles = new List<Profiles.Profile>();
+            List<Profile> profiles = new List<Profile>();
 
             switch (request.Predicate)
             {
@@ -56,7 +57,7 @@ public class List
                     break;
             }
 
-            return Result<List<Profiles.Profile>>.Success(profiles);
+            return Result<List<Profile>>.Success(profiles);
         }
     }
 }

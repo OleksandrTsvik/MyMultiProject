@@ -1,4 +1,4 @@
-using Application.Duties;
+using Application.Duties.DTOs;
 using Domain;
 
 namespace Application.Mappers;

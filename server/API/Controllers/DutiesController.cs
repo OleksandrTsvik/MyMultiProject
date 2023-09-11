@@ -1,4 +1,5 @@
 using Application.Duties;
+using Application.Duties.DTOs;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-namespace Application.DictionaryCategories;
+namespace Application.DictionaryCategories.DTOs;
 
 public class DictionaryCategoryDto
 {
