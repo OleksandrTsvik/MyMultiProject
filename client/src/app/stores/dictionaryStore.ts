@@ -8,7 +8,8 @@ import {
   DictionaryQuantity,
   EditDictionaryCategoryDto,
   EditDictionaryItemDto,
-  SortDictionaryCategoryDto
+  SortDictionaryCategoryDto,
+  SortDictionaryItemDto
 } from '../models/dictionary';
 import agent from '../api/agent';
 
@@ -135,7 +136,7 @@ export default class DictionaryStore {
     }
   }
 
-  changePositions = async (sourceIndex: number, destinationIndex: number) => {
+  changeCategoryPositions = async (sourceIndex: number, destinationIndex: number) => {
     if (sourceIndex === destinationIndex) {
       return;
     }
@@ -242,6 +243,42 @@ export default class DictionaryStore {
       });
 
       this.updateCountItems(-1);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  changeItemPositions = async (sourceIndex: number, destinationIndex: number) => {
+    if (
+      !this.categoryDetails ||
+      sourceIndex === destinationIndex
+    ) {
+      return;
+    }
+
+    let position = 1;
+    const sortedItemsDto: SortDictionaryItemDto[] = [];
+    const sortedItems = this.itemsArray;
+
+    // remove the element with the source index and insert before the destination index
+    sortedItems.splice(destinationIndex, 0, sortedItems.splice(sourceIndex, 1)[0]);
+
+    for (const item of sortedItems) {
+      item.position = position;
+
+      this.items.set(item.id, item);
+
+      sortedItemsDto.push({
+        itemId: item.id,
+        categoryId: this.categoryDetails.id,
+        position: item.position
+      });
+
+      position++;
+    }
+
+    try {
+      await agent.DictionaryItems.sort(sortedItemsDto);
     } catch (error) {
       console.log(error);
     }

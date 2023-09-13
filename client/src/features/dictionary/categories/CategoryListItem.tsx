@@ -57,7 +57,7 @@ export default observer(function CategoryListItem(
     <tr
       ref={provided.innerRef}
       {...provided.draggableProps}
-      className={"top aligned cursor-pointer" + (snapshot.isDragging ? ' item__dragging' : '')}
+      className={'top aligned cursor-pointer' + (snapshot.isDragging ? ' item__dragging' : '')}
       onClick={() => navigate(`/dictionary/categories/${category.id}`)}
     >
       <Table.Cell

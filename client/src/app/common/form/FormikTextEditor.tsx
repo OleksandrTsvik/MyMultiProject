@@ -5,7 +5,8 @@ import { ContentState, EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
-import TextEditor, { TextEditorProps } from '../../../components/TextEditor';
+import { TextEditorProps } from '../../../components/TextEditor';
+import TextEditorWithImages from '../imageUpload/TextEditorWithImages';
 
 interface Props extends TextEditorProps {
   name: string;
@@ -30,7 +31,7 @@ export default function FormikTextEditor(
   return (
     <Form.Field error={meta.touched && !!meta.error}>
       {label && <label style={labelStyle}>{label}</label>}
-      <TextEditor
+      <TextEditorWithImages
         {...props}
         editorState={editorState}
         onEditorStateChange={(editorState) => {

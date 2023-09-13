@@ -7,14 +7,14 @@ import CategoryListItem from './CategoryListItem';
 
 export default observer(function CategoriesPage() {
   const { dictionaryStore } = useStore();
-  const { categoriesSortByPosition, changePositions } = dictionaryStore;
+  const { categoriesSortByPosition, changeCategoryPositions } = dictionaryStore;
 
   function handleDragEnd(result: DropResult, provided: ResponderProvided) {
     if (!result.destination) {
       return;
     }
 
-    changePositions(result.source.index, result.destination.index);
+    changeCategoryPositions(result.source.index, result.destination.index);
   }
 
   return (

@@ -17,11 +17,14 @@ export default function StatusDropdown(
     ...props
   }: Props
 ) {
+  const statusesKeys = Object.keys(statuses);
   const [currentValue, setCurrentValue] = useState<DropdownValue>(props.value);
 
   const [options, setOptions] = useState<DropdownItemProps[]>([
-    ...additionalStatuses.map((status) => getDropdownItem(status, defaultStatusColor)),
-    ...Object.keys(statuses).map((status) => getDropdownItem(status, statuses[status]))
+    ...additionalStatuses
+      .filter((status) => !statusesKeys.includes(status))
+      .map((status) => getDropdownItem(status, defaultStatusColor)),
+    ...statusesKeys.map((status) => getDropdownItem(status, statuses[status]))
   ]);
 
   function getDropdownItem(status: string, color: string): DropdownItemProps {

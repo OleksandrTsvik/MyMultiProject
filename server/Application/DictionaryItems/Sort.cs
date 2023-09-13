@@ -28,9 +28,13 @@ public class Sort
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
+            List<Guid> itemIds = request.SortDtos.Select(s => s.ItemId).ToList();
+            List<Guid> categoryIds = request.SortDtos.Select(s => s.CategoryId).ToList();
+
             List<DictionaryCategoryItem> dictionaryCategoryItems = await _context.DictionaryCategoryItems
                 .Where(x => x.DictionaryItem.AppUser.UserName == _userAccessor.GetUserName() &&
-                    request.SortDtos.Any(s => s.ItemId == x.DictionaryItemId && s.CategoryId == x.DictionaryCategoryId))
+                    itemIds.Contains(x.DictionaryItemId) &&
+                    categoryIds.Contains(x.DictionaryCategoryId))
                 .ToListAsync();
 
             foreach (DictionaryCategoryItem dictionaryCategoryItem in dictionaryCategoryItems)

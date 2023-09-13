@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Icon, Table } from 'semantic-ui-react';
+import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 import { DictionaryItem } from '../../../app/models/dictionary';
 import { useStore } from '../../../app/stores/store';
@@ -9,9 +10,17 @@ import StatusLabel from '../StatusLabel';
 
 interface Props {
   item: DictionaryItem;
+  provided: DraggableProvided;
+  snapshot: DraggableStateSnapshot;
 }
 
-export default observer(function ItemsList({ item }: Props) {
+export default observer(function ItemsList(
+  {
+    item,
+    provided,
+    snapshot
+  }: Props
+) {
   const { categoryId } = useParams();
 
   const { modalStore, dictionaryStore } = useStore();
@@ -34,14 +43,21 @@ export default observer(function ItemsList({ item }: Props) {
   }
 
   return (
-    <Table.Row verticalAlign="top">
-      <Table.Cell collapsing>
+    <tr
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      className={'top aligned' + (snapshot.isDragging ? ' item__dragging' : '')}
+    >
+      <Table.Cell
+        collapsing
+        {...provided.dragHandleProps}
+      >
         <Icon name="block layout" />
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell className={snapshot.isDragging ? 'w-50' : ''}>
         <div dangerouslySetInnerHTML={{ __html: item.text }} />
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell className={snapshot.isDragging ? 'w-50' : ''}>
         <div dangerouslySetInnerHTML={{ __html: item.translation }} />
       </Table.Cell>
       <Table.Cell collapsing>
@@ -63,6 +79,6 @@ export default observer(function ItemsList({ item }: Props) {
           />
         </div>
       </Table.Cell>
-    </Table.Row>
+    </tr>
   );
 });
