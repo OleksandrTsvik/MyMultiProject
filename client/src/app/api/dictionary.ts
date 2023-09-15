@@ -1,13 +1,18 @@
 import {
   CreateDictionaryCategoryDto,
   CreateDictionaryItemDto,
+  CreateGrammarRuleDto,
   DictionaryCategory,
   DictionaryItem,
   DictionaryQuantity,
   EditDictionaryCategoryDto,
   EditDictionaryItemDto,
+  EditGrammarRuleDto,
+  GrammarRule,
+  GrammarRuleListItem,
   SortDictionaryCategoryDto,
-  SortDictionaryItemDto
+  SortDictionaryItemDto,
+  SortGrammarRuleDto
 } from '../models/dictionary';
 import { requests } from './agent';
 
@@ -35,4 +40,15 @@ export const DictionaryItems = {
     .put<DictionaryItem>(`/dictionary/items/${item.id}`, item),
   delete: (id: string) => requests.delete<void>(`/dictionary/items/${id}`),
   sort: (items: SortDictionaryItemDto[]) => requests.patch<void>('/dictionary/items', items)
+};
+
+export const GrammarRules = {
+  list: () => requests.get<GrammarRuleListItem[]>('/dictionary/rules'),
+  details: (id: string) => requests.get<GrammarRule>(`/dictionary/rules/${id}`),
+  create: (item: CreateGrammarRuleDto) => requests
+    .post<GrammarRule>('/dictionary/rules', item),
+  update: (item: EditGrammarRuleDto) => requests
+    .put<GrammarRule>(`/dictionary/rules/${item.id}`, item),
+  delete: (id: string) => requests.delete<void>(`/dictionary/rules/${id}`),
+  sort: (rules: SortGrammarRuleDto[]) => requests.patch<void>('/dictionary/rules', rules)
 };

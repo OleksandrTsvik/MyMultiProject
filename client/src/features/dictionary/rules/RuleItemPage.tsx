@@ -1,42 +1,69 @@
-import { SyntheticEvent } from 'react';
+import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Link, useParams } from 'react-router-dom';
-import { Button, Container, Flag, Header, Label, Segment } from 'semantic-ui-react';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Button, Container, Header, Segment } from 'semantic-ui-react';
 
+import { GrammarRule } from '../../../app/models/dictionary';
 import { useStore } from '../../../app/stores/store';
+import agent from '../../../app/api/agent';
 import ModalConfirm from '../../../app/common/modals/ModalConfirm';
 import LinkBack from '../../../components/LinkBack';
+import Loading from '../../../components/Loading';
+import CustomFlag from '../../../components/CustomFlag';
+import StatusLabel from '../StatusLabel';
 
 export default observer(function RuleItemPage() {
+  const navigate = useNavigate();
   const { ruleId } = useParams();
 
   const { modalStore } = useStore();
   const { openModal } = modalStore;
 
-  function handleOpenDeleteRule(event: SyntheticEvent) {
-    event.stopPropagation();
+  const [grammarRule, setGrammarRule] = useState<GrammarRule>();
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (ruleId) {
+      agent.GrammarRules.details(ruleId)
+        .then((data) => setGrammarRule(data))
+        .finally(() => setLoading(false));
+    }
+  }, [ruleId]);
+
+  function handleOpenDeleteRule() {
+    if (!grammarRule) {
+      return;
+    }
 
     openModal(
       <ModalConfirm
-        content={`Delete the rule ${'title'}.`}
-        onConfirm={() => console.log('onConfirm Rule')}
+        content={`Delete the rule "${grammarRule?.title}"?`}
+        onConfirm={() => agent.GrammarRules.delete(grammarRule.id)
+          .then(() => navigate('/dictionary/rules'))
+        }
       />,
       {},
       true
     );
   }
 
+  if (loading) {
+    return <Loading content="Loading grammar rule..." />;
+  }
+
+  if (!grammarRule) {
+    return <Navigate to="/not-found" replace />;
+  }
+
   return (
     <Container>
       <LinkBack link="/dictionary/rules" />
       <Header as="h2" className="text-center">
-        <Label horizontal color="teal">status</Label>
-        <Flag name="america" className="mx-2" />
-        <div className="d-inline-block">Title --- ID {ruleId}</div>
+        <StatusLabel status={grammarRule.status} />
+        <CustomFlag className="flag__medium mx-2" strName={grammarRule.language} />
+        <div className="d-inline-block">{grammarRule.title}</div>
       </Header>
-      <Segment>
-        Description
-      </Segment>
+      <Segment dangerouslySetInnerHTML={{ __html: grammarRule.description }} />
       <div className="text-end">
         <Button
           content="Edit"

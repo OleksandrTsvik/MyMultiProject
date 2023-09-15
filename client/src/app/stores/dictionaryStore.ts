@@ -8,6 +8,7 @@ import {
   DictionaryQuantity,
   EditDictionaryCategoryDto,
   EditDictionaryItemDto,
+  GrammarRuleListItem,
   SortDictionaryCategoryDto,
   SortDictionaryItemDto
 } from '../models/dictionary';
@@ -25,6 +26,9 @@ export default class DictionaryStore {
 
   items: Map<string, DictionaryItem> = new Map<string, DictionaryItem>();
   loadingItems: boolean = true;
+
+  grammarRules: Map<string, GrammarRuleListItem> = new Map<string, GrammarRuleListItem>();
+  loadingGrammarRules: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -46,6 +50,15 @@ export default class DictionaryStore {
   get itemsSortByPosition(): DictionaryItem[] {
     return this.itemsArray
       .sort((item01, item02) => item01.position - item02.position);
+  }
+
+  get grammarRulesArray(): GrammarRuleListItem[] {
+    return Array.from(this.grammarRules.values());
+  }
+
+  get grammarRulesSortByPosition(): GrammarRuleListItem[] {
+    return this.grammarRulesArray
+      .sort((rule01, rule02) => rule01.position - rule02.position);
   }
 
   loadQuantity = async () => {
@@ -297,6 +310,31 @@ export default class DictionaryStore {
     this.setLoadingItems(true);
   }
 
+  loadGrammarRules = async () => {
+    this.setLoadingGrammarRules(true);
+
+    try {
+      const grammarRules = await agent.GrammarRules.list();
+
+      runInAction(() => {
+        for (const rule of grammarRules) {
+          rule.dateCreation = new Date(rule.dateCreation);
+
+          this.grammarRules.set(rule.id, rule);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    this.setLoadingGrammarRules(false);
+  }
+
+  resetGrammarRules = () => {
+    this.grammarRules.clear();
+    this.setLoadingGrammarRules(true);
+  }
+
   setLoadingQuantity = (state: boolean) => {
     this.loadingQuantity = state;
   }
@@ -311,5 +349,9 @@ export default class DictionaryStore {
 
   setLoadingItems = (state: boolean) => {
     this.loadingItems = state;
+  }
+
+  setLoadingGrammarRules = (state: boolean) => {
+    this.loadingGrammarRules = state;
   }
 }

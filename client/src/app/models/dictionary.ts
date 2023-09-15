@@ -57,19 +57,30 @@ export interface SortDictionaryItemDto {
   position: number;
 }
 
-export interface GrammarRuleDto {
+export interface GrammarRule {
+  id: string;
   title: string;
+  description: string;
   language: string;
   status?: string;
   position: number;
   dateCreation: Date;
 }
 
-export interface GrammarRule {
+export interface GrammarRuleListItem extends Omit<GrammarRule, 'description'> { }
+
+export interface SortGrammarRuleDto {
+  id: string;
+  position: number;
+}
+
+export interface CreateGrammarRuleDto {
   title: string;
   description: string;
   language: string;
   status?: string;
-  dateCreation: Date;
-  exampleItems: DictionaryItem[];
+}
+
+export interface EditGrammarRuleDto extends CreateGrammarRuleDto {
+  id: string;
 }
