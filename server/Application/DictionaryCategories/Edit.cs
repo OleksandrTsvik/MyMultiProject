@@ -11,7 +11,6 @@ namespace Application.DictionaryCategories;
 
 public class Edit
 {
-
     public class Command : IRequest<Result<DictionaryCategoryDto>>
     {
         public EditDto EditDto { get; set; }

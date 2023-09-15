@@ -8,7 +8,6 @@ namespace Application.DictionaryCategories;
 
 public class Details
 {
-
     public class Query : IRequest<Result<DictionaryCategoryDto>>
     {
         public Guid Id { get; set; }
