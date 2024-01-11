@@ -16,6 +16,7 @@ public class DataContext : IdentityDbContext<AppUser>
     public DbSet<DictionaryCategoryItem> DictionaryCategoryItems { get; set; }
     public DbSet<GrammarRule> GrammarRules { get; set; }
     public DbSet<GrammarRuleItem> GrammarRuleItems { get; set; }
+    public DbSet<Birthday> Birthdays { get; set; }
 
     public DataContext(DbContextOptions options) : base(options)
     {
@@ -32,5 +33,6 @@ public class DataContext : IdentityDbContext<AppUser>
         builder.ApplyConfiguration(new ImageConfiguration());
         builder.ApplyConfiguration(new GrammarRuleItemConfiguration());
         builder.ApplyConfiguration(new DictionaryCategoryItemConfiguration());
+        builder.ApplyConfiguration(new BirthdayConfiguration());
     }
 }

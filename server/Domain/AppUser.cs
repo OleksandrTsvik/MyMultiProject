@@ -12,6 +12,7 @@ public class AppUser : IdentityUser
     public ICollection<UserFollowing> Followings { get; set; }
     public ICollection<UserFollowing> Followers { get; set; }
     public ICollection<Image> Images { get; set; }
+    public ICollection<Birthday> Birthdays { get; set; }
 
     public AppUser()
     {
@@ -21,5 +22,6 @@ public class AppUser : IdentityUser
         Followings = new List<UserFollowing>();
         Followers = new List<UserFollowing>();
         Images = new List<Image>();
+        Birthdays = new List<Birthday>();
     }
 }
