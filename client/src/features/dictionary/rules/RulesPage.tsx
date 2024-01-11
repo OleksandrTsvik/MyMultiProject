@@ -27,7 +27,7 @@ export default observer(function RulesPage() {
   }, [loadGrammarRules, resetGrammarRules]);
 
   if (loadingGrammarRules) {
-    return <Loading content="Loading grammar rules..." />;
+    return <Loading content="Loading grammar rules..." dimmer={false} />;
   }
 
   return (
