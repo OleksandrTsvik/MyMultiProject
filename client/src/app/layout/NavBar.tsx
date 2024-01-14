@@ -15,15 +15,11 @@ export default observer(function NavBar() {
 
   return (
     <Sticky>
-      <Menu
-        inverted
-        icon="labeled"
-        size="tiny"
-        className="menu__nav"
-      >
+      <Menu inverted icon="labeled" size="tiny" className="menu__nav">
         <Container className="flex-wrap">
           <Menu.Item
-            as={NavLink} to="/"
+            as={NavLink}
+            to="/"
             header
             className="fw-bold justify-content-center"
           >
@@ -31,7 +27,8 @@ export default observer(function NavBar() {
             MyMultiProject
           </Menu.Item>
           <Menu.Item
-            as={NavLink} to="/tasks"
+            as={NavLink}
+            to="/tasks"
             className="justify-content-center"
           >
             <IconPill
@@ -42,7 +39,8 @@ export default observer(function NavBar() {
             Tasks
           </Menu.Item>
           <Menu.Item
-            as={NavLink} to="/dictionary"
+            as={NavLink}
+            to="/dictionary"
             className="justify-content-center"
           >
             <Icon name="book" />
@@ -61,39 +59,52 @@ export default observer(function NavBar() {
           >
             <Dropdown.Menu>
               <Dropdown.Item
-                as={NavLink} to="/translate/language"
+                as={NavLink}
+                to="/translate/language"
                 icon="language"
                 text="Language"
               />
               <Dropdown.Item
-                as={NavLink} to="/translate/keyboard"
+                as={NavLink}
+                to="/translate/keyboard"
                 icon="keyboard"
                 text="Keyboard"
               />
             </Dropdown.Menu>
           </Dropdown>
           <Menu.Item
-            as={NavLink} to="/games"
+            as={NavLink}
+            to="/games"
             className="justify-content-center"
           >
             <Icon name="gamepad" />
             Games
           </Menu.Item>
           <Menu.Item
-            as={NavLink} to="/errors"
+            as={NavLink}
+            to="/birthdays"
+            className="justify-content-center"
+          >
+            <Icon name="gift" />
+            Birthdays
+          </Menu.Item>
+          <Menu.Item
+            as={NavLink}
+            to="/errors"
             className="justify-content-center"
           >
             <Icon name="bug" />
             Errors
           </Menu.Item>
           <Menu.Item
-            as={NavLink} to="/not-found"
+            as={NavLink}
+            to="/not-found"
             name="404"
             className="justify-content-center"
           />
           <Menu.Menu position="right">
-            {isLoggedIn
-              ? <Dropdown
+            {isLoggedIn ? (
+              <Dropdown
                 item
                 icon={
                   <>
@@ -104,10 +115,14 @@ export default observer(function NavBar() {
                       src={user?.image || '/assets/user.png'}
                     />
                     <Popup
-                      content={<span className="text-break">{user?.userName}</span>}
+                      content={
+                        <span className="text-break">{user?.userName}</span>
+                      }
                       position="bottom right"
                       trigger={
-                        <span className="truncate-text menu__username">{user?.userName}</span>
+                        <span className="truncate-text menu__username">
+                          {user?.userName}
+                        </span>
                       }
                     />
                     <Icon name="dropdown" />
@@ -117,18 +132,16 @@ export default observer(function NavBar() {
               >
                 <Dropdown.Menu>
                   <Dropdown.Item
-                    as={NavLink} to={`/profiles/${user?.userName}`}
+                    as={NavLink}
+                    to={`/profiles/${user?.userName}`}
                     icon="user outline"
                     text="My Profile"
                   />
-                  <Dropdown.Item
-                    onClick={logout}
-                    icon="power"
-                    text="Logout"
-                  />
+                  <Dropdown.Item onClick={logout} icon="power" text="Logout" />
                 </Dropdown.Menu>
               </Dropdown>
-              : <>
+            ) : (
+              <>
                 <Menu.Item
                   onClick={() => openModal(<LoginForm />, { size: 'mini' })}
                   className="justify-content-center"
@@ -144,7 +157,7 @@ export default observer(function NavBar() {
                   Register
                 </Menu.Item>
               </>
-            }
+            )}
           </Menu.Menu>
         </Container>
       </Menu>

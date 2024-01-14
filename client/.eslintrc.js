@@ -30,6 +30,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
     'no-prototype-builtins': 'off',
     'no-console': 'off',
     'jsx-quotes': ['warn', 'prefer-double'],

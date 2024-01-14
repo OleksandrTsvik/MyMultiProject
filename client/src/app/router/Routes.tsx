@@ -18,6 +18,7 @@ import EditRulePage from '../../features/dictionary/rules/EditRulePage';
 import RuleItemPage from '../../features/dictionary/rules/RuleItemPage';
 import AddCategoryItemPage from '../../features/dictionary/items/AddCategoryItemPage';
 import EditCategoryItemPage from '../../features/dictionary/items/EditCategoryItemPage';
+import BirthdaysPage from '../../features/birthdays/BirthdaysPage';
 
 export const routes: RouteObject[] = [
   {
@@ -33,40 +34,53 @@ export const routes: RouteObject[] = [
             path: 'dictionary',
             element: <DictionaryPage />,
             children: [
-              { index: true, element: <Navigate to="/dictionary/categories" replace /> },
+              {
+                index: true,
+                element: <Navigate to="/dictionary/categories" replace />,
+              },
               { path: 'categories', element: <CategoriesPage /> },
-              { path: 'rules', element: <RulesPage /> }
-            ]
+              { path: 'rules', element: <RulesPage /> },
+            ],
           },
           {
             path: 'dictionary',
             children: [
               { path: 'categories/:categoryId', element: <CategoryPage /> },
-              { path: 'categories/:categoryId/item/add', element: <AddCategoryItemPage /> },
-              { path: 'categories/:categoryId/item/edit/:itemId', element: <EditCategoryItemPage /> },
+              {
+                path: 'categories/:categoryId/item/add',
+                element: <AddCategoryItemPage />,
+              },
+              {
+                path: 'categories/:categoryId/item/edit/:itemId',
+                element: <EditCategoryItemPage />,
+              },
               { path: 'rules/add', element: <AddRulePage /> },
               { path: 'rules/edit/:ruleId', element: <EditRulePage /> },
-              { path: 'rules/:ruleId', element: <RuleItemPage /> }
-            ]
-          }
-        ]
+              { path: 'rules/:ruleId', element: <RuleItemPage /> },
+            ],
+          },
+          { path: 'birthdays', element: <BirthdaysPage /> },
+        ],
       },
       {
         path: 'translate',
         children: [
-          { index: true, element: <Navigate to="/translate/language" replace /> },
+          {
+            index: true,
+            element: <Navigate to="/translate/language" replace />,
+          },
           { path: 'language', element: <HomePage /> },
-          { path: 'keyboard', element: <TranslateKeyboardPage /> }
-        ]
+          { path: 'keyboard', element: <TranslateKeyboardPage /> },
+        ],
       },
       { path: 'profiles/:username', element: <ProfilePage /> },
       { path: 'games', element: <>Games</> },
       { path: 'errors', element: <TestErrorsPage /> },
       { path: 'server-error', element: <ServerErrorPage /> },
       { path: 'not-found', element: <NotFoundPage /> },
-      { path: '*', element: <Navigate to="/not-found" replace /> }
-    ]
-  }
+      { path: '*', element: <Navigate to="/not-found" replace /> },
+    ],
+  },
 ];
 
 export const router = createBrowserRouter(routes);

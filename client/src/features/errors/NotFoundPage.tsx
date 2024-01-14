@@ -7,10 +7,8 @@ export default function NotFoundPage() {
         className="flex-fill d-flex flex-column justify-content-center align-items-center"
         negative
       >
-        <Message.Header className="mb-2">
-          404. Page Not Found
-        </Message.Header>
-        <p>Make sure the address is correct and the page hasn't moved</p>
+        <Message.Header className="mb-2">404. Page Not Found</Message.Header>
+        <p>Make sure the address is correct and the page hasn&apos;t moved</p>
       </Message>
     </Container>
   );

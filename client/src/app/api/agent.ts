@@ -9,6 +9,7 @@ import { Duties } from './duties';
 import { Account } from './account';
 import { Dictionary, DictionaryCategories, DictionaryItems, GrammarRules } from './dictionary';
 import { Profiles } from './profiles';
+import { Birthdays } from './birthdays';
 
 export const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -105,7 +106,7 @@ export const requests = {
 };
 
 export const uploadFile = <T>(file: Blob, url: string, fieldName: string = 'File') => {
-  let formData = new FormData();
+  const formData = new FormData();
   formData.append(fieldName, file);
 
   return axios
@@ -122,7 +123,8 @@ const agent = {
   Dictionary,
   DictionaryCategories,
   DictionaryItems,
-  GrammarRules
+  GrammarRules,
+  Birthdays,
 };
 
 export default agent;

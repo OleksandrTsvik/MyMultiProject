@@ -6,6 +6,7 @@ import UserStore from './userStore';
 import ModalStore from './modalStore';
 import ProfileStore from './profileStore';
 import DictionaryStore from './dictionaryStore';
+import BirthdayStore from './birthdayStore';
 
 interface Store {
   dutyStore: DutyStore;
@@ -14,6 +15,7 @@ interface Store {
   modalStore: ModalStore;
   profileStore: ProfileStore;
   dictionaryStore: DictionaryStore;
+  birthdayStore: BirthdayStore;
 }
 
 export const store: Store = {
@@ -22,7 +24,8 @@ export const store: Store = {
   userStore: new UserStore(),
   modalStore: new ModalStore(),
   profileStore: new ProfileStore(),
-  dictionaryStore: new DictionaryStore()
+  dictionaryStore: new DictionaryStore(),
+  birthdayStore: new BirthdayStore(),
 };
 
 export const StoreContext = createContext(store);

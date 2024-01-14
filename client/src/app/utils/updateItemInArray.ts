@@ -9,9 +9,9 @@
 export default function updateItemInArray<T>(
   array: T[],
   item: Partial<T>,
-  predicate: (value: T, index: number, obj: T[]) => unknown
+  predicate: (value: T, index: number, obj: T[]) => unknown,
 ): number {
-  let updateIndex = array.findIndex(predicate);
+  const updateIndex = array.findIndex(predicate);
 
   if (updateIndex < 0) {
     return -1;
@@ -19,7 +19,7 @@ export default function updateItemInArray<T>(
 
   array[updateIndex] = {
     ...array[updateIndex],
-    ...item
+    ...item,
   };
 
   return 1;

@@ -17,13 +17,11 @@ interface Props {
   snapshot: DraggableStateSnapshot;
 }
 
-export default observer(function CategoryListItem(
-  {
-    category,
-    provided,
-    snapshot
-  }: Props
-) {
+export default observer(function CategoryListItem({
+  category,
+  provided,
+  snapshot,
+}: Props) {
   const navigate = useNavigate();
 
   const { modalStore, dictionaryStore } = useStore();
@@ -31,25 +29,33 @@ export default observer(function CategoryListItem(
   const { openModal } = modalStore;
   const { deleteCategory } = dictionaryStore;
 
-  function handleOpenEditCategory(event: SyntheticEvent, category: DictionaryCategory) {
+  function handleOpenEditCategory(
+    event: SyntheticEvent,
+    category: DictionaryCategory,
+  ) {
     event.stopPropagation();
 
     openModal(<EditCategory category={category} />, { size: 'small' }, true);
   }
 
-  function handleOpenDeleteCategory(event: SyntheticEvent, category: DictionaryCategory) {
+  function handleOpenDeleteCategory(
+    event: SyntheticEvent,
+    category: DictionaryCategory,
+  ) {
     event.stopPropagation();
 
     openModal(
       <ModalConfirm
-        content={<>
-          <p>Delete the category "{category.title}".</p>
-          <i>when deleting a category, the items are not deleted</i>
-        </>}
+        content={
+          <>
+            <p>Delete the category &quot;{category.title}&quot;.</p>
+            <i>when deleting a category, the items are not deleted</i>
+          </>
+        }
         onConfirm={() => deleteCategory(category.id)}
       />,
       {},
-      true
+      true,
     );
   }
 
@@ -57,13 +63,13 @@ export default observer(function CategoryListItem(
     <tr
       ref={provided.innerRef}
       {...provided.draggableProps}
-      className={'top aligned cursor-pointer' + (snapshot.isDragging ? ' item__dragging' : '')}
+      className={
+        'top aligned cursor-pointer' +
+        (snapshot.isDragging ? ' item__dragging' : '')
+      }
       onClick={() => navigate(`/dictionary/categories/${category.id}`)}
     >
-      <Table.Cell
-        collapsing
-        {...provided.dragHandleProps}
-      >
+      <Table.Cell collapsing {...provided.dragHandleProps}>
         <Icon name="block layout" />
       </Table.Cell>
       <Table.Cell collapsing>

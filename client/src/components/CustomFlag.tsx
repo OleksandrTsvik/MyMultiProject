@@ -3,7 +3,7 @@ import { Flag, FlagNameValues, FlagProps } from 'semantic-ui-react';
 
 import getSemanticFlagName from '../app/utils/getSemanticFlagName';
 
-interface BaseProps extends FlagProps { }
+interface BaseProps extends FlagProps {}
 
 interface NameProps extends BaseProps {
   strName?: never;
@@ -30,7 +30,5 @@ export default function CustomFlag({ name, strName, ...props }: Props) {
     return null;
   }
 
-  return (
-    <Flag {...props} name={flagName} />
-  );
+  return <Flag {...props} name={flagName} />;
 }
