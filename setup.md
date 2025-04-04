@@ -1,5 +1,21 @@
 # Setup
 
+## docker-compose.dev.yml
+
+```yml
+services:
+  adminer:
+    image: adminer:latest
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+```
+
+> Instead of `pgadmin4`, you can use `adminer`.
+
 ## .vscode
 
 ### settings.json

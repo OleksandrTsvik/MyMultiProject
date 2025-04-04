@@ -5,8 +5,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile.dev
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://*:5000
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://*:5000
     volumes:
       - ./backend/src:/app
       - /app/Api/obj/
@@ -26,34 +26,29 @@ services:
     depends_on:
       - postgres
 
-  # frontend:
-  #   container_name: frontend
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile.dev
-  #   ports:
-  #     - 3000:3000
-  #   depends_on:
-  #     - backend
-
   postgres:
     image: postgres:latest
     container_name: postgres
     restart: always
     environment:
-      - POSTGRES_DB=my-multi-project
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: my-multi-project
     volumes:
       - ./.containers/db:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
-  adminer:
-    image: adminer
-    container_name: adminer
+  pgadmin4:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin4
     restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    volumes:
+      - ./.containers/pgadmin:/var/lib/pgadmin
     ports:
-      - 8080:8080
+      - 5050:80
     depends_on:
       - postgres
