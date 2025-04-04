@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+EXPOSE 5000
+
+COPY ["src/Api/Api.csproj", "Api/"]
+COPY ["src/Application/Application.csproj", "Application/"]
+COPY ["src/Domain/Domain.csproj", "Domain/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "Infrastructure/"]
+COPY ["src/Persistence/Persistence.csproj", "Persistence/"]
+COPY ["src/SharedKernel/SharedKernel.csproj", "SharedKernel/"]
+
+RUN dotnet restore "Api/Api.csproj"
+COPY src .
+
+CMD [ "dotnet", "watch", "run", "--project" , "Api/Api.csproj", "--urls", "http://*:5000", "--no-hot-reload" ]

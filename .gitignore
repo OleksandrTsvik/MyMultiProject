@@ -1,11 +1,12 @@
-# Visual Studio Code
+# Visual Studio
 .vscode
-
-# Visual Studio IDE
 .vs
 
 # JetBrains IDEA
 .idea
+
+# Volume data
+.containers/
 
 # draw.io
 /db-schema/.$*

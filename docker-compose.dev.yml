@@ -1,0 +1,59 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://*:5000
+    volumes:
+      - ./backend/src:/app
+      - /app/Api/obj/
+      - /app/Api/bin/
+      - /app/Application/obj/
+      - /app/Application/bin/
+      - /app/Domain/obj/
+      - /app/Domain/bin/
+      - /app/Infrastructure/obj/
+      - /app/Infrastructure/bin/
+      - /app/Persistence/obj/
+      - /app/Persistence/bin/
+      - /app/SharedKernel/obj/
+      - /app/SharedKernel/bin/
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgres
+
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile.dev
+  #   ports:
+  #     - 3000:3000
+  #   depends_on:
+  #     - backend
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=my-multi-project
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
