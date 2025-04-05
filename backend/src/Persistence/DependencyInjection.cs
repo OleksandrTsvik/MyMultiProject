@@ -25,9 +25,9 @@ public static class DependencyInjection
             ApplicationDbOptions applicationDbOptions = serviceProvider
                 .GetRequiredService<IOptions<ApplicationDbOptions>>().Value;
 
-            options.UseNpgsql(
-                applicationDbOptions.ConnectionString,
-                options => options.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery));
+            options
+                .UseNpgsql(applicationDbOptions.ConnectionString)
+                .UseSnakeCaseNamingConvention();
         });
 
         services.AddScoped<ApplicationDbInitializer>();

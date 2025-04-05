@@ -23,8 +23,9 @@ public sealed class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, PagedLis
         CancellationToken cancellationToken)
     {
         IQueryable<User> query = _dbContext.Users
+            .OrderBy(user => user.UserName)
             .WhereIf(
-                !string.IsNullOrWhiteSpace(request.Email),
+                !string.IsNullOrWhiteSpace(request.UserName),
                 user => EF.Functions.ILike(user.UserName, $"%{request.UserName}%"))
             .WhereIf(
                 !string.IsNullOrWhiteSpace(request.Email),
@@ -36,7 +37,7 @@ public sealed class GetUsersQueryHandler : IQueryHandler<GetUsersQuery, PagedLis
                 user.UserName,
                 user.Email,
                 user.EmailVerified,
-                user.Roles.Select(role => role.Name).ToArray()))
+                user.Roles.Select(role => role.Name).Order().ToArray()))
             .ToPagedListAsync(request.PageNumber, request.PageSize, cancellationToken);
 
         return users;

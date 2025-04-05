@@ -32,7 +32,7 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
 
         if (user is null)
         {
-            return UserErrors.NotFoundByEmail(request.Email);
+            return UserErrors.InvalidCredentials();
         }
 
         if (user.IsDeleted)

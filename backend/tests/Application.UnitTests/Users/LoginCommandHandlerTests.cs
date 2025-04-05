@@ -47,7 +47,7 @@ public class LoginCommandHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeEquivalentTo(UserErrors.NotFoundByEmail(command.Email));
+        result.Error.Should().BeEquivalentTo(UserErrors.InvalidCredentials());
     }
 
     [Fact]
