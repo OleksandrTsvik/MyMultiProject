@@ -22,7 +22,7 @@ public class LayerTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class LayerTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class LayerTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 
     [Fact]
@@ -83,6 +83,6 @@ public class LayerTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 }

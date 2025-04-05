@@ -18,6 +18,6 @@ public class PersistenceTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 }

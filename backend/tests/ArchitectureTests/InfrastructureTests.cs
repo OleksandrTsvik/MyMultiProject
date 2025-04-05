@@ -17,7 +17,7 @@ public class InfrastructureTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 
     [Fact]
@@ -34,6 +34,6 @@ public class InfrastructureTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 }

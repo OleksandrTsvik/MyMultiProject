@@ -21,7 +21,7 @@ public class ApplicationTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class ApplicationTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 
     [Fact]
@@ -57,6 +57,6 @@ public class ApplicationTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 }

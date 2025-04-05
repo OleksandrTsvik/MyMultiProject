@@ -45,9 +45,9 @@ public class LoginCommandHandlerTests
         Result<LoginResponse> result = await _handler.Handle(command, default);
 
         // Assert
-        result.IsSuccess.Should().BeFalse();
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeEquivalentTo(UserErrors.InvalidCredentials());
+        Assert.True(result.IsFailure);
+        Assert.False(result.IsSuccess);
+        Assert.Equivalent(UserErrors.InvalidCredentials(), result.Error);
     }
 
     [Fact]
@@ -91,8 +91,9 @@ public class LoginCommandHandlerTests
         Result<LoginResponse> result = await _handler.Handle(command, default);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeEquivalentTo(UserErrors.UserDeleted());
+        Assert.True(result.IsFailure);
+        Assert.False(result.IsSuccess);
+        Assert.Equivalent(UserErrors.UserDeleted(), result.Error);
     }
 
     [Fact]
@@ -112,8 +113,9 @@ public class LoginCommandHandlerTests
         Result<LoginResponse> result = await _handler.Handle(command, default);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeEquivalentTo(UserErrors.InvalidPasswordHash());
+        Assert.True(result.IsFailure);
+        Assert.False(result.IsSuccess);
+        Assert.Equivalent(UserErrors.InvalidPasswordHash(), result.Error);
     }
 
     [Fact]
@@ -137,8 +139,9 @@ public class LoginCommandHandlerTests
         Result<LoginResponse> result = await _handler.Handle(command, default);
 
         // Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().BeEquivalentTo(UserErrors.InvalidCredentials());
+        Assert.True(result.IsFailure);
+        Assert.False(result.IsSuccess);
+        Assert.Equivalent(UserErrors.InvalidCredentials(), result.Error);
     }
 
     [Fact]
@@ -172,7 +175,8 @@ public class LoginCommandHandlerTests
         Result<LoginResponse> result = await _handler.Handle(command, default);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
+        Assert.False(result.IsFailure);
+        Assert.True(result.IsSuccess);
     }
 
     [Fact]
@@ -284,9 +288,11 @@ public class LoginCommandHandlerTests
         Result<LoginResponse> result = await _handler.Handle(command, default);
 
         // Assert
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.AccessToken.Should().Be(accessTokenInfo.Token);
-        result.Value.RefreshToken.Should().Be(refreshTokenInfo.Token);
+        Assert.False(result.IsFailure);
+        Assert.True(result.IsSuccess);
+
+        Assert.NotNull(result.Value);
+        Assert.Equal(accessTokenInfo.Token, result.Value.AccessToken);
+        Assert.Equal(refreshTokenInfo.Token, result.Value.RefreshToken);
     }
 }

@@ -21,7 +21,7 @@ public class ApiTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 
     [Fact]
@@ -38,6 +38,6 @@ public class ApiTests : BaseArchitectureTest
             .GetResult();
 
         // Assert
-        result.IsSuccessful.Should().BeTrue();
+        Assert.True(result.IsSuccessful);
     }
 }
