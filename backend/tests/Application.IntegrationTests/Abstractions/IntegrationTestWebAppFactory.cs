@@ -18,9 +18,9 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<IApiMarker>, I
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseSetting("ApplicationDb:ConnectionString", _dbContainer.GetConnectionString());
-
         builder.UseEnvironment("Development");
+
+        builder.UseSetting("ApplicationDb:ConnectionString", _dbContainer.GetConnectionString());
     }
 
     public async Task InitializeAsync()

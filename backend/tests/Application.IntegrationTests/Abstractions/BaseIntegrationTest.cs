@@ -22,5 +22,6 @@ public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppF
     public virtual void Dispose()
     {
         Scope.Dispose();
+        DbContext.Dispose();
     }
 }

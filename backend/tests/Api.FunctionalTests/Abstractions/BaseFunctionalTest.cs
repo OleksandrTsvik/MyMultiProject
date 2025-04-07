@@ -21,5 +21,7 @@ public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFac
     public virtual void Dispose()
     {
         Scope.Dispose();
+        DbContext.Dispose();
+        HttpClient.Dispose();
     }
 }

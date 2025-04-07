@@ -2,6 +2,8 @@ using Api.Abstractions;
 using Application.Common.Models;
 using Application.Users.Get;
 using Application.Users.Login;
+using Domain.Users;
+using Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
@@ -21,6 +23,7 @@ public sealed class UsersController : BaseApiController
         return HandleResult(result);
     }
 
+    [HasPermission(UserPermissionType.ReadUser)]
     [HttpGet]
     public async Task<IActionResult> GetUsers(
         [FromQuery(Name = "u")] string? userName,

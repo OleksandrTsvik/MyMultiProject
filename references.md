@@ -11,6 +11,7 @@
 - [[Microsoft] Routing in ASP.NET Core. Route constraints](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-8.0#route-constraints)
 - [[Microsoft] Test ASP.NET Core MVC apps](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/test-asp-net-core-mvc-apps)
 - [[Microsoft] Naming of environment variables](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-8.0#naming-of-environment-variables)
+- [[Stack Overflow] ASP.NET Core disable authentication in development environment](https://stackoverflow.com/questions/41112564/asp-net-core-disable-authentication-in-development-environment)
 - [[YouTube] Easy Email Verification in .NET: FluentEmail + Papercut](https://www.youtube.com/watch?v=KtCjH-1iCIk)
 - [[YouTube] Authentication & Authorization](https://www.youtube.com/playlist?list=PLYpjLpq5ZDGtJOHUbv7KHuxtYLk1nJPw5)
 - [[YouTube] How to Write Architecture Tests for the Clean Architecture](https://www.youtube.com/watch?v=_D6Kai4RdGY)
