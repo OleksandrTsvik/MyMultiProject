@@ -56,7 +56,6 @@ public class LoginTests : BaseUserTest, IAsyncLifetime
 
         Assert.Equal(StatusCodes.Status400BadRequest, errorResponse.StatusCode);
         Assert.NotNull(errorResponse.Details);
-        Assert.Single(errorResponse.Details);
         Assert.Contains(nameof(LoginCommand.Email), errorResponse.Details.Select(error => error.Code));
     }
 

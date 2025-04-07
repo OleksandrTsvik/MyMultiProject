@@ -20,22 +20,27 @@ public abstract class BaseUserTest : BaseIntegrationTest
         string? password = null,
         List<UserRole>? roles = null)
     {
-        string? passwordHash = string.IsNullOrWhiteSpace(password) ? null : _passwordHasher.Hash(password);
-
-        var user = new User
-        {
-            UserName = email,
-            Email = email,
-            EmailVerified = true,
-            PasswordHash = passwordHash,
-            Roles = roles ?? [],
-        };
+        User user = CreateUserInstance(email, password, roles);
 
         DbContext.Users.Add(user);
-
         await DbContext.SaveChangesAsync();
 
         return user;
+    }
+
+    protected async Task<List<User>> CreateUsersAsync(string email, params string[] emails)
+    {
+        var users = new List<User>
+        {
+            CreateUserInstance(email)
+        };
+
+        users.AddRange(emails.Select(email => CreateUserInstance(email)));
+
+        DbContext.Users.AddRange(users);
+        await DbContext.SaveChangesAsync();
+
+        return users;
     }
 
     protected async Task<List<UserRole>> CreateUserRolesAsync()
@@ -75,5 +80,24 @@ public abstract class BaseUserTest : BaseIntegrationTest
         await DbContext.SaveChangesAsync();
 
         return roles;
+    }
+
+    protected User CreateUserInstance(
+        string email,
+        string? password = null,
+        List<UserRole>? roles = null)
+    {
+        string? passwordHash = string.IsNullOrWhiteSpace(password) ? null : _passwordHasher.Hash(password);
+
+        var user = new User
+        {
+            UserName = email,
+            Email = email,
+            EmailVerified = true,
+            PasswordHash = passwordHash,
+            Roles = roles ?? [],
+        };
+
+        return user;
     }
 }

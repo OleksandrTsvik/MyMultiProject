@@ -11,14 +11,7 @@ dotnet build
 ```
 
 3. In the `src/Api` folder, fill in the `appsettings.json` file.
-
-4. Create EF migrations:
-
-```sh
-dotnet ef migrations add InitialCreate -s src/Api -p src/Persistence
-```
-
-5. Run:
+4. Run:
 
 ```sh
 cd src/Api

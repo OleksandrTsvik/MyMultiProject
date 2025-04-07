@@ -54,9 +54,10 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 2;
 
-        await CreateUserAsync("test-01@mail.com");
-        await CreateUserAsync("test-02@mail.com");
-        await CreateUserAsync("test-03@mail.com");
+        await CreateUsersAsync(
+            "test-01@mail.com",
+            "test-02@mail.com",
+            "test-03@mail.com");
 
         var query = new GetUsersQuery(userName, email, pageNumber, pageSize);
 
@@ -84,8 +85,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 2;
         int pageSize = 2;
 
-        await CreateUserAsync("test-01@mail.com");
-        await CreateUserAsync("test-02@mail.com");
+        await CreateUsersAsync("test-01@mail.com", "test-02@mail.com");
         User user = await CreateUserAsync("test-03@mail.com");
 
         var query = new GetUsersQuery(userName, email, pageNumber, pageSize);
@@ -115,8 +115,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 5;
 
-        await CreateUserAsync("test-01@mail.com");
-        await CreateUserAsync("test-02@mail.com");
+        await CreateUsersAsync("test-01@mail.com", "test-02@mail.com");
 
         List<UserRole> roles = await CreateUserRolesAsync();
         User user = await CreateUserAsync("test-03@mail.com", null, roles);
@@ -148,8 +147,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 5;
 
-        await CreateUserAsync("test-01@mail.com");
-        await CreateUserAsync("test-02@mail.com");
+        await CreateUsersAsync("test-01@mail.com", "test-02@mail.com");
 
         List<UserRole> roles = await CreateUserRolesAsync();
         User user = await CreateUserAsync(email, null, roles);
@@ -181,10 +179,11 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 5;
 
-        await CreateUserAsync("test-04@mail.com");
-        await CreateUserAsync("test-05@gmail.com");
-        await CreateUserAsync("user-test-05@mail.com");
-        await CreateUserAsync("test-055@mail.com");
+        await CreateUsersAsync(
+            "test-04@mail.com",
+            "test-05@gmail.com",
+            "user-test-05@mail.com",
+            "test-055@mail.com");
 
         User user = await CreateUserAsync(email);
 
