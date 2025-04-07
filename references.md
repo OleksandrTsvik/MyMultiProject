@@ -16,6 +16,7 @@
 - [[YouTube] How to Write Architecture Tests for the Clean Architecture](https://www.youtube.com/watch?v=_D6Kai4RdGY)
 - [[YouTube] Unit Testing CQRS Handlers With Moq, Fluent Assertions, and xUnit](https://www.youtube.com/watch?v=a6Qab5l-VLo)
 - [[YouTube] The Best Way To Use Docker For Integration Testing In .NET](https://www.youtube.com/watch?v=tj5ZCtvgXKY)
+- [[YouTube] The Complete Guide to Functional Testing in ASP.NET Core (End-to-End Testing)](https://www.youtube.com/watch?v=ASa8wXMXwrQ)
 
 ## General
 

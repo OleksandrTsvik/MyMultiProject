@@ -1,7 +1,15 @@
 namespace Api.Abstractions;
 
-public sealed record ErrorResponse(
+public record ErrorResponse<TDetails>(
     int StatusCode,
     string Code,
     string Message,
-    object? Details = null);
+    TDetails? Details = default);
+
+public sealed record ErrorResponse : ErrorResponse<object>
+{
+    public ErrorResponse(int StatusCode, string Code, string Message, object? Details = null)
+        : base(StatusCode, Code, Message, Details)
+    {
+    }
+}
