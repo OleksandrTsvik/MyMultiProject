@@ -1,5 +1,6 @@
 using Api.Abstractions;
 using Application.Birthdays.Create;
+using Application.Birthdays.Update;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 
@@ -15,6 +16,19 @@ public class BirthdaysController : BaseApiController
         var command = new CreateBirthdayCommand(request.FullName, request.Date, request.Note);
 
         Result<Guid> result = await Sender.Send(command, cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpPut("id:guid")]
+    public async Task<IActionResult> UpdateBirthday(
+        Guid id,
+        [FromBody] UpdateBirthdayRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateBirthdayCommand(id, request.FullName, request.Date, request.Note);
+
+        Result result = await Sender.Send(command, cancellationToken);
 
         return HandleResult(result);
     }
