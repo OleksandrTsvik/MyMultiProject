@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250404150256_InitialCreate")]
+    [Migration("20250407205709_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -52,10 +52,6 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_birthdays");
-
-                    b.HasIndex("FullName")
-                        .IsUnique()
-                        .HasDatabaseName("ix_birthdays_full_name");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_birthdays_user_id");

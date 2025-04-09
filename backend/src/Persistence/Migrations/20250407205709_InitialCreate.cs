@@ -183,12 +183,6 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_birthdays_full_name",
-                table: "birthdays",
-                column: "full_name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "ix_birthdays_user_id",
                 table: "birthdays",
                 column: "user_id");

@@ -16,10 +16,6 @@ public sealed class BirthdayConfiguration : IEntityTypeConfiguration<Birthday>
             .HasMaxLength(BirthdayRules.MaxFullNameLength);
 
         builder
-            .HasIndex(birthday => birthday.FullName)
-            .IsUnique();
-
-        builder
             .Property(birthday => birthday.Date)
             .IsRequired();
 

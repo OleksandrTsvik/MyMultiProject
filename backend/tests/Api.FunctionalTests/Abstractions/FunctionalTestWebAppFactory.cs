@@ -1,10 +1,5 @@
-using Api.FunctionalTests.Abstractions.Authorization;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.PostgreSql;
 
 namespace Api.FunctionalTests.Abstractions;
@@ -25,12 +20,6 @@ public class FunctionalTestWebAppFactory : WebApplicationFactory<IApiMarker>, IA
         builder.UseEnvironment("Development");
 
         builder.UseSetting("ApplicationDb:ConnectionString", _dbContainer.GetConnectionString());
-
-        builder.ConfigureTestServices(services =>
-        {
-            services.RemoveAll<IAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, AnonymousAuthorizationHandler>();
-        });
     }
 
     public async Task InitializeAsync()

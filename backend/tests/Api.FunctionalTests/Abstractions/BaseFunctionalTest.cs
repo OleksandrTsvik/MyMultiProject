@@ -1,3 +1,5 @@
+using Api.FunctionalTests.Abstractions.Services;
+using Application.Common.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 
@@ -7,21 +9,27 @@ public abstract class BaseFunctionalTest : IClassFixture<FunctionalTestWebAppFac
 {
     protected readonly IServiceScope Scope;
 
-    protected readonly ApplicationDbContext DbContext;
     protected readonly HttpClient HttpClient;
+    protected readonly ApplicationDbContext DbContext;
+    protected readonly AuthenticationService AuthenticationService;
 
     protected BaseFunctionalTest(FunctionalTestWebAppFactory factory)
     {
         Scope = factory.Services.CreateScope();
 
-        DbContext = Scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         HttpClient = factory.CreateClient();
+        DbContext = Scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        AuthenticationService = new AuthenticationService(
+            HttpClient,
+            DbContext,
+            Scope.ServiceProvider.GetRequiredService<IPasswordHasher>());
     }
 
     public virtual void Dispose()
     {
         Scope.Dispose();
-        DbContext.Dispose();
         HttpClient.Dispose();
+        DbContext.Dispose();
     }
 }

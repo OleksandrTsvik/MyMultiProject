@@ -15,7 +15,9 @@ internal abstract class ApplicationDbRepository<TEntity>
 
     public virtual Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return DbContext.Set<TEntity>().FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+        return DbContext.Set<TEntity>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
     }
 
     public Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default)

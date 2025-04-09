@@ -184,7 +184,7 @@ public class LoginCommandHandlerTests
     {
         // Arrange
         var command = new LoginCommand("test@example.com", "password");
-        var user = new User { PasswordHash = "password_hash" };
+        var user = new User { Id = Guid.NewGuid(), PasswordHash = "password_hash" };
         var accessTokenInfo = new TokenInfo("access_token", DateTime.UtcNow);
         var refreshTokenInfo = new TokenInfo("refresh_token", DateTime.UtcNow);
 
@@ -212,7 +212,9 @@ public class LoginCommandHandlerTests
         // Assert
         _refreshTokenRepositoryMock.Verify(
             refreshTokenRepository => refreshTokenRepository.InsertAsync(
-                It.IsAny<RefreshToken>(),
+                It.Is<RefreshToken>(refreshToken =>
+                    refreshToken.UserId == user.Id &&
+                    refreshToken.Token == refreshTokenInfo.Token),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }

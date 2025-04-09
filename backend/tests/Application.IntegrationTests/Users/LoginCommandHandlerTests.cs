@@ -1,6 +1,5 @@
 using Application.Users.Login;
 using Domain.Users;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.IntegrationTests.Users;
 

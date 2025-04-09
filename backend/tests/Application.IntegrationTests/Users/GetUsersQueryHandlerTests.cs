@@ -1,6 +1,5 @@
 using Application.Users.Get;
 using Domain.Users;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.IntegrationTests.Users;
 
@@ -54,7 +53,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 2;
 
-        await CreateUsersAsync(
+        await CreateManyUsersAsync(
             "test-01@mail.com",
             "test-02@mail.com",
             "test-03@mail.com");
@@ -85,7 +84,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 2;
         int pageSize = 2;
 
-        await CreateUsersAsync("test-01@mail.com", "test-02@mail.com");
+        await CreateManyUsersAsync("test-01@mail.com", "test-02@mail.com");
         User user = await CreateUserAsync("test-03@mail.com");
 
         var query = new GetUsersQuery(userName, email, pageNumber, pageSize);
@@ -115,7 +114,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 5;
 
-        await CreateUsersAsync("test-01@mail.com", "test-02@mail.com");
+        await CreateManyUsersAsync("test-01@mail.com", "test-02@mail.com");
 
         List<UserRole> roles = await CreateUserRolesAsync();
         User user = await CreateUserAsync("test-03@mail.com", null, roles);
@@ -147,7 +146,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 5;
 
-        await CreateUsersAsync("test-01@mail.com", "test-02@mail.com");
+        await CreateManyUsersAsync("test-01@mail.com", "test-02@mail.com");
 
         List<UserRole> roles = await CreateUserRolesAsync();
         User user = await CreateUserAsync(email, null, roles);
@@ -179,7 +178,7 @@ public class GetUsersQueryHandlerTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 1;
         int pageSize = 5;
 
-        await CreateUsersAsync(
+        await CreateManyUsersAsync(
             "test-04@mail.com",
             "test-05@gmail.com",
             "user-test-05@mail.com",

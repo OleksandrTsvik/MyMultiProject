@@ -23,9 +23,11 @@ public class GetUsersTests : BaseUserTest, IAsyncLifetime
     public async Task Get_Should_ReturnOk_WhenQueryStringIsEmpty()
     {
         // Arrange
-        await CreateUsersAsync("test-01@mail.com", "test-02@mail.com");
+        await CreateManyUsersAsync("test-01@mail.com", "test-02@mail.com");
 
         string requestUri = GenerateQueryString();
+
+        HttpClient.DefaultRequestHeaders.Authorization = await AuthenticationService.GetAuthenticationHeaderAsync();
 
         // Act
         HttpResponseMessage response = await HttpClient.GetAsync(requestUri);
@@ -38,7 +40,7 @@ public class GetUsersTests : BaseUserTest, IAsyncLifetime
         Assert.NotNull(users);
         Assert.Equal(1, users.CurrentPage);
         Assert.Equal(1, users.TotalPages);
-        Assert.Equal(2, users.TotalItems);
+        Assert.Equal(3, users.TotalItems);
         Assert.False(users.HasPreviousPage);
         Assert.False(users.HasNextPage);
     }
@@ -51,7 +53,7 @@ public class GetUsersTests : BaseUserTest, IAsyncLifetime
         int pageNumber = 2;
         int pageSize = 5;
 
-        await CreateUsersAsync(
+        await CreateManyUsersAsync(
             "01-test@mail.com",
             "02-test@mail.com",
             "03-test@mail.com",
@@ -66,6 +68,8 @@ public class GetUsersTests : BaseUserTest, IAsyncLifetime
             email: "test@mail.com",
             pageNumber: pageNumber,
             pageSize: pageSize);
+
+        HttpClient.DefaultRequestHeaders.Authorization = await AuthenticationService.GetAuthenticationHeaderAsync();
 
         // Act
         HttpResponseMessage response = await HttpClient.GetAsync(requestUri);

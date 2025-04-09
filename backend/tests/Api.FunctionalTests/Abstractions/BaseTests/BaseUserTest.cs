@@ -27,7 +27,7 @@ public abstract class BaseUserTest : BaseFunctionalTest
         return user;
     }
 
-    protected async Task<List<User>> CreateUsersAsync(string email, params string[] emails)
+    protected async Task<List<User>> CreateManyUsersAsync(string email, params string[] emails)
     {
         var users = new List<User>
         {
@@ -46,23 +46,23 @@ public abstract class BaseUserTest : BaseFunctionalTest
     {
         List<UserPermission> permissions = await DbContext.UserPermissions.ToListAsync();
 
-        var managerPermissions = new List<UserPermissionType>
+        var adminPermissions = new List<UserPermissionType>
         {
-            UserPermissionType.FullAccess
+            UserPermissionType.FullAccess,
         };
 
         var testerPermissions = new List<UserPermissionType>
         {
-            UserPermissionType.FullAccess
+            UserPermissionType.ReadUser,
         };
 
         var roles = new List<UserRole>
         {
             new()
             {
-                Name = "Manager",
+                Name = "Admin",
                 Permissions = permissions
-                    .Where(userPermission => managerPermissions.Contains(userPermission.Name))
+                    .Where(userPermission => adminPermissions.Contains(userPermission.Name))
                     .ToList(),
             },
             new()
@@ -75,7 +75,6 @@ public abstract class BaseUserTest : BaseFunctionalTest
         };
 
         DbContext.UserRoles.AddRange(roles);
-
         await DbContext.SaveChangesAsync();
 
         return roles;

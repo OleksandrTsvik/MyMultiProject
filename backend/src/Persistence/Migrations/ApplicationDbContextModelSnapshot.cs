@@ -50,10 +50,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_birthdays");
 
-                    b.HasIndex("FullName")
-                        .IsUnique()
-                        .HasDatabaseName("ix_birthdays_full_name");
-
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_birthdays_user_id");
 

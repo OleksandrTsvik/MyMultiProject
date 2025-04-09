@@ -1,8 +1,8 @@
+using Application.Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Persistence.Abstractions;
-using Persistence.Extensions;
 using Persistence.Options;
 
 namespace Persistence;
@@ -37,7 +37,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScopedEndsWith("Repository");
+        services.AddScopedEndsWith("Repository", AssemblyReference.Assembly);
 
         return services;
     }
