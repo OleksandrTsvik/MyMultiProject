@@ -35,8 +35,8 @@ public class LoginCommandHandlerTests
         var command = new LoginCommand("test@example.com", "password");
         User? user = null;
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -57,8 +57,8 @@ public class LoginCommandHandlerTests
         var command = new LoginCommand("test@example.com", "password");
         User? user = null;
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -81,8 +81,8 @@ public class LoginCommandHandlerTests
         var command = new LoginCommand("test@example.com", "password");
         var user = new User { DeletedOnUtc = DateTime.UtcNow };
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -103,8 +103,8 @@ public class LoginCommandHandlerTests
         var command = new LoginCommand("test@example.com", "password");
         var user = new User { PasswordHash = string.Empty };
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -125,8 +125,8 @@ public class LoginCommandHandlerTests
         var command = new LoginCommand("test@example.com", "password");
         var user = new User { PasswordHash = "password_hash" };
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -153,8 +153,8 @@ public class LoginCommandHandlerTests
         var accessTokenInfo = new TokenInfo("access_token", DateTime.UtcNow);
         var refreshTokenInfo = new TokenInfo("refresh_token", DateTime.UtcNow);
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -188,8 +188,8 @@ public class LoginCommandHandlerTests
         var accessTokenInfo = new TokenInfo("access_token", DateTime.UtcNow);
         var refreshTokenInfo = new TokenInfo("refresh_token", DateTime.UtcNow);
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -228,8 +228,8 @@ public class LoginCommandHandlerTests
         var accessTokenInfo = new TokenInfo("access_token", DateTime.UtcNow);
         var refreshTokenInfo = new TokenInfo("refresh_token", DateTime.UtcNow);
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
@@ -268,8 +268,8 @@ public class LoginCommandHandlerTests
         var accessTokenInfo = new TokenInfo("access_token", DateTime.UtcNow);
         var refreshTokenInfo = new TokenInfo("refresh_token", DateTime.UtcNow);
 
-        _userRepositoryMock.Setup(userRepository =>
-            userRepository.GetByEmailWithRolesAndPermissionsAsync(
+        _userRepositoryMock.Setup(
+            userRepository => userRepository.GetByEmailWithRolesAndPermissionsAsync(
                 command.Email,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);

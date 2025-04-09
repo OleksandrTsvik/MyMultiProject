@@ -20,7 +20,7 @@ public static class UserErrors
         "Users.EmailNotVerified",
         $"Email '{email}' is not verified.", email);
 
-    public static Error InvalidPasswordHash() => Error.Failure(
+    public static Error InvalidPasswordHash() => Error.Forbidden(
         "Users.InvalidPasswordHash",
         "Invalid user password hash.");
 }

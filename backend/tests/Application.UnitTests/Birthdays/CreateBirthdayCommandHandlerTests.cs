@@ -46,7 +46,8 @@ public class CreateBirthdayCommandHandlerTests
         var userId = Guid.NewGuid();
         var command = new CreateBirthdayCommand("Oleksandr Tsvik", DateTime.UtcNow, note);
 
-        _userContextMock.Setup(userContext => userContext.UserId)
+        _userContextMock
+            .Setup(userContext => userContext.UserId)
             .Returns(userId);
 
         // Act

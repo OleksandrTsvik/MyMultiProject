@@ -1,9 +1,0 @@
-global using Api.Abstractions;
-global using Api.FunctionalTests.Abstractions;
-global using Api.FunctionalTests.Abstractions.BaseTests;
-global using Api.FunctionalTests.Abstractions.Extensions;
-global using Application.Common.Models;
-global using Microsoft.AspNetCore.Http;
-global using Microsoft.EntityFrameworkCore;
-global using System.Net;
-global using System.Net.Http.Json;

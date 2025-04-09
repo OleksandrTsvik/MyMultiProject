@@ -20,7 +20,7 @@ public class BirthdaysController : BaseApiController
         return HandleResult(result);
     }
 
-    [HttpPut("id:guid")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateBirthday(
         Guid id,
         [FromBody] UpdateBirthdayRequest request,

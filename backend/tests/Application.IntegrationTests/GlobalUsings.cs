@@ -1,5 +1,10 @@
+global using Api.Abstractions;
 global using Application.Common.Models;
 global using Application.IntegrationTests.Abstractions;
 global using Application.IntegrationTests.Abstractions.BaseTests;
+global using Application.IntegrationTests.Abstractions.Extensions;
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore;
 global using SharedKernel;
+global using System.Net;
+global using System.Net.Http.Json;

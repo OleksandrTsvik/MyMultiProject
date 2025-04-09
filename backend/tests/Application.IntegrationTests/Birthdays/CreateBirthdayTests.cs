@@ -1,12 +1,13 @@
 using Application.Birthdays.Create;
+using Domain.Birthdays;
 
-namespace Api.FunctionalTests.Birthdays;
+namespace Application.IntegrationTests.Birthdays;
 
-public class CreateBirthdayTests : BaseFunctionalTest
+public class CreateBirthdayTests : BaseIntegrationTest
 {
     public static readonly string RequestUri = "api/birthdays";
 
-    public CreateBirthdayTests(FunctionalTestWebAppFactory factory)
+    public CreateBirthdayTests(IntegrationTestWebAppFactory factory)
         : base(factory)
     {
     }
@@ -30,7 +31,7 @@ public class CreateBirthdayTests : BaseFunctionalTest
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-        ErrorResponse<List<ValidationError>> errorResponse = await response.GetErrorResponseAsync();
+        ErrorResponse<List<ValidationError>> errorResponse = await response.GetValidationErrorResponseAsync();
 
         Assert.Equal(StatusCodes.Status400BadRequest, errorResponse.StatusCode);
         Assert.NotNull(errorResponse.Details);
@@ -41,11 +42,7 @@ public class CreateBirthdayTests : BaseFunctionalTest
     public async Task Post_Should_ReturnOk_WhenRequestIsValid()
     {
         // Arrange
-        string fullName = "Oleksandr Tsvik";
-        DateTime date = DateTime.UtcNow;
-        string note = "Test note.";
-
-        var request = new CreateBirthdayRequest(fullName, date, note);
+        var request = new CreateBirthdayRequest("Oleksandr Tsvik", DateTime.UtcNow, "Test note.");
 
         HttpClient.DefaultRequestHeaders.Authorization = await AuthenticationService.GetAuthenticationHeaderAsync();
 
@@ -58,5 +55,12 @@ public class CreateBirthdayTests : BaseFunctionalTest
         Guid birthdayId = await response.GetContentAsync<Guid>();
 
         Assert.NotEqual(birthdayId, Guid.Empty);
+
+        Birthday? birthday = await DbContext.Birthdays
+            .FirstOrDefaultAsync(birthday => birthday.Id == birthdayId);
+
+        Assert.NotNull(birthday);
+        Assert.Equal(request.FullName, birthday.FullName);
+        Assert.Equal(request.Note, birthday.Note);
     }
 }

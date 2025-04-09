@@ -4,7 +4,7 @@ using Application.Users.Login;
 using Domain.Users;
 using Persistence;
 
-namespace Api.FunctionalTests.Abstractions.Services;
+namespace Application.IntegrationTests.Abstractions.Services;
 
 public sealed class AuthenticationService
 {
@@ -59,9 +59,9 @@ public sealed class AuthenticationService
         string password,
         List<UserPermissionType> permissions)
     {
-        User user = await CreateOrUpdateAuthorizedUserAsync(email, password, permissions);
+        await CreateOrUpdateAuthorizedUserAsync(email, password, permissions);
 
-        var request = new LoginRequest(user.Email, password);
+        var request = new LoginRequest(email, password);
 
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync("api/users/login", request);
         LoginResponse? loginResponse = await response.GetContentAsync<LoginResponse>();
