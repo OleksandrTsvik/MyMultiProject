@@ -28,10 +28,9 @@ internal sealed class BirthdayRepository : ApplicationDbRepository<Birthday>, IB
     public Task DeleteAsync(Guid id, Guid userId, CancellationToken cancellationToken = default)
     {
         return DbContext.Birthdays
-            .Where(
-                birthday =>
-                    birthday.Id == id &&
-                    birthday.UserId == userId)
+            .Where(birthday =>
+                birthday.Id == id &&
+                birthday.UserId == userId)
             .ExecuteDeleteAsync(cancellationToken);
     }
 }

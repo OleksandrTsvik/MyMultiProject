@@ -2,7 +2,9 @@ using Api.Abstractions;
 using Api.Contracts.Birthdays;
 using Application.Birthdays.Create;
 using Application.Birthdays.Delete;
+using Application.Birthdays.Get;
 using Application.Birthdays.Update;
+using Application.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 
@@ -10,6 +12,19 @@ namespace API.Controllers;
 
 public class BirthdaysController : BaseApiController
 {
+    [HttpGet]
+    public async Task<IActionResult> GetBirthdays(
+        [FromQuery(Name = "p")] int? pageNumber,
+        [FromQuery(Name = "ps")] int? pageSize,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetBirthdaysQuery(pageNumber, pageSize);
+
+        Result<PagedList<BirthdayResponse>> result = await Sender.Send(query, cancellationToken);
+
+        return HandleResult(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateBirthday(
         [FromBody] CreateBirthdayRequest request,

@@ -26,4 +26,14 @@ public abstract class BaseBirthdayTest : BaseIntegrationTest
 
         return birthdayId;
     }
+
+    protected async Task CreateManyBirthdaysAsync(string fullName, params string[] fullNames)
+    {
+        await CreateBirthdayAsync(fullName);
+
+        foreach (string item in fullNames)
+        {
+            await CreateBirthdayAsync(item);
+        }
+    }
 }
