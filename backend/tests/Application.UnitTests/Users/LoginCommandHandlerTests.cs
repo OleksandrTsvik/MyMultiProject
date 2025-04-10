@@ -119,10 +119,10 @@ public class LoginCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_Should_ReturnFailureResult_WhenPasswordIsInvalid()
+    public async Task Handle_Should_ReturnFailureResult_WhenPasswordIsWrong()
     {
         // Arrange
-        var command = new LoginCommand("test@example.com", "password");
+        var command = new LoginCommand("test@example.com", "wrong-password");
         var user = new User { PasswordHash = "password_hash" };
 
         _userRepositoryMock.Setup(

@@ -6,19 +6,19 @@ namespace Application.UnitTests.Birthdays;
 
 public class CreateBirthdayCommandHandlerTests
 {
-    private readonly Mock<IBirthdayRepository> _birthdayRepositoryMock;
     private readonly Mock<IUserContext> _userContextMock;
+    private readonly Mock<IBirthdayRepository> _birthdayRepositoryMock;
 
     private readonly CreateBirthdayCommandHandler _handler;
 
     public CreateBirthdayCommandHandlerTests()
     {
-        _birthdayRepositoryMock = new();
         _userContextMock = new();
+        _birthdayRepositoryMock = new();
 
         _handler = new CreateBirthdayCommandHandler(
-            _birthdayRepositoryMock.Object,
-            _userContextMock.Object);
+            _userContextMock.Object,
+            _birthdayRepositoryMock.Object);
     }
 
     [Theory]

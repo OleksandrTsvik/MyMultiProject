@@ -1,4 +1,4 @@
-using Api.Abstractions;
+using Api.Contracts;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;

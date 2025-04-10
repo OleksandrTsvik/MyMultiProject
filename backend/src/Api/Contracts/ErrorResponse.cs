@@ -1,4 +1,4 @@
-namespace Api.Abstractions;
+namespace Api.Contracts;
 
 public record ErrorResponse<TDetails>(
     int StatusCode,

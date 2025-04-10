@@ -1,4 +1,4 @@
-using Application.Birthdays.Create;
+using Api.Contracts.Birthdays;
 
 namespace Application.IntegrationTests.Abstractions.BaseTests;
 
@@ -11,8 +11,8 @@ public abstract class BaseBirthdayTest : BaseIntegrationTest
 
     protected async Task<Guid> CreateBirthdayAsync(
         string fullName,
-        DateTime? date = null,
-        string? note = null)
+        string? note = null,
+        DateTime? date = null)
     {
         var request = new CreateBirthdayRequest(
             fullName,

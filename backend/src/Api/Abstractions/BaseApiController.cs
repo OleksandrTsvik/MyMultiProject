@@ -1,3 +1,4 @@
+using Api.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;

@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Api.Contracts.Users;
 using Application.Common.Authentication;
 using Application.Users.Login;
 using Domain.Users;

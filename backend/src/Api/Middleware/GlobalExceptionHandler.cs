@@ -1,4 +1,4 @@
-using Api.Abstractions;
+using Api.Contracts;
 using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 

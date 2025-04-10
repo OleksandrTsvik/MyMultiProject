@@ -1,4 +1,4 @@
-namespace Application.Birthdays.Create;
+namespace Api.Contracts.Birthdays;
 
 public sealed record CreateBirthdayRequest(
     string FullName,

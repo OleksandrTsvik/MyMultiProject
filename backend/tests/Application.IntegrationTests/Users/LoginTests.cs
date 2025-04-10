@@ -1,3 +1,4 @@
+using Api.Contracts.Users;
 using Application.Users.Login;
 using Domain.Users;
 

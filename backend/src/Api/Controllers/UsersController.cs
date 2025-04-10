@@ -1,4 +1,5 @@
 using Api.Abstractions;
+using Api.Contracts.Users;
 using Application.Common.Models;
 using Application.Users.Get;
 using Application.Users.Login;

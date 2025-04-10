@@ -7,13 +7,13 @@ namespace Application.Birthdays.Create;
 
 public sealed class CreateBirthdayCommandHandler : ICommandHandler<CreateBirthdayCommand, Guid>
 {
-    private readonly IBirthdayRepository _birthdayRepository;
     private readonly IUserContext _userContext;
+    private readonly IBirthdayRepository _birthdayRepository;
 
-    public CreateBirthdayCommandHandler(IBirthdayRepository birthdayRepository, IUserContext userContext)
+    public CreateBirthdayCommandHandler(IUserContext userContext, IBirthdayRepository birthdayRepository)
     {
-        _birthdayRepository = birthdayRepository;
         _userContext = userContext;
+        _birthdayRepository = birthdayRepository;
     }
 
     public async Task<Result<Guid>> Handle(CreateBirthdayCommand request, CancellationToken cancellationToken)

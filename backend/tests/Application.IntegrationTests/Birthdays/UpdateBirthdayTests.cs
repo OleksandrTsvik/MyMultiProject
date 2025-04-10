@@ -1,4 +1,4 @@
-using Application.Birthdays.Update;
+using Api.Contracts.Birthdays;
 using Domain.Birthdays;
 
 namespace Application.IntegrationTests.Birthdays;
@@ -57,7 +57,7 @@ public class UpdateBirthdayTests : BaseBirthdayTest
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
         ErrorResponse errorResponse = await response.GetErrorResponseAsync();
-        Error error = BirthdayErrors.NotFoundById(birthdayId);
+        Error error = BirthdayErrors.NotFound();
 
         Assert.Equal(StatusCodes.Status404NotFound, errorResponse.StatusCode);
         Assert.Equal(error.Code, errorResponse.Code);
@@ -67,6 +67,42 @@ public class UpdateBirthdayTests : BaseBirthdayTest
             .FirstOrDefaultAsync(birthday => birthday.Id == birthdayId);
 
         Assert.Null(birthday);
+    }
+
+    [Fact]
+    public async Task Put_Should_ReturnNotFound_WhenTryingUpdateAnotherUsersBirthday()
+    {
+        // Arrange
+        string otherUserBirthdayFullName = "Oleksandr Tsvik";
+        string otherUserBirthdayNote = "Test note.";
+        Guid otherUserBirthdayId = await CreateBirthdayAsync(otherUserBirthdayFullName, otherUserBirthdayNote);
+
+        var request = new UpdateBirthdayRequest("Test Name", DateTime.UtcNow, "Hello world.");
+
+        HttpClient.DefaultRequestHeaders.Authorization = await AuthenticationService.GetAuthenticationHeaderAsync(
+            "test@mail.com",
+            "password",
+            []);
+
+        // Act
+        HttpResponseMessage response = await HttpClient.PutAsJsonAsync($"{RequestUri}/{otherUserBirthdayId}", request);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+        ErrorResponse errorResponse = await response.GetErrorResponseAsync();
+        Error error = BirthdayErrors.NotFound();
+
+        Assert.Equal(StatusCodes.Status404NotFound, errorResponse.StatusCode);
+        Assert.Equal(error.Code, errorResponse.Code);
+        Assert.Equal(error.Message, errorResponse.Message);
+
+        Birthday? birthday = await DbContext.Birthdays
+            .FirstOrDefaultAsync(birthday => birthday.Id == otherUserBirthdayId);
+
+        Assert.NotNull(birthday);
+        Assert.Equal(otherUserBirthdayFullName, birthday.FullName);
+        Assert.Equal(otherUserBirthdayNote, birthday.Note);
     }
 
     [Fact]
