@@ -2,7 +2,7 @@
 
 ## 🚀 How-to run
 
-1. Install .NET 8.0.
+1. Install .NET 9.0.
 2. Install required dependencies:
 
 ```sh

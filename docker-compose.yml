@@ -11,7 +11,7 @@ services:
       - postgres
 
   postgres:
-    image: postgres:latest
+    image: postgres:17
     container_name: postgres
     environment:
       POSTGRES_DB: my-multi-project

@@ -27,7 +27,7 @@ services:
       - postgres
 
   postgres:
-    image: postgres:latest
+    image: postgres:17
     container_name: postgres
     restart: always
     environment:
@@ -40,7 +40,7 @@ services:
       - 5432:5432
 
   pgadmin4:
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:9
     container_name: pgadmin4
     restart: always
     environment:
